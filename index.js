@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;  // Использование переменной PORT, предоставляемой Heroku
 
 // Инициализация Firebase Admin SDK
 const serviceAccount = require('./firebase-config.json');
@@ -158,22 +158,4 @@ app.get('/getRepair/:id', async (req, res) => {
 // Запуск сервера
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
-});
-// Получение списка всех ремонтов
-app.get('/getRepairs', async (req, res) => {
-  try {
-    const repairsRef = db.collection('Repairs');
-    const snapshot = await repairsRef.get();
-    if (snapshot.empty) {
-      res.status(404).send('No repairs found');
-      return;
-    }
-    const repairs = [];
-    snapshot.forEach(doc => {
-      repairs.push({ id: doc.id, data: doc.data() });
-    });
-    res.status(200).json(repairs);
-  } catch (error) {
-    res.status(500).send('Error getting repairs: ' + error.message);
-  }
 });
