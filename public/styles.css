@@ -1,0 +1,79 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+h1 {
+  color: #333;
+}
+
+#menu, #form-page, #search-page {
+  background: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 600px;
+}
+
+form div, .inline {
+  margin-bottom: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input, select {
+  padding: 8px;
+  margin-top: 5px;
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 12px;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+button.small {
+  width: 30px; /* Изменен размер кнопки */
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+}
+
+.inline > * {
+  margin-right: 10px;
+}
+
+button.add-repair {
+  padding: 4px 8px;
+}
+
+input.small, select.small {
+  width: 150px;
+}
+
+#buttons, #search-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
