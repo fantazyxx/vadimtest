@@ -54,6 +54,7 @@ app.get('/getDevice/:id', async (req, res) => {
     }
     res.status(200).json({ id: doc.id, data: doc.data() });
   } catch (error) {
+    console.error('Error getting device:', error);
     res.status(500).send('Error getting device: ' + error.message);
   }
 });
@@ -160,4 +161,20 @@ app.get('/getRepair/:id', async (req, res) => {
 // Запуск сервера
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
+});
+// Добавление нового устройства
+app.post('/addDevice', async (req, res) => {
+  const { deviceNumber, deviceModel, factorySerialNumber, region, deviceType } = req.body;
+  try {
+    await db.collection('Devices').doc(deviceNumber).set({
+      model: deviceModel,
+      factory_serial_number: factorySerialNumber,
+      region: region,
+      type: deviceType
+    });
+    res.status(200).send('Device added successfully');
+  } catch (error) {
+    console.error('Error adding device:', error);
+    res.status(500).send('Error adding device: ' + error.message);
+  }
 });
