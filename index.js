@@ -36,9 +36,11 @@ app.get('/getDevices', async (req, res) => {
     });
     res.status(200).json(devices);
   } catch (error) {
+    console.error('Error getting devices:', error);  // Логирование ошибок
     res.status(500).send('Error getting devices: ' + error.message);
   }
 });
+
 
 // Получение информации об устройстве по системному номеру
 app.get('/getDevice/:id', async (req, res) => {
