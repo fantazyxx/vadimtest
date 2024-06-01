@@ -253,4 +253,50 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+document.getElementById('addDeviceBtn').addEventListener('click', () => {
+  document.getElementById('addDeviceForm').style.display = 'block';
+});
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  document.getElementById('addDeviceForm').style.display = 'none';
+  document.getElementById('deviceForm').reset();
+});
+
+document.getElementById('deviceForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const deviceNumber = document.getElementById('deviceNumber').value;
+  const deviceModel = document.getElementById('deviceModel').value;
+  const factorySerialNumber = document.getElementById('factorySerialNumber').value;
+  const region = document.getElementById('region').value;
+  const deviceType = document.getElementById('deviceType').value;
+
+  const deviceData = {
+      deviceNumber,
+      deviceModel,
+      factorySerialNumber,
+      region,
+      deviceType
+  };
+
+  try {
+      const response = await fetch('/addDevice', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(deviceData)
+      });
+
+      if (response.ok) {
+          alert('Устройство успешно добавлено!');
+          document.getElementById('addDeviceForm').style.display = 'none';
+          document.getElementById('deviceForm').reset();
+      } else {
+          alert('Ошибка при добавлении устройства.');
+      }
+  } catch (error) {
+      console.error('Error adding device:', error);
+      alert('Ошибка при добавлении устройства.');
+  }
+});
 
