@@ -1,11 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
+  const addDeviceButton = document.getElementById('add-device-button');
   const formPage = document.getElementById('form-page');
   const menuPage = document.getElementById('menu');
   const searchPage = document.getElementById('search-page');
+  const addDeviceFormPage = document.getElementById('add-device-form-page');
   const backButton = document.getElementById('back-button');
   const searchBackButton = document.getElementById('search-back-button');
+  const addDeviceBackButton = document.getElementById('add-device-back-button');
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number');
@@ -16,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
+  const addDeviceForm = document.getElementById('device-form');
 
   let repairsToAdd = [];
   let totalCost = 0;
@@ -31,6 +35,11 @@ document.addEventListener('DOMContentLoaded', function() {
     searchPage.style.display = 'block';
   });
 
+  addDeviceButton.addEventListener('click', () => {
+    menuPage.style.display = 'none';
+    addDeviceFormPage.style.display = 'block';
+  });
+
   backButton.addEventListener('click', () => {
     clearForm();
     formPage.style.display = 'none';
@@ -40,6 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
   searchBackButton.addEventListener('click', () => {
     clearSearch();
     searchPage.style.display = 'none';
+    menuPage.style.display = 'block';
+  });
+
+  addDeviceBackButton.addEventListener('click', () => {
+    clearAddDeviceForm();
+    addDeviceFormPage.style.display = 'none';
     menuPage.style.display = 'block';
   });
 
@@ -217,6 +232,10 @@ document.addEventListener('DOMContentLoaded', function() {
     searchResultsDiv.innerHTML = '';
   }
 
+  function clearAddDeviceForm() {
+    addDeviceForm.reset();
+  }
+
   actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
@@ -239,6 +258,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify(repairData)
       });
+
       if (response.ok) {
         alert('Акт успешно добавлен');
         clearForm();
@@ -252,51 +272,44 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при добавлении акта');
     }
   });
-});
-document.getElementById('addDeviceBtn').addEventListener('click', () => {
-  document.getElementById('addDeviceForm').style.display = 'block';
-});
 
-document.getElementById('backBtn').addEventListener('click', () => {
-  document.getElementById('addDeviceForm').style.display = 'none';
-  document.getElementById('deviceForm').reset();
-});
+  addDeviceForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const deviceNumber = document.getElementById('deviceNumber').value;
+    const deviceModel = document.getElementById('deviceModel').value;
+    const factorySerialNumber = document.getElementById('factorySerialNumber').value;
+    const region = document.getElementById('region').value;
+    const deviceType = document.getElementById('deviceType').value;
 
-document.getElementById('deviceForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const deviceNumber = document.getElementById('deviceNumber').value;
-  const deviceModel = document.getElementById('deviceModel').value;
-  const factorySerialNumber = document.getElementById('factorySerialNumber').value;
-  const region = document.getElementById('region').value;
-  const deviceType = document.getElementById('deviceType').value;
-
-  const deviceData = {
+    const deviceData = {
       deviceNumber,
       deviceModel,
       factorySerialNumber,
       region,
       deviceType
-  };
+    };
 
-  try {
+    try {
       const response = await fetch('/addDevice', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(deviceData)
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(deviceData)
       });
 
       if (response.ok) {
-          alert('Устройство успешно добавлено!');
-          document.getElementById('addDeviceForm').style.display = 'none';
-          document.getElementById('deviceForm').reset();
+        alert('Устройство успешно добавлено');
+        clearAddDeviceForm();
+        addDeviceFormPage.style.display = 'none';
+        menuPage.style.display = 'block';
       } else {
-          alert('Ошибка при добавлении устройства.');
+        alert('Ошибка при добавлении устройства');
       }
-  } catch (error) {
+    } catch (error) {
       console.error('Error adding device:', error);
-      alert('Ошибка при добавлении устройства.');
-  }
+      alert('Ошибка при добавлении устройства');
+    }
+  });
 });
 
