@@ -1,59 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <title>Main Menu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Repair Management System</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <button id="addActBtn">Внести Акт</button>
-        <button id="searchDeviceBtn">Поиск устройства</button>
-        <button id="addDeviceBtn">Добавить устройство</button>
+  <div class="container">
+    <h1>Repair Management System</h1>
+    <div id="main-buttons">
+      <button id="addActButton">Внести Акт</button>
+      <button id="searchDeviceButton">Поиск устройства</button>
+      <button id="addDeviceButton">Добавить устройство</button>
     </div>
-
     <div id="addDeviceForm" style="display: none;">
-        <h2>Добавить устройство</h2>
-        <form id="deviceForm">
-            <label for="deviceNumber">Номер устройства</label>
-            <input type="text" id="deviceNumber" name="deviceNumber" required>
-
-            <label for="deviceModel">Тип устройства</label>
-            <select id="deviceModel" name="deviceModel" required>
-                <option value="">--</option>
-                <option value="УНА 001-03">УНА 001-03</option>
-                <option value="Спектр">Спектр</option>
-                <option value="DoCash 2241">DoCash 2241</option>
-                <option value="Deep 2240">Deep 2240</option>
-                <option value="Банкнота 1КУ">Банкнота 1КУ</option>
-                <option value="Scan Coin">Scan Coin</option>
-                <option value="VAMA BP-2">VAMA BP-2</option>
-            </select>
-
-            <label for="factorySerialNumber">Заводской номер</label>
-            <input type="text" id="factorySerialNumber" name="factorySerialNumber" required>
-
-            <label for="region">Регион</label>
-            <input type="text" id="region" name="region" required>
-
-            <label for="deviceType">Тип устройства</label>
-            <select id="deviceType" name="deviceType" required>
-                <option value="">--</option>
-                <option value="Безвакуумный/ленточный упаковщик">Безвакуумный/ленточный упаковщик</option>
-                <option value="Детектор валют">Детектор валют</option>
-                <option value="Вакуумный упаковщик">Вакуумный упаковщик</option>
-                <option value="Счетчик банкнот">Счетчик банкнот</option>
-                <option value="Счетчик монет">Счетчик монет</option>
-            </select>
-
-            <div class="form-buttons">
-                <button type="button" id="backBtn">Назад</button>
-                <button type="submit">Сохранить</button>
-            </div>
-        </form>
+      <form>
+        <div>
+          <label for="deviceId">Номер устройства:</label>
+          <input type="text" id="deviceId" name="deviceId">
+        </div>
+        <div>
+          <label for="deviceModel">Тип устройства:</label>
+          <select id="deviceModel" name="deviceModel">
+            <option value="">--</option>
+            <option value="УНА 001-03">УНА 001-03</option>
+            <option value="Спектр">Спектр</option>
+            <option value="DoCash 2241">DoCash 2241</option>
+            <option value="Deep 2240">Deep 2240</option>
+            <option value="Банкнота 1КУ">Банкнота 1КУ</option>
+            <option value="Scan Coin">Scan Coin</option>
+            <option value="VAMA BP-2">VAMA BP-2</option>
+          </select>
+        </div>
+        <div>
+          <label for="factorySerialNumber">Заводской номер:</label>
+          <input type="text" id="factorySerialNumber" name="factorySerialNumber">
+        </div>
+        <div>
+          <label for="region">Регион:</label>
+          <input type="text" id="region" name="region">
+        </div>
+        <div>
+          <label for="deviceType">Тип устройства:</label>
+          <select id="deviceType" name="deviceType">
+            <option value="Безвакуумный/ленточный упаковщик">Безвакуумный/ленточный упаковщик</option>
+            <option value="Детектор валют">Детектор валют</option>
+            <option value="Вакуумный упаковщик">Вакуумный упаковщик</option>
+            <option value="Счетчик банкнот">Счетчик банкнот</option>
+            <option value="Счетчик монет">Счетчик монет</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button type="button" id="backButton">Назад</button>
+          <button type="button" id="saveButton">Сохранить</button>
+        </div>
+      </form>
     </div>
-
-    <script src="app.js"></script>
+  </div>
+  <script src="app.js"></script>
 </body>
 </html>

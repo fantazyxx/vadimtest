@@ -41,7 +41,6 @@ app.get('/getDevices', async (req, res) => {
   }
 });
 
-
 // Получение информации об устройстве по системному номеру
 app.get('/getDevice/:id', async (req, res) => {
   const deviceId = req.params.id;
@@ -158,10 +157,6 @@ app.get('/getRepair/:id', async (req, res) => {
   }
 });
 
-// Запуск сервера
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
 // Добавление нового устройства
 app.post('/addDevice', async (req, res) => {
   const { deviceNumber, deviceModel, factorySerialNumber, region, deviceType } = req.body;
@@ -177,4 +172,9 @@ app.post('/addDevice', async (req, res) => {
     console.error('Error adding device:', error);
     res.status(500).send('Error adding device: ' + error.message);
   }
+});
+
+// Запуск сервера
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
 });
