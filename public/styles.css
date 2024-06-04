@@ -1,5 +1,5 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Helvetica', 'Arial', sans-serif;
   background-color: #f0f0f0;
   margin: 0;
   padding: 0;
@@ -27,7 +27,7 @@ h1 {
 #menu {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Расстояние между кнопками */
+  gap: 10px;
   margin-top: 20px;
 }
 
@@ -45,35 +45,8 @@ button:hover {
   background-color: #0056b3;
 }
 
-button.small {
-  width: 30px; /* Изменен размер кнопки */
-}
-
-.inline {
-  display: flex;
-  align-items: center;
-}
-
-.inline > * {
-  margin-right: 10px;
-}
-
-button.add-repair {
-  padding: 4px 8px;
-}
-
-input.small, select.small {
-  width: 150px;
-}
-
-#buttons, #search-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
 #addDeviceForm, #searchDeviceForm, #addRepairForm {
-  display: none; /* Формы скрыты по умолчанию */
+  display: none;
   background: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -81,26 +54,40 @@ input.small, select.small {
   width: 90%;
   max-width: 600px;
   margin-top: 20px;
-  text-align: left; /* Текст выравнивается по левому краю */
+  text-align: left;
 }
 
-#addDeviceForm form, #searchDeviceForm form, #addRepairForm form {
+form {
   display: flex;
   flex-direction: column;
 }
 
-#addDeviceForm form div, #searchDeviceForm form div, #addRepairForm form div {
+form div {
   margin-bottom: 15px;
 }
 
 label {
   font-weight: bold;
   margin-bottom: 5px;
+  font-size: 14px;
 }
 
 input, select {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.buttons button {
+  padding: 10px 15px;
   font-size: 16px;
 }
