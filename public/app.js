@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const addDeviceBackButton = document.getElementById('add-device-back-button');
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
-  const deviceNumberSelect = document.getElementById('device-number');
-  const deviceTypeInput = document.getElementById('device-type');
+  const deviceNumberSelect = document.getElementById('device-number-select');
+  const deviceTypeInput = document.getElementById('device-type-input');
   const previousRepairsList = document.getElementById('previous-repairs');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
@@ -332,3 +332,4 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 });
+
