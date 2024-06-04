@@ -10,20 +10,71 @@
   <div class="container">
     <h1>Repair Management System</h1>
     <div id="menu">
-      <button id="addActButton">Внести Акт</button>
-      <button id="searchDeviceButton">Поиск устройства</button>
-      <button id="addDeviceButton">Добавить устройство</button>
+      <button id="add-act-button">Внести Акт</button>
+      <button id="search-device-button">Поиск устройства</button>
+      <button id="add-device-button">Добавить устройство</button>
     </div>
 
-    <div id="addDeviceForm">
-      <form id="device-form">
+    <div id="form-page" style="display: none;">
+      <form id="act-form">
         <div>
-          <label for="deviceId">Номер устройства:</label>
-          <input type="text" id="deviceId" name="deviceId">
+          <label for="act-number">Номер Акта:</label>
+          <input type="text" id="act-number" required>
         </div>
         <div>
-          <label for="deviceModel">Тип устройства:</label>
-          <select id="deviceModel" name="deviceModel">
+          <label for="device-number-select">Номер Устройства:</label>
+          <select id="device-number-select" required></select>
+        </div>
+        <div>
+          <label for="device-type-input">Тип Устройства:</label>
+          <input type="text" id="device-type-input" disabled>
+        </div>
+        <div>
+          <label for="repair-date">Дата Ремонта:</label>
+          <input type="date" id="repair-date" required>
+        </div>
+        <div id="previous-repairs">
+          <h3>Предыдущие Ремонты (за последние 6 месяцев)</h3>
+          <ul id="previous-repairs-list"></ul>
+        </div>
+        <div id="repair-list">
+          <h3>Добавить Ремонтные Работы</h3>
+          <button type="button" id="add-repair-button">Добавить Ремонт</button>
+        </div>
+        <div>
+          <label for="total-cost">Общая Стоимость:</label>
+          <input type="text" id="total-cost" disabled>
+        </div>
+        <div class="buttons">
+          <button type="button" id="back-button">Назад</button>
+          <button type="submit">Сохранить Акт</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="search-page" style="display: none;">
+      <form>
+        <div>
+          <label for="search-device-id">ID Устройства:</label>
+          <input type="text" id="search-device-id">
+        </div>
+        <div class="buttons">
+          <button type="button" id="search-back-button">Назад</button>
+          <button type="button" id="search-button">Поиск</button>
+        </div>
+        <div id="search-results"></div>
+      </form>
+    </div>
+
+    <div id="add-device-page" style="display: none;">
+      <form id="device-form">
+        <div>
+          <label for="device-number">Номер Устройства:</label>
+          <input type="text" id="device-number" required>
+        </div>
+        <div>
+          <label for="device-model">Тип Устройства:</label>
+          <select id="device-model" required>
             <option value="">--</option>
             <option value="УНА 001-03">УНА 001-03</option>
             <option value="Спектр">Спектр</option>
@@ -35,12 +86,12 @@
           </select>
         </div>
         <div>
-          <label for="factorySerialNumber">Заводской номер:</label>
-          <input type="text" id="factorySerialNumber" name="factorySerialNumber">
+          <label for="factory-serial-number">Заводской Номер:</label>
+          <input type="text" id="factory-serial-number" required>
         </div>
         <div>
           <label for="region">Регион:</label>
-          <select id="region" name="region">
+          <select id="region" required>
             <option value="">--</option>
             <option value="Тернопіль">Тернопіль</option>
             <option value="Чернігів">Чернігів</option>
@@ -69,50 +120,8 @@
           </select>
         </div>
         <div class="buttons">
-          <button type="button" id="backButton">Назад</button>
-          <button type="button" id="saveButton">Сохранить</button>
-        </div>
-      </form>
-    </div>
-    
-    <div id="searchDeviceForm">
-      <form>
-        <div>
-          <label for="searchDeviceId">Номер устройства:</label>
-          <input type="text" id="searchDeviceId" name="searchDeviceId">
-        </div>
-        <div class="buttons">
-          <button type="button" id="searchBackButton">Назад</button>
-          <button type="button" id="searchButton">Поиск</button>
-        </div>
-      </form>
-    </div>
-    
-    <div id="addRepairForm">
-      <form>
-        <div>
-          <label for="repairId">Номер ремонта:</label>
-          <input type="text" id="repairId" name="repairId">
-        </div>
-        <div>
-          <label for="repairDeviceId">Номер устройства:</label>
-          <input type="text" id="repairDeviceId" name="repairDeviceId">
-        </div>
-        <div>
-          <label for="repairType">Тип ремонта:</label>
-          <input type="text" id="repairType" name="repairType">
-        </div>
-        <div>
-          <label for="workCount">Количество работ:</label>
-          <input type="number" id="workCount" name="workCount">
-        </div>
-        <div>
-          <label for="installationDate">Дата установки:</label>
-          <input type="date" id="installationDate" name="installationDate">
-        </div>
-        <div class="buttons">
-          <button type="button" id="repairBackButton">Назад</button>
-          <button type="button" id="addRepairButton">Добавить</button>
+          <button type="button" id="add-device-back-button">Назад</button>
+          <button type="submit">Добавить Устройство</button>
         </div>
       </form>
     </div>

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number-select');
   const deviceTypeInput = document.getElementById('device-type-input');
-  const previousRepairsList = document.getElementById('previous-repairs');
+  const previousRepairsList = document.getElementById('previous-repairs-list');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
   const totalCostInput = document.getElementById('total-cost');
@@ -24,14 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
   let repairsToAdd = [];
   let totalCost = 0;
 
-  // Уникальные регионы
   const uniqueRegions = [
     "Тернопіль", "Чернігів", "Прилуки", "Черкаси", "Чернівці", "Дніпро", "Закарпаття",
     "Рівне", "Харків", "Херсон", "Хмельницький", "Івано Франківськ", "Київ", "Кіровоград",
     "Кривий ріг", "Львів", "Миколаїв", "Одеса", "Полтава", "Кременчуг", "Суми", "Волинь", "Вінниця", "Запоріжжя"
   ];
 
-  // Заполнение выпадающего списка регионов
   function populateRegionSelect() {
     const options = uniqueRegions
       .map(region => `<option value="${region}">${region}</option>`)
@@ -39,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
     regionSelect.innerHTML = `<option value="">--</option>${options}`;
   }
 
-  populateRegionSelect(); // Вызов функции для заполнения при загрузке страницы
+  populateRegionSelect();
 
   addActButton.addEventListener('click', () => {
     menuPage.style.display = 'none';
