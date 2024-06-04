@@ -14,28 +14,21 @@ h1 {
   color: #333;
 }
 
-#menu, #form-page, #search-page {
+.container {
   background: #fff;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 600px;
+  text-align: center;
 }
 
-form div, .inline {
-  margin-bottom: 10px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input, select {
-  padding: 8px;
-  margin-top: 5px;
-  width: 100%;
+#menu {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Расстояние между кнопками */
+  margin-top: 20px;
 }
 
 button {
@@ -44,7 +37,8 @@ button {
   color: white;
   border: none;
   border-radius: 5px;
-  padding: 8px 12px;
+  padding: 10px 15px;
+  font-size: 16px;
 }
 
 button:hover {
