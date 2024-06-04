@@ -33,13 +33,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Заполнение выпадающего списка регионов
   function populateRegionSelect() {
-    regionSelect.innerHTML = '<option value="">--</option>'; // Опция по умолчанию
-    uniqueRegions.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region;
-      option.textContent = region;
-      regionSelect.appendChild(option);
-    });
+    const options = uniqueRegions
+      .map(region => `<option value="${region}">${region}</option>`)
+      .join('');
+    regionSelect.innerHTML = `<option value="">--</option>${options}`;
   }
 
   populateRegionSelect(); // Вызов функции для заполнения при загрузке страницы
@@ -153,8 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function loadDeviceNumbers() {
     try {
-      const response = await fetch('/getDevices');
-      const devices = await response.json();
+      const devices = await loadDataFromFirestore('devices');
       deviceNumberSelect.innerHTML = '<option value="">--</option>';
       devices.forEach(device => {
         const option = document.createElement('option');
@@ -165,33 +161,41 @@ document.addEventListener('DOMContentLoaded', function() {
       deviceNumberSelect.style.width = '550px';
     } catch (error) {
       console.error('Error fetching device numbers:', error);
+      alert('Ошибка при загрузке номеров устройств.');
     }
   }
 
   async function loadDeviceType(deviceNumber) {
     try {
-      const response = await fetch(`/getDevice/${deviceNumber}`);
-      const device = await response.json();
-      deviceTypeInput.value = device.data.model;
+      const device = await loadDataFromFirestore('devices', device => {
+        return device.id === deviceNumber;
+      });
+      deviceTypeInput.value = device.length > 0 ? device[0].data.model : '';
     } catch (error) {
       console.error('Error fetching device type:', error);
+      alert('Ошибка при загрузке типа устройства.');
     }
   }
 
   async function loadPreviousRepairs(deviceNumber) {
     try {
-      const response = await fetch('/getRepairs');
-      const repairs = await response.json();
+      const repairs = await loadDataFromFirestore('repairs', repair => {
+        return (
+          repair.data.device_id === deviceNumber &&
+          new Date(repair.data.installation_date) >= sixMonthsAgo()
+        );
+      });
+
       previousRepairsList.innerHTML = '';
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-      repairs.filter(repair => repair.data.device_id === deviceNumber && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
+
+      repairs.forEach(repair => {
         const listItem = document.createElement('li');
         listItem.textContent = `${repair.data.repair_type}, Дата: ${repair.data.installation_date}`;
         previousRepairsList.appendChild(listItem);
       });
     } catch (error) {
       console.error('Error fetching previous repairs:', error);
+      alert('Ошибка при загрузке предыдущих ремонтов.');
     }
   }
 
@@ -235,6 +239,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     } catch (error) {
       console.error('Error fetching repairs:', error);
+      alert('Ошибка при загрузке ремонтов.');
     }
   }
 
@@ -331,4 +336,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  // Общая функция для загрузки данных из Firestore
+  async function loadDataFromFirestore(collectionName, filterFn = null) {
+    try {
+      const response = await fetch(`/get${capitalize(collectionName)}`);
+      const data = await response.json();
+      return filterFn ? data.filter(filterFn) : data;
+    } catch (error) {
+      console.error(`Error fetching data from ${collectionName}:`, error);
+      throw error;
+    }
+  }
+
+  // Вспомогательная функция для получения даты 6 месяцев назад
+  function sixMonthsAgo() {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 6);
+    return date;
+  }
+
+  // Вспомогательная функция для капитализации первой буквы строки
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
 });
