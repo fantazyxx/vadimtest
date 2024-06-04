@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
   const formPage = document.getElementById('form-page');
-  const menuPage = document.getElementById('menu');
+  const menuPage = document.getElementById('main-buttons');
   const searchPage = document.getElementById('search-page');
   const addDevicePage = document.getElementById('add-device-page');
   const backButton = document.getElementById('back-button');
@@ -11,8 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const addDeviceBackButton = document.getElementById('add-device-back-button');
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
-  const deviceNumberSelect = document.getElementById('device-number');
-  const deviceTypeInput = document.getElementById('device-type');
+  const deviceNumberSelect = document.getElementById('device-number-select');
+  const deviceTypeInput = document.getElementById('device-type-input');
   const previousRepairsList = document.getElementById('previous-repairs');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
