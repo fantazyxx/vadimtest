@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
   const formPage = document.getElementById('form-page');
-  const menuPage = document.getElementById('main-buttons');
+  const menuPage = document.getElementById('menu');
   const searchPage = document.getElementById('search-page');
   const addDevicePage = document.getElementById('add-device-page');
   const backButton = document.getElementById('back-button');
@@ -11,17 +11,38 @@ document.addEventListener('DOMContentLoaded', function() {
   const addDeviceBackButton = document.getElementById('add-device-back-button');
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
-  const deviceNumberSelect = document.getElementById('device-number-select');
-  const deviceTypeInput = document.getElementById('device-type-input');
+  const deviceNumberSelect = document.getElementById('device-number');
+  const deviceTypeInput = document.getElementById('device-type');
   const previousRepairsList = document.getElementById('previous-repairs');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
+  const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
   let totalCost = 0;
+
+  // Уникальные регионы
+  const uniqueRegions = [
+    "Тернопіль", "Чернігів", "Прилуки", "Черкаси", "Чернівці", "Дніпро", "Закарпаття",
+    "Рівне", "Харків", "Херсон", "Хмельницький", "Івано Франківськ", "Київ", "Кіровоград",
+    "Кривий ріг", "Львів", "Миколаїв", "Одеса", "Полтава", "Кременчуг", "Суми", "Волинь", "Вінниця", "Запоріжжя"
+  ];
+
+  // Заполнение выпадающего списка регионов
+  function populateRegionSelect() {
+    regionSelect.innerHTML = '<option value="">--</option>'; // Опция по умолчанию
+    uniqueRegions.forEach(region => {
+      const option = document.createElement('option');
+      option.value = region;
+      option.textContent = region;
+      regionSelect.appendChild(option);
+    });
+  }
+
+  populateRegionSelect(); // Вызов функции для заполнения при загрузке страницы
 
   addActButton.addEventListener('click', () => {
     menuPage.style.display = 'none';
@@ -231,6 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
     searchResultsDiv.innerHTML = '';
   }
 
+  function clearAddDeviceForm() {
+    document.getElementById('device-form').reset();
+  }
+
   actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
@@ -306,7 +331,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  function clearAddDeviceForm() {
-    document.getElementById('device-form').reset();
-  }
 });
