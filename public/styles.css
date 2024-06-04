@@ -45,7 +45,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-#addDeviceForm, #searchDeviceForm, #addRepairForm {
+#form-page, #search-page, #add-device-page {
   display: none;
   background: #fff;
   padding: 20px;
