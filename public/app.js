@@ -13,35 +13,54 @@ document.addEventListener('DOMContentLoaded', function() {
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number-select');
   const deviceTypeInput = document.getElementById('device-type-input');
-  const previousRepairsList = document.getElementById('previous-repairs-list');
+  const previousRepairsList = document.getElementById('previous-repairs');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
   const regionSelect = document.getElementById('region');
+  const addRepairLabel = document.getElementById('add-repair-label');
 
   let repairsToAdd = [];
   let totalCost = 0;
 
+  // Уникальные регионы
   const uniqueRegions = [
     "Тернопіль", "Чернігів", "Прилуки", "Черкаси", "Чернівці", "Дніпро", "Закарпаття",
     "Рівне", "Харків", "Херсон", "Хмельницький", "Івано Франківськ", "Київ", "Кіровоград",
     "Кривий ріг", "Львів", "Миколаїв", "Одеса", "Полтава", "Кременчуг", "Суми", "Волинь", "Вінниця", "Запоріжжя"
   ];
 
+  // Заполнение выпадающего списка регионов
   function populateRegionSelect() {
-    const options = uniqueRegions
-      .map(region => `<option value="${region}">${region}</option>`)
-      .join('');
-    regionSelect.innerHTML = `<option value="">--</option>${options}`;
+    regionSelect.innerHTML = '<option value="">--</option>'; // Опция по умолчанию
+    uniqueRegions.forEach(region => {
+      const option = document.createElement('option');
+      option.value = region;
+      option.textContent = region;
+      regionSelect.appendChild(option);
+    });
   }
 
-  populateRegionSelect();
+  populateRegionSelect(); // Вызов функции для заполнения при загрузке страницы
+
+  function resetFormDisplay() {
+    addRepairLabel.style.display = 'block';
+    addRepairButton.style.display = 'block';
+  }
+
+  function resetButtonsSpacing() {
+    const buttons = [addActButton, searchDeviceButton, addDeviceButton];
+    buttons.forEach(button => {
+      button.style.marginRight = '10px';
+    });
+  }
 
   addActButton.addEventListener('click', () => {
     menuPage.style.display = 'none';
     formPage.style.display = 'block';
+    resetFormDisplay();
     loadDeviceNumbers();
   });
 
@@ -59,18 +78,21 @@ document.addEventListener('DOMContentLoaded', function() {
     clearForm();
     formPage.style.display = 'none';
     menuPage.style.display = 'block';
+    resetButtonsSpacing();
   });
 
   searchBackButton.addEventListener('click', () => {
     clearSearch();
     searchPage.style.display = 'none';
     menuPage.style.display = 'block';
+    resetButtonsSpacing();
   });
 
   addDeviceBackButton.addEventListener('click', () => {
     clearAddDeviceForm();
     addDevicePage.style.display = 'none';
     menuPage.style.display = 'block';
+    resetButtonsSpacing();
   });
 
   searchButton.addEventListener('click', async () => {
@@ -148,7 +170,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function loadDeviceNumbers() {
     try {
-      const devices = await loadDataFromFirestore('devices');
+      const response = await fetch('/getDevices');
+      const devices = await response.json();
       deviceNumberSelect.innerHTML = '<option value="">--</option>';
       devices.forEach(device => {
         const option = document.createElement('option');
@@ -159,41 +182,33 @@ document.addEventListener('DOMContentLoaded', function() {
       deviceNumberSelect.style.width = '550px';
     } catch (error) {
       console.error('Error fetching device numbers:', error);
-      alert('Ошибка при загрузке номеров устройств.');
     }
   }
 
   async function loadDeviceType(deviceNumber) {
     try {
-      const device = await loadDataFromFirestore('devices', device => {
-        return device.id === deviceNumber;
-      });
-      deviceTypeInput.value = device.length > 0 ? device[0].data.model : '';
+      const response = await fetch(`/getDevice/${deviceNumber}`);
+      const device = await response.json();
+      deviceTypeInput.value = device.data.model;
     } catch (error) {
       console.error('Error fetching device type:', error);
-      alert('Ошибка при загрузке типа устройства.');
     }
   }
 
   async function loadPreviousRepairs(deviceNumber) {
     try {
-      const repairs = await loadDataFromFirestore('repairs', repair => {
-        return (
-          repair.data.device_id === deviceNumber &&
-          new Date(repair.data.installation_date) >= sixMonthsAgo()
-        );
-      });
-
+      const response = await fetch('/getRepairs');
+      const repairs = await response.json();
       previousRepairsList.innerHTML = '';
-
-      repairs.forEach(repair => {
+      const sixMonthsAgo = new Date();
+      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+      repairs.filter(repair => repair.data.device_id === deviceNumber && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
         const listItem = document.createElement('li');
         listItem.textContent = `${repair.data.repair_type}, Дата: ${repair.data.installation_date}`;
         previousRepairsList.appendChild(listItem);
       });
     } catch (error) {
       console.error('Error fetching previous repairs:', error);
-      alert('Ошибка при загрузке предыдущих ремонтов.');
     }
   }
 
@@ -248,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function() {
     repairListDiv.innerHTML = '';
     totalCostInput.value = '';
     repairsToAdd = [];
+    resetFormDisplay();
   }
 
   function clearSearch() {
@@ -286,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearForm();
         formPage.style.display = 'none';
         menuPage.style.display = 'block';
+        resetButtonsSpacing();
       } else {
         alert('Ошибка при добавлении акта');
       }
@@ -325,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         clearAddDeviceForm();
         addDevicePage.style.display = 'none';
         menuPage.style.display = 'block';
+        resetButtonsSpacing();
       } else {
         alert('Ошибка при добавлении устройства.');
       }
@@ -334,27 +352,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  // Общая функция для загрузки данных из Firestore
-  async function loadDataFromFirestore(collectionName, filterFn = null) {
-    try {
-      const response = await fetch(`/get${capitalize(collectionName)}`);
-      const data = await response.json();
-      return filterFn ? data.filter(filterFn) : data;
-    } catch (error) {
-      console.error(`Error fetching data from ${collectionName}:`, error);
-      throw error;
-    }
-  }
-
-  // Вспомогательная функция для получения даты 6 месяцев назад
-  function sixMonthsAgo() {
-    const date = new Date();
-    date.setMonth(date.getMonth() - 6);
-    return date;
-  }
-
-  // Вспомогательная функция для капитализации первой буквы строки
-  function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
 });
