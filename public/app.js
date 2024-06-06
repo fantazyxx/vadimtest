@@ -13,14 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number-select');
   const deviceTypeInput = document.getElementById('device-type-input');
-  const previousRepairsList = document.getElementById('previous-repairs');
+  const previousRepairsList = document.getElementById('previous-repairs-list');
   const addRepairButton = document.getElementById('add-repair-button');
   const repairListDiv = document.getElementById('repair-list');
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
   const regionSelect = document.getElementById('region');
-  const addRepairLabel = document.getElementById('add-repair-label');
 
   let repairsToAdd = [];
   let totalCost = 0;
@@ -32,9 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     "Кривий ріг", "Львів", "Миколаїв", "Одеса", "Полтава", "Кременчуг", "Суми", "Волинь", "Вінниця", "Запоріжжя"
   ];
 
-  // Заполнение выпадающего списка регионов
   function populateRegionSelect() {
-    regionSelect.innerHTML = '<option value="">--</option>'; // Опция по умолчанию
+    regionSelect.innerHTML = '<option value="">--</option>';
     uniqueRegions.forEach(region => {
       const option = document.createElement('option');
       option.value = region;
@@ -43,56 +41,41 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  populateRegionSelect(); // Вызов функции для заполнения при загрузке страницы
-
-  function resetFormDisplay() {
-    addRepairLabel.style.display = 'block';
-    addRepairButton.style.display = 'block';
-  }
-
-  function resetButtonsSpacing() {
-    const buttons = [addActButton, searchDeviceButton, addDeviceButton];
-    buttons.forEach(button => {
-      button.style.marginRight = '10px';
-    });
-  }
+  populateRegionSelect();
 
   addActButton.addEventListener('click', () => {
-    menuPage.style.display = 'none';
-    formPage.style.display = 'block';
-    resetFormDisplay();
+    menuPage.classList.add('hidden');
+    formPage.classList.remove('hidden');
     loadDeviceNumbers();
   });
 
   searchDeviceButton.addEventListener('click', () => {
-    menuPage.style.display = 'none';
-    searchPage.style.display = 'block';
+    menuPage.classList.add('hidden');
+    searchPage.classList.remove('hidden');
   });
 
   addDeviceButton.addEventListener('click', () => {
-    menuPage.style.display = 'none';
-    addDevicePage.style.display = 'block';
+    menuPage.classList.add('hidden');
+    addDevicePage.classList.remove('hidden');
   });
 
   backButton.addEventListener('click', () => {
     clearForm();
-    formPage.style.display = 'none';
-    menuPage.style.display = 'block';
+    formPage.classList.add('hidden');
+    menuPage.classList.remove('hidden');
     resetButtonsSpacing();
   });
 
   searchBackButton.addEventListener('click', () => {
     clearSearch();
-    searchPage.style.display = 'none';
-    menuPage.style.display = 'block';
-    resetButtonsSpacing();
+    searchPage.classList.add('hidden');
+    menuPage.classList.remove('hidden');
   });
 
   addDeviceBackButton.addEventListener('click', () => {
     clearAddDeviceForm();
-    addDevicePage.style.display = 'none';
-    menuPage.style.display = 'block';
-    resetButtonsSpacing();
+    addDevicePage.classList.add('hidden');
+    menuPage.classList.remove('hidden');
   });
 
   searchButton.addEventListener('click', async () => {
@@ -252,18 +235,18 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     } catch (error) {
       console.error('Error fetching repairs:', error);
-      alert('Ошибка при загрузке ремонтов.');
-    }
+    alert('Ошибка при загрузке ремонтов.');
   }
 
   function clearForm() {
     actForm.reset();
     deviceTypeInput.value = '';
     previousRepairsList.innerHTML = '';
-    repairListDiv.innerHTML = '';
+    // Удаляем только добавленные элементы списка ремонтов
+    const repairItems = repairListDiv.querySelectorAll('.inline');
+    repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
     repairsToAdd = [];
-    resetFormDisplay();
   }
 
   function clearSearch() {
@@ -300,9 +283,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         alert('Акт успешно добавлен');
         clearForm();
-        formPage.style.display = 'none';
-        menuPage.style.display = 'block';
-        resetButtonsSpacing();
+        formPage.classList.add('hidden');
+        menuPage.classList.remove('hidden');
       } else {
         alert('Ошибка при добавлении акта');
       }
@@ -340,9 +322,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (response.ok) {
         alert('Устройство успешно добавлено!');
         clearAddDeviceForm();
-        addDevicePage.style.display = 'none';
-        menuPage.style.display = 'block';
-        resetButtonsSpacing();
+        addDevicePage.classList.add('hidden');
+        menuPage.classList.remove('hidden');
       } else {
         alert('Ошибка при добавлении устройства.');
       }
@@ -351,5 +332,4 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при добавлении устройства.');
     }
   });
-
 });
