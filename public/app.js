@@ -63,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
     clearForm();
     formPage.classList.add('hidden');
     menuPage.classList.remove('hidden');
-    resetButtonsSpacing();
   });
 
   searchBackButton.addEventListener('click', () => {
@@ -235,7 +234,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     } catch (error) {
       console.error('Error fetching repairs:', error);
-    alert('Ошибка при загрузке ремонтов.');
+      alert('Ошибка при загрузке ремонтов.');
+    }
   }
 
   function clearForm() {
@@ -332,4 +332,5 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при добавлении устройства.');
     }
   });
+
 });
