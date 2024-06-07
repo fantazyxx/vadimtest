@@ -1,6 +1,4 @@
-console.log('Script loaded');
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('DOM fully loaded and parsed');
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
@@ -78,14 +76,13 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   addDeviceBackButton.addEventListener('click', () => {
-    console.log('Add Device button clicked');
+    console.log('Add Device Back button clicked');
     clearAddDeviceForm();
     addDevicePage.classList.add('hidden');
     menuPage.classList.remove('hidden');
   });
 
   searchButton.addEventListener('click', async () => {
-    console.log('Search button clicked');
     const deviceId = searchDeviceIdInput.value;
     if (deviceId) {
       await searchDeviceRepairs(deviceId);
@@ -93,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   deviceNumberSelect.addEventListener('change', async () => {
-        const deviceNumber = deviceNumberSelect.value;
+    const deviceNumber = deviceNumberSelect.value;
     if (deviceNumber) {
       await loadDeviceType(deviceNumber);
       await loadPreviousRepairs(deviceNumber);
@@ -308,14 +305,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
-    const deviceType = document.getElementById('device-type').value;
 
     const deviceData = {
       deviceNumber,
       deviceModel,
       factorySerialNumber,
-      region,
-      deviceType
+      region
     };
 
     try {
@@ -333,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
         addDevicePage.classList.add('hidden');
         menuPage.classList.remove('hidden');
       } else {
-        alert('Ошибка при добавлении       устройства.');
+        alert('Ошибка при добавлении устройства.');
       }
     } catch (error) {
       console.error('Error adding device:', error);
@@ -342,3 +337,4 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+   
