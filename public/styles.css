@@ -94,3 +94,74 @@ input, select {
 .hidden {
   display: none;
 }
+
+/* Другие стили, необходимые для проекта */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input, form select, form button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons button {
+  flex: 1;
+  margin: 0 5px;
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+}
+
+.inline select, .inline button {
+  margin-right: 10px;
+}
+
+#repair-list h3, #previous-repairs h3 {
+  margin-top: 0;
+}
+
+#search-results .inline {
+  justify-content: space-between;
+}
+
+#search-results .inline div {
+  margin-right: 20px;
+}
