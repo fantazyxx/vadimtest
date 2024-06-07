@@ -242,9 +242,10 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error fetching repairs:', error);
       alert('Ошибка при загрузке ремонтов.');
     }
-  }
-  
-  function clearForm() {
+    }
+    
+    // Функции для очистки форм
+    function clearForm() {
     actForm.reset();
     deviceTypeInput.value = '';
     previousRepairsList.innerHTML = '';
@@ -252,23 +253,24 @@ document.addEventListener('DOMContentLoaded', function() {
     repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
     repairsToAdd = [];
-  }
-  
-  function clearSearch() {
+    }
+    
+    function clearSearch() {
     searchDeviceIdInput.value = '';
     searchResultsDiv.innerHTML = '';
-  }
-  
-  function clearAddDeviceForm() {
+    }
+    
+    function clearAddDeviceForm() {
     document.getElementById('device-form').reset();
-  }
-  
-  actForm.addEventListener('submit', async (event) => {
+    }
+    
+    // Обработчик формы добавления акта
+    actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
     const deviceNumber = deviceNumberSelect.value;
     const repairDate = document.getElementById('repair-date').value;
-  
+    
     const repairData = {
       repair_id: actNumber,
       device_id: deviceNumber,
@@ -276,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function() {
       work_count: repairsToAdd.length,
       installation_date: repairDate
     };
-  
+    
     try {
       const response = await fetch('/addRepair', {
         method: 'POST',
@@ -297,22 +299,23 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error adding repair:', error);
       alert('Ошибка при добавлении акта');
     }
-  });
-  
-  document.getElementById('device-form').addEventListener('submit', async (e) => {
+    });
+    
+    // Обработчик формы добавления устройства
+    document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const deviceNumber = document.getElementById('device-number').value;
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
-  
+    
     const deviceData = {
       deviceNumber,
       deviceModel,
       factorySerialNumber,
       region
     };
-  
+    
     try {
       const response = await fetch('/addDevice', {
         method: 'POST',
@@ -321,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         body: JSON.stringify(deviceData)
       });
-  
+    
       if (response.ok) {
         alert('Устройство успешно добавлено!');
         clearAddDeviceForm();
@@ -334,4 +337,6 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error adding device:', error);
       alert('Ошибка при добавлении устройства.');
     }
-  });
+    });
+    });
+    
