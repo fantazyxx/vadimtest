@@ -191,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     } catch (error) {
       console.error('Error fetching previous repairs:', error);
+      alert('Ошибка при загрузке ремонтов.');
     }
   }
 
@@ -334,3 +335,5 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
 });
+
+
