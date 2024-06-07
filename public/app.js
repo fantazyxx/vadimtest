@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
   let repairsToAdd = [];
   let totalCost = 0;
 
-  // Уникальные регионы
   const uniqueRegions = [
     "Тернопіль", "Чернігів", "Прилуки", "Черкаси", "Чернівці", "Дніпро", "Закарпаття",
     "Рівне", "Харків", "Херсон", "Хмельницький", "Івано Франківськ", "Київ", "Кіровоград",
@@ -243,7 +242,6 @@ document.addEventListener('DOMContentLoaded', function() {
     actForm.reset();
     deviceTypeInput.value = '';
     previousRepairsList.innerHTML = '';
-    // Удаляем только добавленные элементы списка ремонтов
     const repairItems = repairListDiv.querySelectorAll('.inline');
     repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
@@ -333,7 +331,4 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при добавлении устройства.');
     }
   });
-
 });
-
-
