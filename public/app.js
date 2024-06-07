@@ -1,4 +1,6 @@
+console.log('Script loaded');
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('DOM fully loaded and parsed');
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
@@ -43,40 +45,47 @@ document.addEventListener('DOMContentLoaded', function() {
   populateRegionSelect();
 
   addActButton.addEventListener('click', () => {
+    console.log('Add Act button clicked');
     menuPage.classList.add('hidden');
     formPage.classList.remove('hidden');
     loadDeviceNumbers();
   });
 
   searchDeviceButton.addEventListener('click', () => {
+    console.log('Search Device button clicked');
     menuPage.classList.add('hidden');
     searchPage.classList.remove('hidden');
   });
 
   addDeviceButton.addEventListener('click', () => {
+    console.log('Add Device button clicked');
     menuPage.classList.add('hidden');
     addDevicePage.classList.remove('hidden');
   });
 
   backButton.addEventListener('click', () => {
+    console.log('Back button clicked');
     clearForm();
     formPage.classList.add('hidden');
     menuPage.classList.remove('hidden');
   });
 
   searchBackButton.addEventListener('click', () => {
+    console.log('Search Back button clicked');
     clearSearch();
     searchPage.classList.add('hidden');
     menuPage.classList.remove('hidden');
   });
 
   addDeviceBackButton.addEventListener('click', () => {
+    console.log('Add Device button clicked');
     clearAddDeviceForm();
     addDevicePage.classList.add('hidden');
     menuPage.classList.remove('hidden');
   });
 
   searchButton.addEventListener('click', async () => {
+    console.log('Search button clicked');
     const deviceId = searchDeviceIdInput.value;
     if (deviceId) {
       await searchDeviceRepairs(deviceId);
@@ -84,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   deviceNumberSelect.addEventListener('change', async () => {
-    const deviceNumber = deviceNumberSelect.value;
+        const deviceNumber = deviceNumberSelect.value;
     if (deviceNumber) {
       await loadDeviceType(deviceNumber);
       await loadPreviousRepairs(deviceNumber);
