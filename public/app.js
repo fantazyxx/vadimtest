@@ -324,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function() {
         addDevicePage.classList.add('hidden');
         menuPage.classList.remove('hidden');
       } else {
-        alert('Ошибка при добавлении устройства.');
+        alert('Ошибка при добавлении       устройства.');
       }
     } catch (error) {
       console.error('Error adding device:', error);
@@ -332,3 +332,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
