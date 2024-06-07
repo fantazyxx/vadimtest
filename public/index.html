@@ -19,19 +19,19 @@
       <form id="act-form">
         <div>
           <label for="act-number">Номер Акта:</label>
-          <input type="text" id="act-number" required>
+          <input type="text" id="act-number" autocomplete="off" required>
         </div>
         <div>
           <label for="device-number-select">Номер Устройства:</label>
-          <select id="device-number-select" required></select>
+          <select id="device-number-select" autocomplete="off" required></select>
         </div>
         <div>
           <label for="device-type-input">Тип Устройства:</label>
-          <input type="text" id="device-type-input" disabled>
+          <input type="text" id="device-type-input" autocomplete="off" disabled>
         </div>
         <div>
           <label for="repair-date">Дата Ремонта:</label>
-          <input type="date" id="repair-date" required>
+          <input type="date" id="repair-date" autocomplete="off" required>
         </div>
         <div id="previous-repairs">
           <h3>Предыдущие Ремонты (за последние 6 месяцев)</h3>
@@ -43,7 +43,7 @@
         </div>
         <div>
           <label for="total-cost">Общая Стоимость:</label>
-          <input type="text" id="total-cost" disabled>
+          <input type="text" id="total-cost" autocomplete="off" disabled>
         </div>
         <div class="buttons">
           <button type="button" id="back-button">Назад</button>
@@ -56,7 +56,7 @@
       <form>
         <div>
           <label for="search-device-id">ID Устройства:</label>
-          <input type="text" id="search-device-id">
+          <input type="text" id="search-device-id" autocomplete="off">
         </div>
         <div class="buttons">
           <button type="button" id="search-back-button">Назад</button>
@@ -70,11 +70,11 @@
       <form id="device-form">
         <div>
           <label for="device-number">Номер Устройства:</label>
-          <input type="text" id="device-number" required>
+          <input type="text" id="device-number" autocomplete="off" required>
         </div>
         <div>
           <label for="device-model">Тип Устройства:</label>
-          <select id="device-model" required>
+          <select id="device-model" autocomplete="off" required>
             <option value="">--</option>
             <option value="УНА 001-03">УНА 001-03</option>
             <option value="Спектр">Спектр</option>
@@ -87,11 +87,11 @@
         </div>
         <div>
           <label for="factory-serial-number">Заводской Номер:</label>
-          <input type="text" id="factory-serial-number" required>
+          <input type="text" id="factory-serial-number" autocomplete="off" required>
         </div>
         <div>
           <label for="region">Регион:</label>
-          <select id="region" required>
+          <select id="region" autocomplete="off" required>
             <option value="">--</option>
             <option value="Тернопіль">Тернопіль</option>
             <option value="Чернігів">Чернігів</option>
@@ -129,4 +129,3 @@
   <script src="app.js"></script>
 </body>
 </html>
-
