@@ -305,14 +305,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
-    const deviceType = document.getElementById('device-type').value;
 
     const deviceData = {
       deviceNumber,
       deviceModel,
       factorySerialNumber,
-      region,
-      deviceType
+      region
     };
 
     try {
