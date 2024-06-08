@@ -348,6 +348,5 @@ document.addEventListener('DOMContentLoaded', function() {
           alert('Ошибка при добавлении устройства.');
       }
   });
-  
-    });
+  });
     
