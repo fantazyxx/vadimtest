@@ -266,77 +266,88 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Обработчик формы добавления акта
     actForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const actNumber = document.getElementById('act-number').value;
-    const deviceNumber = deviceNumberSelect.value;
-    const repairDate = document.getElementById('repair-date').value;
-    
-    const repairData = {
-      repair_id: actNumber,
-      device_id: deviceNumber,
-      repair_type: repairsToAdd.join(', '),
-      work_count: repairsToAdd.length,
-      installation_date: repairDate
-    };
-    
-    try {
-      const response = await fetch('/addRepair', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(repairData)
-      });
-      if (response.ok) {
-        alert('Акт успешно добавлен');
-        clearForm();
-        formPage.classList.add('hidden');
-        menuPage.classList.remove('hidden');
-      } else {
-        alert('Ошибка при добавлении акта');
+      event.preventDefault();
+      const actNumber = document.getElementById('act-number').value;
+      const deviceNumber = deviceNumberSelect.value;
+      const repairDate = document.getElementById('repair-date').value;
+
+      console.log('Act Number:', actNumber);
+      console.log('Device Number:', deviceNumber);
+      console.log('Repair Date:', repairDate);
+  
+      const repairData = {
+          repair_id: actNumber,
+          device_id: deviceNumber,
+          repair_type: repairsToAdd.join(', '),
+          work_count: repairsToAdd.length,
+          installation_date: repairDate
+      };
+  
+      try {
+          const response = await fetch('/addRepair', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(repairData)
+          });
+          if (response.ok) {
+              alert('Акт успешно добавлен');
+              clearForm();
+              formPage.classList.add('hidden');
+              menuPage.classList.remove('hidden');
+          } else {
+              alert('Ошибка при добавлении акта');
+          }
+      } catch (error) {
+          console.error('Error adding repair:', error);
+          alert('Ошибка при добавлении акта');
       }
-    } catch (error) {
-      console.error('Error adding repair:', error);
-      alert('Ошибка при добавлении акта');
-    }
-    });
+  });
+  
     
     // Обработчик формы добавления устройства
     document.getElementById('device-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const deviceNumber = document.getElementById('device-number').value;
-    const deviceModel = document.getElementById('device-model').value;
-    const factorySerialNumber = document.getElementById('factory-serial-number').value;
-    const region = document.getElementById('region').value;
-    
-    const deviceData = {
-      deviceNumber,
-      deviceModel,
-      factorySerialNumber,
-      region
-    };
-    
-    try {
-      const response = await fetch('/addDevice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(deviceData)
-      });
-    
-      if (response.ok) {
-        alert('Устройство успешно добавлено!');
-        clearAddDeviceForm();
-        addDevicePage.classList.add('hidden');
-        menuPage.classList.remove('hidden');
-      } else {
-        alert('Ошибка при добавлении устройства.');
+      e.preventDefault();
+      const deviceNumber = document.getElementById('device-number').value;
+      const deviceModel = document.getElementById('device-model').value;
+      const factorySerialNumber = document.getElementById('factory-serial-number').value;
+      const region = document.getElementById('region').value;
+      
+      console.log('Device Number:', deviceNumber);
+      console.log('Device Model:', deviceModel);
+      console.log('Factory Serial Number:', factorySerialNumber);
+      console.log('Region:', region);
+
+      const deviceData = {
+          deviceNumber,
+          deviceModel,
+          factorySerialNumber,
+          region
+      };
+  
+      try {
+          const response = await fetch('/addDevice', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(deviceData)
+          });
+  
+          if (response.ok) {
+              alert('Устройство успешно добавлено!');
+              clearAddDeviceForm();
+              addDevicePage.classList.add('hidden');
+              menuPage.classList.remove('hidden');
+          } else {
+              alert('Ошибка при добавлении устройства.');
+          }
+      } catch (error) {
+          console.error('Error adding device:', error);
+          alert('Ошибка при добавлении устройства.');
       }
-    } catch (error) {
-      console.error('Error adding device:', error);
-      alert('Ошибка при добавлении устройства.');
-    }
-    });
+  });
+  
     });
     
