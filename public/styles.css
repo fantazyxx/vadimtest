@@ -94,7 +94,7 @@ input, select {
 }
 
 .hidden {
-  display: none !important;
+  display: none;
 }
 
 h1 {
