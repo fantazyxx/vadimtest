@@ -6,11 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Контейнеры страниц
   const formContainer = document.getElementById('form-container');
-  const formPage = document.getElementById('form-page');
   const searchContainer = document.getElementById('search-container');
-  const searchPage = document.getElementById('search-page');
   const addDeviceContainer = document.getElementById('add-device-container');
-  const addDevicePage = document.getElementById('add-device-page');
   const menuPage = document.getElementById('menu'); 
 
   // Кнопки "Назад"
@@ -54,24 +51,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   addActButton.addEventListener('click', () => {
     menuPage.classList.add('hidden');
-    formContainer.classList.remove('hidden'); 
-    searchContainer.classList.add('hidden'); // Скрываем другие контейнеры
-    addDeviceContainer.classList.add('hidden'); 
+    formContainer.classList.remove('hidden');
+    searchContainer.classList.add('hidden');
+    addDeviceContainer.classList.add('hidden');
     loadDeviceNumbers();
   });
 
   searchDeviceButton.addEventListener('click', () => {
     menuPage.classList.add('hidden');
     searchContainer.classList.remove('hidden');
-    formContainer.classList.add('hidden'); // Скрываем другие контейнеры
-    addDeviceContainer.classList.add('hidden'); 
+    formContainer.classList.add('hidden');
+    addDeviceContainer.classList.add('hidden');
   });
 
   addDeviceButton.addEventListener('click', () => {
     menuPage.classList.add('hidden');
     addDeviceContainer.classList.remove('hidden');
-    formContainer.classList.add('hidden'); // Скрываем другие контейнеры
-    searchContainer.classList.add('hidden'); 
+    formContainer.classList.add('hidden');
+    searchContainer.classList.add('hidden');
   });
 
   backButton.addEventListener('click', () => {
@@ -310,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response.ok) {
         alert('Акт успешно добавлен');
         clearForm();
-        formPage.classList.add('hidden');
+        formContainer.classList.add('hidden');
         menuPage.classList.remove('hidden');
       } else {
         alert('Ошибка при добавлении акта');
@@ -353,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (response.ok) {
         alert('Устройство успешно добавлено!');
         clearAddDeviceForm();
-        addDevicePage.classList.add('hidden');
+        addDeviceContainer.classList.add('hidden');
         menuPage.classList.remove('hidden');
       } else {
         alert('Ошибка при добавлении устройства.');
