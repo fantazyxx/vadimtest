@@ -1,14 +1,24 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+  // Кнопки меню
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
+
+  // Контейнеры страниц
+  const formContainer = document.getElementById('form-container');
   const formPage = document.getElementById('form-page');
-  const menuPage = document.getElementById('menu');
+  const searchContainer = document.getElementById('search-container');
   const searchPage = document.getElementById('search-page');
+  const addDeviceContainer = document.getElementById('add-device-container');
   const addDevicePage = document.getElementById('add-device-page');
+  const menuPage = document.getElementById('menu'); 
+
+  // Кнопки "Назад"
   const backButton = document.getElementById('back-button');
   const searchBackButton = document.getElementById('search-back-button');
   const addDeviceBackButton = document.getElementById('add-device-back-button');
+
+  // Другие элементы
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number-select');
@@ -43,43 +53,49 @@ document.addEventListener('DOMContentLoaded', function() {
   populateRegionSelect();
 
   addActButton.addEventListener('click', () => {
-    console.log('Add Act button clicked');
     menuPage.classList.add('hidden');
-    formPage.classList.remove('hidden');
+    formContainer.classList.remove('hidden'); 
+    searchContainer.classList.add('hidden'); // Скрываем другие контейнеры
+    addDeviceContainer.classList.add('hidden'); 
     loadDeviceNumbers();
   });
 
   searchDeviceButton.addEventListener('click', () => {
-    console.log('Search Device button clicked');
     menuPage.classList.add('hidden');
-    searchPage.classList.remove('hidden');
+    searchContainer.classList.remove('hidden');
+    formContainer.classList.add('hidden'); // Скрываем другие контейнеры
+    addDeviceContainer.classList.add('hidden'); 
   });
 
   addDeviceButton.addEventListener('click', () => {
-    console.log('Add Device button clicked');
     menuPage.classList.add('hidden');
-    addDevicePage.classList.remove('hidden');
+    addDeviceContainer.classList.remove('hidden');
+    formContainer.classList.add('hidden'); // Скрываем другие контейнеры
+    searchContainer.classList.add('hidden'); 
   });
 
   backButton.addEventListener('click', () => {
-    console.log('Back button clicked');
     clearForm();
-    formPage.classList.add('hidden');
     menuPage.classList.remove('hidden');
+    formContainer.classList.add('hidden');
+    searchContainer.classList.add('hidden');
+    addDeviceContainer.classList.add('hidden');
   });
 
   searchBackButton.addEventListener('click', () => {
-    console.log('Search Back button clicked');
     clearSearch();
-    searchPage.classList.add('hidden');
     menuPage.classList.remove('hidden');
+    formContainer.classList.add('hidden');
+    searchContainer.classList.add('hidden');
+    addDeviceContainer.classList.add('hidden');
   });
 
   addDeviceBackButton.addEventListener('click', () => {
-    console.log('Add Device Back button clicked');
     clearAddDeviceForm();
-    addDevicePage.classList.add('hidden');
     menuPage.classList.remove('hidden');
+    formContainer.classList.add('hidden');
+    searchContainer.classList.add('hidden');
+    addDeviceContainer.classList.add('hidden');
   });
 
   searchButton.addEventListener('click', async () => {

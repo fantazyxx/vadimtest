@@ -118,3 +118,6 @@ button {
 select.small {
   width: 100%;
 }
+#form-container, #search-container, #add-device-container {
+  transition: opacity 0.3s ease-in-out; /* Плавное изменение непрозрачности */
+}
