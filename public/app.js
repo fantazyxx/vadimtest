@@ -1,21 +1,14 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // Кнопки меню
+document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
   const addDeviceButton = document.getElementById('add-device-button');
-
-  // Контейнеры страниц
   const formContainer = document.getElementById('form-container');
   const searchContainer = document.getElementById('search-container');
   const addDeviceContainer = document.getElementById('add-device-container');
-  const menuPage = document.getElementById('menu'); 
-
-  // Кнопки "Назад"
+  const menuPage = document.getElementById('menu');
   const backButton = document.getElementById('back-button');
   const searchBackButton = document.getElementById('search-back-button');
   const addDeviceBackButton = document.getElementById('add-device-back-button');
-
-  // Другие элементы
   const searchButton = document.getElementById('search-button');
   const actForm = document.getElementById('act-form');
   const deviceNumberSelect = document.getElementById('device-number-select');
@@ -50,49 +43,43 @@ document.addEventListener('DOMContentLoaded', function () {
   populateRegionSelect();
 
   addActButton.addEventListener('click', () => {
+    console.log('Add Act button clicked');
     menuPage.classList.add('hidden');
     formContainer.classList.remove('hidden');
-    searchContainer.classList.add('hidden');
-    addDeviceContainer.classList.add('hidden');
     loadDeviceNumbers();
   });
 
   searchDeviceButton.addEventListener('click', () => {
+    console.log('Search Device button clicked');
     menuPage.classList.add('hidden');
     searchContainer.classList.remove('hidden');
-    formContainer.classList.add('hidden');
-    addDeviceContainer.classList.add('hidden');
   });
 
   addDeviceButton.addEventListener('click', () => {
+    console.log('Add Device button clicked');
     menuPage.classList.add('hidden');
     addDeviceContainer.classList.remove('hidden');
-    formContainer.classList.add('hidden');
-    searchContainer.classList.add('hidden');
   });
 
   backButton.addEventListener('click', () => {
+    console.log('Back button clicked');
     clearForm();
-    menuPage.classList.remove('hidden');
     formContainer.classList.add('hidden');
-    searchContainer.classList.add('hidden');
-    addDeviceContainer.classList.add('hidden');
+    menuPage.classList.remove('hidden');
   });
 
   searchBackButton.addEventListener('click', () => {
+    console.log('Search Back button clicked');
     clearSearch();
-    menuPage.classList.remove('hidden');
-    formContainer.classList.add('hidden');
     searchContainer.classList.add('hidden');
-    addDeviceContainer.classList.add('hidden');
+    menuPage.classList.remove('hidden');
   });
 
   addDeviceBackButton.addEventListener('click', () => {
+    console.log('Add Device Back button clicked');
     clearAddDeviceForm();
-    menuPage.classList.remove('hidden');
-    formContainer.classList.add('hidden');
-    searchContainer.classList.add('hidden');
     addDeviceContainer.classList.add('hidden');
+    menuPage.classList.remove('hidden');
   });
 
   searchButton.addEventListener('click', async () => {
@@ -235,30 +222,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function searchDeviceRepairs(deviceId) {
     try {
-      const response = await fetch('/getRepairs');
-      const repairs = await response.json();
-      searchResultsDiv.innerHTML = '';
-      const sixMonthsAgo = new Date();
-      sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-      repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
-        const repairType = document.createElement('div');
-        repairType.textContent = repair.data.repair_type;
-        const repairDate = document.createElement('div');
-        repairDate.textContent = repair.data.installation_date;
-        const resultRow = document.createElement('div');
-        resultRow.classList.add('inline');
-        resultRow.appendChild(repairType);
-        resultRow.appendChild(repairDate);
-        searchResultsDiv.appendChild(resultRow);
-      });
+        const response = await fetch('/getRepairs');
+        const repairs = await response.json();
+        searchResultsDiv.innerHTML = '';
+        const sixMonthsAgo = new Date();
+        sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+        repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
+            const repairType = document.createElement('div');
+            repairType.textContent = repair.data.repair_type;
+            const repairDate = document.createElement('div');
+            repairDate.textContent = repair.data.installation_date;
+            const resultRow = document.createElement('div');
+            resultRow.classList.add('inline');
+            resultRow.appendChild(repairType);
+            resultRow.appendChild(repairDate);
+            searchResultsDiv.appendChild(resultRow);
+        });
     } catch (error) {
-      console.error('Error fetching repairs:', error);
-      alert('Ошибка при загрузке ремонтов.');
+        console.error('Error fetching repairs:', error);
+        alert('Ошибка при загрузке ремонтов.');
     }
-  }
+}
 
-  // Функции для очистки форм
-  function clearForm() {
+// Функции для очистки форм
+function clearForm() {
     actForm.reset();
     deviceTypeInput.value = '';
     previousRepairsList.innerHTML = '';
@@ -266,99 +253,89 @@ document.addEventListener('DOMContentLoaded', function () {
     repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
     repairsToAdd = [];
-  }
+}
 
-  function clearSearch() {
+function clearSearch() {
     searchDeviceIdInput.value = '';
     searchResultsDiv.innerHTML = '';
-  }
+}
 
-  function clearAddDeviceForm() {
+function clearAddDeviceForm() {
     document.getElementById('device-form').reset();
-  }
+}
 
-  // Обработчик формы добавления акта
-  actForm.addEventListener('submit', async (event) => {
+// Обработчик формы добавления акта
+actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
     const deviceNumber = deviceNumberSelect.value;
     const repairDate = document.getElementById('repair-date').value;
 
-    console.log('Act Number:', actNumber);
-    console.log('Device Number:', deviceNumber);
-    console.log('Repair Date:', repairDate);
-
     const repairData = {
-      repair_id: actNumber,
-      device_id: deviceNumber,
-      repair_type: repairsToAdd.join(', '),
-      work_count: repairsToAdd.length,
-      installation_date: repairDate
+        repair_id: actNumber,
+        device_id: deviceNumber,
+        repair_type: repairsToAdd.join(', '),
+        work_count: repairsToAdd.length,
+        installation_date: repairDate
     };
 
     try {
-      const response = await fetch('/addRepair', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(repairData)
-      });
-      if (response.ok) {
-        alert('Акт успешно добавлен');
-        clearForm();
-        formContainer.classList.add('hidden');
-        menuPage.classList.remove('hidden');
-      } else {
-        alert('Ошибка при добавлении акта');
-      }
+        const response = await fetch('/addRepair', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(repairData)
+        });
+        if (response.ok) {
+            alert('Акт успешно добавлен');
+            clearForm();
+            formContainer.classList.add('hidden');
+            menuPage.classList.remove('hidden');
+        } else {
+            alert('Ошибка при добавлении акта');
+        }
     } catch (error) {
-      console.error('Error adding repair:', error);
-      alert('Ошибка при добавлении акта');
+        console.error('Error adding repair:', error);
+        alert('Ошибка при добавлении акта');
     }
-  });
+});
 
-  // Обработчик формы добавления устройства
-  document.getElementById('device-form').addEventListener('submit', async (e) => {
+// Обработчик формы добавления устройства
+document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const deviceNumber = document.getElementById('device-number').value;
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
 
-    console.log('Device Number:', deviceNumber);
-    console.log('Device Model:', deviceModel);
-    console.log('Factory Serial Number:', factorySerialNumber);
-    console.log('Region:', region);
-
     const deviceData = {
-      deviceNumber,
-      deviceModel,
-      factorySerialNumber,
-      region
+        deviceNumber,
+        deviceModel,
+        factorySerialNumber,
+        region
     };
 
     try {
-      const response = await fetch('/addDevice', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(deviceData)
-      });
+        const response = await fetch('/addDevice', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(deviceData)
+        });
 
-      if (response.ok) {
-        alert('Устройство успешно добавлено!');
-        clearAddDeviceForm();
-        addDeviceContainer.classList.add('hidden');
-        menuPage.classList.remove('hidden');
-      } else {
-        alert('Ошибка при добавлении устройства.');
-      }
+        if (response.ok) {
+            alert('Устройство успешно добавлено!');
+            clearAddDeviceForm();
+            addDeviceContainer.classList.add('hidden');
+            menuPage.classList.remove('hidden');
+        } else {
+            alert('Ошибка при добавлении устройства.');
+        }
     } catch (error) {
-      console.error('Error adding device:', error);
-      alert('Ошибка при добавлении устройства.');
+        console.error('Error adding device:', error);
+        alert('Ошибка при добавлении устройства.');
     }
-  });
 });
-
+});
