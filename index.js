@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Получение списка устройств
 app.get('/getDevices', async (req, res) => {
   try {
+    console.log('Получение списка устройств');
     const devicesRef = db.collection('Devices');
     const snapshot = await devicesRef.get();
     if (snapshot.empty) {
@@ -44,6 +45,7 @@ app.get('/getDevices', async (req, res) => {
 // Получение информации об устройстве по системному номеру
 app.get('/getDevice/:id', async (req, res) => {
   const deviceId = req.params.id;
+  console.log(`Получение информации об устройстве: ${deviceId}`);
   try {
     const deviceRef = db.collection('Devices').doc(deviceId);
     const doc = await deviceRef.get();
@@ -61,6 +63,7 @@ app.get('/getDevice/:id', async (req, res) => {
 // Получение списка всех типов работ
 app.get('/getWorkTypes', async (req, res) => {
   try {
+    console.log('Получение списка типов работ');
     const workTypesRef = db.collection('WorkTypes');
     const snapshot = await workTypesRef.get();
     if (snapshot.empty) {
@@ -80,6 +83,7 @@ app.get('/getWorkTypes', async (req, res) => {
 // Получение типа работы по идентификатору
 app.get('/getWorkType/:id', async (req, res) => {
   const workTypeId = req.params.id;
+  console.log(`Получение типа работы: ${workTypeId}`);
   try {
     const workTypeRef = db.collection('WorkTypes').doc(workTypeId);
     const doc = await workTypeRef.get();
@@ -96,6 +100,7 @@ app.get('/getWorkType/:id', async (req, res) => {
 // Добавление нового типа работы
 app.post('/addWorkType', async (req, res) => {
   const { work_type, cost } = req.body;
+  console.log(`Добавление нового типа работы: ${work_type}`);
   try {
     await db.collection('WorkTypes').doc(work_type).set({
       cost,
@@ -109,6 +114,7 @@ app.post('/addWorkType', async (req, res) => {
 // Добавление нового ремонта
 app.post('/addRepair', async (req, res) => {
   const { repair_id, device_id, repair_type, work_count, installation_date } = req.body;
+  console.log(`Добавление нового ремонта: ${repair_id}`);
   try {
     await db.collection('Repairs').doc(repair_id).set({
       device_id,
@@ -125,6 +131,7 @@ app.post('/addRepair', async (req, res) => {
 // Получение списка всех ремонтов
 app.get('/getRepairs', async (req, res) => {
   try {
+    console.log('Получение списка всех ремонтов');
     const repairsRef = db.collection('Repairs');
     const snapshot = await repairsRef.get();
     if (snapshot.empty) {
@@ -144,6 +151,7 @@ app.get('/getRepairs', async (req, res) => {
 // Получение деталей ремонта по идентификатору
 app.get('/getRepair/:id', async (req, res) => {
   const repairId = req.params.id;
+  console.log(`Получение деталей ремонта: ${repairId}`);
   try {
     const repairRef = db.collection('Repairs').doc(repairId);
     const doc = await repairRef.get();
@@ -160,6 +168,7 @@ app.get('/getRepair/:id', async (req, res) => {
 // Добавление нового устройства
 app.post('/addDevice', async (req, res) => {
   const { deviceNumber, deviceModel, factorySerialNumber, region, deviceType } = req.body;
+  console.log(`Добавление нового устройства: ${deviceNumber}`);
   try {
     await db.collection('Devices').doc(deviceNumber).set({
       model: deviceModel,
