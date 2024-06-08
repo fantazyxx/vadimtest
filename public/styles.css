@@ -46,7 +46,7 @@ button:hover {
   background-color: #0056b3;
 }
 
-#form-page, #search-page, #add-device-page {
+#form-container, #search-container, #add-device-container {
   display: none;
   background: #fff;
   padding: 20px;
@@ -94,19 +94,7 @@ input, select {
 }
 
 .hidden {
-  display: none;
-}
-
-h1 {
-  text-align: center;
-}
-
-button {
-  display: inline-block;
-}
-
-.small {
-  width: 100px;
+  display: none !important;
 }
 
 .inline {
@@ -115,9 +103,6 @@ button {
   gap: 10px;
 }
 
-select.small {
-  width: 100%;
-}
-#form-container, #search-container, #add-device-container {
-  transition: opacity 0.3s ease-in-out; /* Плавное изменение непрозрачности */
+.small {
+  width: 100px;
 }
