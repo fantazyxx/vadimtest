@@ -116,5 +116,7 @@ select.small {
 }
 
 .hidden {
-  display: none !important;
+  display: block !important;
+  background-color: red; /* чтобы визуально выделить элемент */
 }
+
