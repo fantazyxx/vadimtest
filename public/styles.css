@@ -93,6 +93,10 @@ input, select {
   font-size: 16px;
 }
 
+.hidden {
+  display: none !important;
+}
+
 h1 {
   text-align: center;
 }
@@ -114,9 +118,3 @@ button {
 select.small {
   width: 100%;
 }
-
-.hidden {
-  display: block !important;
-  background-color: red; /* чтобы визуально выделить элемент */
-}
-
