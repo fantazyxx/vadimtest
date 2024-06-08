@@ -14,124 +14,123 @@
       <button id="search-device-button">Поиск устройства</button>
       <button id="add-device-button">Добавить устройство</button>
     </div>
+  </div>
 
-    <div id="form-container" class="hidden">
-      <div id="form-page">
-        <form id="act-form">
-          <div>
-            <label for="act-number">Номер Акта:</label>
-            <input type="text" id="act-number" autocomplete="off" required>
-          </div>
-          <div>
-            <label for="device-number-select">Номер Устройства:</label>
-            <select id="device-number-select" autocomplete="off" required></select>
-          </div>
-          <div>
-            <label for="device-type-input">Тип Устройства:</label>
-            <input type="text" id="device-type-input" autocomplete="off" disabled>
-          </div>
-          <div>
-            <label for="repair-date">Дата Ремонта:</label>
-            <input type="date" id="repair-date" autocomplete="off" required>
-          </div>
-          <div id="previous-repairs">
-            <h3>Предыдущие Ремонты (за последние 6 месяцев)</h3>
-            <ul id="previous-repairs-list"></ul>
-          </div>
-          <div id="repair-list">
-            <h3>Добавить Ремонтные Работы</h3>
-            <button type="button" id="add-repair-button">Добавить Ремонт</button>
-          </div>
-          <div>
-            <label for="total-cost">Общая Стоимость:</label>
-            <input type="text" id="total-cost" autocomplete="off" disabled>
-          </div>
-          <div class="buttons">
-            <button type="button" id="back-button">Назад</button>
-            <button type="submit">Сохранить Акт</button>
-          </div>
-        </form>
-      </div>
+  <div id="form-container" class="hidden">
+    <div id="form-page">
+      <form id="act-form">
+        <div>
+          <label for="act-number">Номер Акта:</label>
+          <input type="text" id="act-number" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="device-number-select">Номер Устройства:</label>
+          <select id="device-number-select" autocomplete="off" required></select>
+        </div>
+        <div>
+          <label for="device-type-input">Тип Устройства:</label>
+          <input type="text" id="device-type-input" autocomplete="off" disabled>
+        </div>
+        <div>
+          <label for="repair-date">Дата Ремонта:</label>
+          <input type="date" id="repair-date" autocomplete="off" required>
+        </div>
+        <div id="previous-repairs">
+          <h3>Предыдущие Ремонты (за последние 6 месяцев)</h3>
+          <ul id="previous-repairs-list"></ul>
+        </div>
+        <div id="repair-list">
+          <h3>Добавить Ремонтные Работы</h3>
+          <button type="button" id="add-repair-button">Добавить Ремонт</button>
+        </div>
+        <div>
+          <label for="total-cost">Общая Стоимость:</label>
+          <input type="text" id="total-cost" autocomplete="off" disabled>
+        </div>
+        <div class="buttons">
+          <button type="button" id="back-button">Назад</button>
+          <button type="submit">Сохранить Акт</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <div id="search-container" class="hidden">
-      <div id="search-page">
-        <form>
-          <div>
-            <label for="search-device-id">ID Устройства:</label>
-            <input type="text" id="search-device-id" autocomplete="off">
-          </div>
-          <div class="buttons">
-            <button type="button" id="search-back-button">Назад</button>
-            <button type="button" id="search-button">Поиск</button>
-          </div>
-          <div id="search-results"></div>
-        </form>
-      </div>
+  <div id="search-container" class="hidden">
+    <div id="search-page">
+      <form>
+        <div>
+          <label for="search-device-id">ID Устройства:</label>
+          <input type="text" id="search-device-id" autocomplete="off">
+        </div>
+        <div class="buttons">
+          <button type="button" id="search-back-button">Назад</button>
+          <button type="button" id="search-button">Поиск</button>
+        </div>
+        <div id="search-results"></div>
+      </form>
     </div>
+  </div>
 
-    <div id="add-device-container" class="hidden">
-      <div id="add-device-page">
-        <form id="device-form">
-          <div>
-            <label for="device-number">Номер Устройства:</label>
-            <input type="text" id="device-number" autocomplete="off" required>
-          </div>
-          <div>
-            <label for="device-model">Тип Устройства:</label>
-            <select id="device-model" autocomplete="off" required>
-              <option value="">--</option>
-              <option value="УНА 001-03">УНА 001-03</option>
-              <option value="Спектр">Спектр</option>
-              <option value="DoCash 2241">DoCash 2241</option>
-              <option value="Deep 2240">Deep 2240</option>
-              <option value="Банкнота 1КУ">Банкнота 1КУ</option>
-              <option value="Scan Coin">Scan Coin</option>
-              <option value="VAMA BP-2">VAMA BP-2</option>
-            </select>
-          </div>
-          <div>
-            <label for="factory-serial-number">Заводской Номер:</label>
-            <input type="text" id="factory-serial-number" autocomplete="off" required>
-          </div>
-          <div>
-            <label for="region">Регион:</label>
-            <select id="region" autocomplete="off" required>
-              <option value="">--</option>
-              <option value="Тернопіль">Тернопіль</option>
-              <option value="Чернігів">Чернігів</option>
-              <option value="Прилуки">Прилуки</option>
-              <option value="Черкаси">Черкаси</option>
-              <option value="Чернівці">Чернівці</option>
-              <option value="Дніпро">Дніпро</option>
-              <option value="Закарпаття">Закарпаття</option>
-              <option value="Рівне">Рівне</option>
-              <option value="Харків">Харків</option>
-              <option value="Херсон">Херсон</option>
-              <option value="Хмельницький">Хмельницький</option>
-              <option value="Івано Франківськ">Івано Франківськ</option>
-              <option value="Київ">Київ</option>
-              <option value="Кіровоград">Кіровоград</option>
-              <option value="Кривий ріг">Кривий ріг</option>
-              <option value="Львів">Львів</option>
-              <option value="Миколаїв">Миколаїв</option>
-              <option value="Одеса">Одеса</option>
-              <option value="Полтава">Полтава</option>
-              <option value="Кременчуг">Кременчуг</option>
-              <option value="Суми">Суми</option>
-              <option value="Волинь">Волинь</option>
-              <option value="Вінниця">Вінниця</option>
-              <option value="Запоріжжя">Запоріжжя</option>
-            </select>
-          </div>
-          <div class="buttons">
-            <button type="button" id="add-device-back-button">Назад</button>
-            <button type="submit">Добавить Устройство</button>
-          </div>
-        </form>
-      </div>
+  <div id="add-device-container" class="hidden">
+    <div id="add-device-page">
+      <form id="device-form">
+        <div>
+          <label for="device-number">Номер Устройства:</label>
+          <input type="text" id="device-number" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="device-model">Тип Устройства:</label>
+          <select id="device-model" autocomplete="off" required>
+            <option value="">--</option>
+            <option value="УНА 001-03">УНА 001-03</option>
+            <option value="Спектр">Спектр</option>
+            <option value="DoCash 2241">DoCash 2241</option>
+            <option value="Deep 2240">Deep 2240</option>
+            <option value="Банкнота 1КУ">Банкнота 1КУ</option>
+            <option value="Scan Coin">Scan Coin</option>
+            <option value="VAMA BP-2">VAMA BP-2</option>
+          </select>
+        </div>
+        <div>
+          <label for="factory-serial-number">Заводской Номер:</label>
+          <input type="text" id="factory-serial-number" autocomplete="off" required>
+        </div>
+        <div>
+          <label for="region">Регион:</label>
+          <select id="region" autocomplete="off" required>
+            <option value="">--</option>
+            <option value="Тернопіль">Тернопіль</option>
+            <option value="Чернігів">Чернігів</option>
+            <option value="Прилуки">Прилуки</option>
+            <option value="Черкаси">Черкаси</option>
+            <option value="Чернівці">Чернівці</option>
+            <option value="Дніпро">Дніпро</option>
+            <option value="Закарпаття">Закарпаття</option>
+            <option value="Рівне">Рівне</option>
+            <option value="Харків">Харків</option>
+            <option value="Херсон">Херсон</option>
+            <option value="Хмельницький">Хмельницький</option>
+            <option value="Івано Франківськ">Івано Франківськ</option>
+            <option value="Київ">Київ</option>
+            <option value="Кіровоград">Кіровоград</option>
+            <option value="Кривий ріг">Кривий ріг</option>
+            <option value="Львів">Львів</option>
+            <option value="Миколаїв">Миколаїв</option>
+            <option value="Одеса">Одеса</option>
+            <option value="Полтава">Полтава</option>
+            <option value="Кременчуг">Кременчуг</option>
+            <option value="Суми">Суми</option>
+            <option value="Волинь">Волинь</option>
+            <option value="Вінниця">Вінниця</option>
+            <option value="Запоріжжя">Запоріжжя</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button type="button" id="add-device-back-button">Назад</button>
+          <button type="submit">Добавить Устройство</button>
+        </div>
+      </form>
     </div>
-
   </div>
 
   <script src="app.js"></script>

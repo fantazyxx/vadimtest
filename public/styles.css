@@ -97,12 +97,24 @@ input, select {
   display: none !important;
 }
 
+h1 {
+  text-align: center;
+}
+
+button {
+  display: inline-block;
+}
+
+.small {
+  width: 100px;
+}
+
 .inline {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
-.small {
-  width: 100px;
+select.small {
+  width: 100%;
 }
