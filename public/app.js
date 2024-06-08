@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Add Act button clicked');
     menuPage.classList.add('hidden');
     formPage.classList.remove('hidden');
+    console.log('Menu Page Hidden:', menuPage.classList.contains('hidden'));
+    console.log('Form Page Visible:', !formPage.classList.contains('hidden'));
     loadDeviceNumbers();
   });
 
