@@ -1,5 +1,6 @@
 // app.js
 import { searchDeviceRepairs } from './search.js';
+import { createTable } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
   searchButton.addEventListener('click', () => {
     const deviceId = searchDeviceIdInput.value;
     if (deviceId) {
-      searchDeviceRepairs(deviceId, searchResultsDiv);
+      searchDeviceRepairs(deviceId);
     }
   });
 
@@ -374,4 +375,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
-
