@@ -1,19 +1,19 @@
 // utils.js
+
 export function createTable(headers, rows) {
     const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
   
-    // Создание заголовков таблицы
-    const headerRow = document.createElement('tr');
+    const thead = document.createElement('thead');
+    const tr = document.createElement('tr');
     headers.forEach(header => {
       const th = document.createElement('th');
       th.textContent = header;
-      headerRow.appendChild(th);
+      tr.appendChild(th);
     });
-    thead.appendChild(headerRow);
+    thead.appendChild(tr);
+    table.appendChild(thead);
   
-    // Создание строк таблицы
+    const tbody = document.createElement('tbody');
     rows.forEach(row => {
       const tr = document.createElement('tr');
       row.forEach(cell => {
@@ -23,9 +23,8 @@ export function createTable(headers, rows) {
       });
       tbody.appendChild(tr);
     });
-  
-    table.appendChild(thead);
     table.appendChild(tbody);
+  
     return table;
   }
   
