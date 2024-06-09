@@ -3,8 +3,10 @@ import { createTable } from './utils.js';
 
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   try {
+    console.log('Запрос к /getRepairs');
     const response = await fetch('/getRepairs');
     const repairs = await response.json();
+    console.log('Данные ремонтов:', repairs);
     searchResultsDiv.innerHTML = '';
 
     const sixMonthsAgo = new Date();
@@ -25,12 +27,14 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
       searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
     }
 
-    const workTypeHeaders = ['№', 'Тип работ', 'Стоимость работ'];
-    const workTypeRows = [];
-
+    console.log('Запрос к /getWorkTypes');
     const workTypesResponse = await fetch('/getWorkTypes');
     const workTypes = await workTypesResponse.json();
+    console.log('Данные типов работ:', workTypes);
     let workTypeIndex = 1;
+
+    const workTypeHeaders = ['№', 'Тип работ', 'Стоимость работ'];
+    const workTypeRows = [];
 
     workTypes.forEach(workType => {
       const row = [workTypeIndex++, workType.data.work_type, workType.data.cost];
