@@ -1,4 +1,5 @@
 // app.js
+
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -89,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
   searchButton.addEventListener('click', () => {
     const deviceId = searchDeviceIdInput.value;
     if (deviceId) {
-      searchDeviceRepairs(deviceId);
+      searchDeviceRepairs(deviceId, searchResultsDiv);
     }
   });
 
