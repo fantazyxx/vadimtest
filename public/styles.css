@@ -47,7 +47,6 @@ button:hover {
 }
 
 #form-container, #search-container, #add-device-container {
-  display: none;
   background: #fff;
   padding: 20px;
   border-radius: 5px;
@@ -91,10 +90,6 @@ input, select {
 .buttons button {
   padding: 10px 15px;
   font-size: 16px;
-}
-
-.hidden {
-  display: none;
 }
 
 h1 {
