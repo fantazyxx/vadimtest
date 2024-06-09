@@ -1,4 +1,3 @@
-// search.js
 import { createTable } from './utils.js';
 
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
@@ -36,11 +35,12 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeHeaders = ['№', 'Тип работ', 'Стоимость работ'];
     const workTypeRows = [];
 
-    workTypes.forEach(workType => {
-      const row = [workTypeIndex++, workType.data.work_type, workType.data.cost];
-      if (repairRows.some(repairRow => repairRow[1] === workType.data.work_type)) {
-        row[1] = `${workType.data.work_type} (выполнено)`;
-        row[2] = `${workType.data.cost} (выполнено)`;
+    workTypes.forEach(workTypeDoc => {
+      const workType = workTypeDoc.data;
+      const row = [workTypeIndex++, workTypeDoc.id, workType.cost];
+      if (repairRows.some(repairRow => repairRow[1] === workTypeDoc.id)) {
+        row[1] = `${workTypeDoc.id} (выполнено)`;
+        row[2] = `${workType.cost} (выполнено)`;
         row.completed = true;
       }
       workTypeRows.push(row);
