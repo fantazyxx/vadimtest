@@ -51,6 +51,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     // Находим и выделяем выполненные работы
     const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)'); // Оптимизация
     workTypeCells.forEach(cell => {
+      console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
       if (recentRepairTypes.has(cell.textContent.trim())) {
         cell.parentNode.classList.add('completed-repair');
       }
