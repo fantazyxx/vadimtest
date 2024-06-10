@@ -7,7 +7,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 h1 {
@@ -22,7 +22,7 @@ h1 {
   width: 90%;
   max-width: 800px;
   text-align: center;
-  margin: 20px auto;
+  margin: 0 auto;
 }
 
 #menu {
@@ -52,7 +52,7 @@ button:hover {
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 90%;
-  max-width: 600px;
+  max-width: 800px;
   margin-top: 20px;
   text-align: left;
 }
@@ -114,34 +114,18 @@ select.small {
   width: 100%;
 }
 
+/* Новые стили для таблиц */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  font-size: 12px;
 }
 
 th, td {
   border: 1px solid #ccc;
   padding: 8px;
   text-align: left;
-}
-
-th {
-  background-color: #f2f2f2;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-#search-results {
-  margin-top: 20px;
-}
-
-#search-results h3 {
-  margin-bottom: 10px;
-}
-
-#search-results table {
-  margin-bottom: 10px;
+  word-wrap: break-word;
+  white-space: normal;
 }
