@@ -13,18 +13,19 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
     const repairHeaders = ['№', 'Тип ремонта', 'Дата'];
-    const repairRows = [];
+    const recentRepairRows = [];
     let repairIndex = 1;
 
     // Сбор типов ремонта, которые были выполнены за последние 6 месяцев
     const recentRepairTypes = new Set(repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).map(repair => repair.data.repair_type));
+    console.log('recentRepairTypes: ', recentRepairTypes);
 
     repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
-      repairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
+      recentRepairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
     });
 
-    if (repairRows.length > 0) {
-      const repairTable = createTable(repairHeaders, repairRows);
+    if (recentRepairRows.length > 0) {
+      const repairTable = createTable(repairHeaders, recentRepairRows);
       searchResultsDiv.appendChild(repairTable);
     } else {
       searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
@@ -47,10 +48,17 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    workTypeRows.forEach((row, index) => {
+    // Находим и выделяем выполненные работы
+    workTypeRows.forEach(row => {
       if (recentRepairTypes.has(row[1])) {
-        const tr = workTypeTable.querySelectorAll('tbody tr')[index];
-        tr.classList.add('completed-repair');
+        // Поиск строки по содержимому ячейки с типом работы
+        const rows = workTypeTable.querySelectorAll('tbody tr');
+        rows.forEach(tr => {
+          const cells = tr.querySelectorAll('td');
+          if (cells[1] && cells[1].textContent === row[1]) {
+            tr.classList.add('completed-repair');
+          }
+        });
       }
     });
   } catch (error) {
