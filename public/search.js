@@ -49,18 +49,13 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     searchResultsDiv.appendChild(workTypeTable);
 
     // Находим и выделяем выполненные работы
-    workTypeRows.forEach(row => {
-      if (recentRepairTypes.has(row[1])) {
-        // Поиск строки по содержимому ячейки с типом работы
-        const rows = workTypeTable.querySelectorAll('tbody tr');
-        rows.forEach(tr => {
-          const cells = tr.querySelectorAll('td');
-          if (cells[1] && cells[1].textContent === row[1]) {
-            tr.classList.add('completed-repair');
-          }
-        });
+    const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)'); // Оптимизация
+    workTypeCells.forEach(cell => {
+      if (recentRepairTypes.has(cell.textContent.trim())) {
+        cell.parentNode.classList.add('completed-repair');
       }
     });
+
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
