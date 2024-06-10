@@ -16,7 +16,8 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const repairRows = [];
     let repairIndex = 1;
 
-    const recentRepairTypes = repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).map(repair => repair.data.repair_type);
+    // Сбор типов ремонта, которые были выполнены за последние 6 месяцев
+    const recentRepairTypes = new Set(repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).map(repair => repair.data.repair_type));
 
     repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
       repairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
@@ -40,11 +41,6 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 
     workTypes.forEach(workType => {
       const row = [workTypeIndex++, workType.id, workType.data.cost];
-      if (recentRepairTypes.includes(workType.id)) {
-        row[1] = `${workType.id} (выполнено)`;
-        row[2] = `${workType.data.cost} (выполнено)`;
-        row.completed = true;
-      }
       workTypeRows.push(row);
     });
 
@@ -52,7 +48,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     searchResultsDiv.appendChild(workTypeTable);
 
     workTypeRows.forEach((row, index) => {
-      if (row.completed) {
+      if (recentRepairTypes.has(row[1])) {
         const tr = workTypeTable.querySelectorAll('tbody tr')[index];
         tr.classList.add('completed-repair');
       }
