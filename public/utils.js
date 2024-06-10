@@ -1,41 +1,38 @@
 // utils.js
-
 export function createTable(headers, rows) {
     const table = document.createElement('table');
     table.style.width = '100%';
-    table.style.fontSize = '10pt';  // Уменьшение размера шрифта
     table.style.borderCollapse = 'collapse';
-  
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    
-    headers.forEach(header => {
-      const th = document.createElement('th');
-      th.textContent = header;
-      th.style.border = '1px solid black';
-      th.style.padding = '8px';
-      th.style.textAlign = 'left';
-      th.style.whiteSpace = 'nowrap';  // Предотвращение переноса слов
-      headerRow.appendChild(th);
+
+    const thead = table.createTHead();
+    const headerRow = thead.insertRow();
+
+    headers.forEach(headerText => {
+        const th = document.createElement('th');
+        th.textContent = headerText;
+        th.style.border = '1px solid #ddd';
+        th.style.padding = '8px';
+        th.style.textAlign = 'left';
+        headerRow.appendChild(th);
     });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-  
-    const tbody = document.createElement('tbody');
+
+    const tbody = table.createTBody();
+
     rows.forEach(row => {
-      const tr = document.createElement('tr');
-      row.forEach(cell => {
-        const td = document.createElement('td');
-        td.textContent = cell;
-        td.style.border = '1px solid black';
-        td.style.padding = '8px';
-        td.style.whiteSpace = 'nowrap';  // Предотвращение переноса слов
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
+        const tr = tbody.insertRow();
+        row.forEach((cellText, index) => {
+            const td = tr.insertCell();
+            td.textContent = cellText;
+            td.style.border = '1px solid #ddd';
+            td.style.padding = '8px';
+            td.style.textAlign = 'left';
+
+            // Добавляем класс 'completed-repair' для завершенных ремонтов
+            if (index === 1 && row.completed) {
+                tr.classList.add('completed-repair');
+            }
+        });
     });
-    table.appendChild(tbody);
-  
+
     return table;
-  }
-  
+}

@@ -1,3 +1,4 @@
+/* styles.css */
 body {
   font-family: 'Helvetica', 'Arial', sans-serif;
   background-color: #f0f0f0;
@@ -8,6 +9,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
+  overflow-y: auto; /* Добавлено для прокрутки */
 }
 
 h1 {
@@ -55,6 +57,7 @@ button:hover {
   max-width: 800px;
   margin-top: 20px;
   text-align: left;
+  overflow: auto; /* Добавлено для прокрутки */
 }
 
 form {
@@ -140,4 +143,9 @@ td {
 
 #search-results {
   margin-top: 20px;
+}
+
+.completed-repair {
+  background-color: #d3d3d3;
+  text-decoration: line-through;
 }
