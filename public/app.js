@@ -223,19 +223,18 @@ document.addEventListener('DOMContentLoaded', function() {
     totalCostInput.value = `${totalCost} грн`;
   }
 
- // Функция для выделения завершенных ремонтов в таблице типов работ
-function highlightCompletedRepairs(repairRows, workTypeRows) {
-  workTypeRows.forEach((workTypeRow) => {
+  function highlightCompletedRepairs(repairRows, workTypeRows) {
+    workTypeRows.forEach((workTypeRow) => {
       const workType = workTypeRow[1];
-      const isCompleted = repairRows.some((repairRow) => repairRow[1] === workType);
+      const isCompleted = repairRows.some((repairRow) => repairRow[1].includes(workType));
       if (isCompleted) {
-          workTypeRow.completed = true;
+        workTypeRow.completed = true;
       }
-  });
-}
+    });
+  }
 
-async function searchDeviceRepairs(deviceId) {
-  try {
+  async function searchDeviceRepairs(deviceId) {
+    try {
       const response = await fetch('/getRepairs');
       const repairs = await response.json();
       searchResultsDiv.innerHTML = '';
@@ -247,14 +246,14 @@ async function searchDeviceRepairs(deviceId) {
       let repairIndex = 1;
 
       repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
-          repairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
+        repairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
       });
 
       if (repairRows.length > 0) {
-          const repairTable = createTable(repairHeaders, repairRows);
-          searchResultsDiv.appendChild(repairTable);
+        const repairTable = createTable(repairHeaders, repairRows);
+        searchResultsDiv.appendChild(repairTable);
       } else {
-          searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
+        searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
       }
 
       const workTypesResponse = await fetch('/getWorkTypes');
@@ -265,9 +264,9 @@ async function searchDeviceRepairs(deviceId) {
       let workTypeIndex = 1;
 
       workTypes.forEach(workTypeDoc => {
-          const workType = workTypeDoc.data;
-          const row = [workTypeIndex++, workTypeDoc.id, workType.cost];
-          workTypeRows.push(row);
+        const workType = workTypeDoc.data;
+        const row = [workTypeIndex++, workTypeDoc.id, workType.cost];
+        workTypeRows.push(row);
       });
 
       highlightCompletedRepairs(repairRows, workTypeRows);
@@ -276,19 +275,18 @@ async function searchDeviceRepairs(deviceId) {
       searchResultsDiv.appendChild(workTypeTable);
 
       workTypeRows.forEach((row, index) => {
-          if (row.completed) {
-              const tr = workTypeTable.querySelectorAll('tbody tr')[index];
-              tr.style.backgroundColor = '#d3d3d3';
-              tr.style.textDecoration = 'line-through';
-          }
+        if (row.completed) {
+          const tr = workTypeTable.querySelectorAll('tbody tr')[index];
+          tr.style.backgroundColor = '#d3d3d3';
+          tr.style.textDecoration = 'line-through';
+        }
       });
-  } catch (error) {
+    } catch (error) {
       console.error('Error fetching repairs:', error);
       alert('Ошибка при загрузке ремонтов.');
+    }
   }
-}
 
-// Функции для очистки форм
   function clearForm() {
     actForm.reset();
     deviceTypeInput.value = '';
@@ -308,7 +306,6 @@ async function searchDeviceRepairs(deviceId) {
     document.getElementById('device-form').reset();
   }
 
-  // Обработчик формы добавления акта
   actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
@@ -345,7 +342,6 @@ async function searchDeviceRepairs(deviceId) {
     }
   });
 
-  // Обработчик формы добавления устройства
   document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const deviceNumber = document.getElementById('device-number').value;
