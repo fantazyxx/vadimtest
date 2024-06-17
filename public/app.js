@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
+  searchDeviceIdInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();  // предотвращает стандартное поведение формы
+      searchButton.click();    // инициирует клик на кнопку поиска
+    }
+  });
   const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
