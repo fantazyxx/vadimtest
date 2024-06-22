@@ -16,7 +16,10 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const recentRepairRows = [];
     let repairIndex = 1;
 
-    // Сбор типов ремонта, которые были выполнены за последние 6 месяцев
+    const deviceResponse = await fetch(`/getDevice/${deviceId}`);
+    const deviceData = await deviceResponse.json();
+    const deviceType = deviceData.data.model;
+
     const recentRepairTypes = new Set(repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).map(repair => repair.data.repair_type));
     console.log('recentRepairTypes: ', recentRepairTypes);
 
@@ -31,9 +34,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
       searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
     }
 
-    console.log('Запрос к /getWorkTypes');
-    const workTypesResponse = await fetch('/getWorkTypes');
-    const workTypes = await workTypesResponse.json();
+    const workTypes = await fetchWorkTypes(deviceType);
     console.log('Данные типов работ:', workTypes);
     let workTypeIndex = 1;
 
@@ -41,15 +42,14 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeRows = [];
 
     workTypes.forEach(workType => {
-      const row = [workTypeIndex++, workType.id, workType.data.cost];
+      const row = [workTypeIndex++, workType.id, workType.price];
       workTypeRows.push(row);
     });
 
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    // Находим и выделяем выполненные работы
-    const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)'); // Оптимизация
+    const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
     workTypeCells.forEach(cell => {
       console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
       if (recentRepairTypes.has(cell.textContent.trim())) {
@@ -60,5 +60,15 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
+  }
+}
+
+async function fetchWorkTypes(deviceType) {
+  try {
+    const response = await fetch(`/getWorkTypes/${deviceType}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching work types:', error);
+    return [];
   }
 }
