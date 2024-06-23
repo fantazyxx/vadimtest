@@ -391,19 +391,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function populateWorkTypes(deviceType) {
     try {
-      const workTypes = await fetchWorkTypes(deviceType);
+      const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
+      const workTypes = await response.json();
       const repairSelect = document.getElementById('repair-select');
-
-      repairSelect.innerHTML = '<option value="">--</option>';
-      workTypes.forEach(work => {
+      repairSelect.innerHTML = '';
+  
+      workTypes.forEach(workType => {
         const option = document.createElement('option');
-        option.value = work.id;
-        option.textContent = `${work.id}: ${work.price} грн`;
+        option.value = workType.id;
+        option.textContent = `${workType.id} - ${workType.price}`;
         repairSelect.appendChild(option);
       });
     } catch (error) {
       console.error('Error populating work types:', error);
     }
   }
-
+  
 });

@@ -49,10 +49,9 @@ app.get('/getDevice/:deviceId', async (req, res) => {
   }
 });
 
-// Получение всех типов работ для устройства
 app.get('/getWorkTypes/:deviceType', async (req, res) => {
   const deviceType = req.params.deviceType;
-  const collectionName = `WorkTypes_${deviceType}`;
+  const collectionName = `WorkTypes_${deviceType.toLowerCase()}`;
   try {
     const workTypesRef = db.collection(collectionName);
     const snapshot = await workTypesRef.get();
@@ -63,6 +62,8 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
     res.status(500).send('Error getting work types');
   }
 });
+
+
 
 // Получение всех ремонтов
 app.get('/getRepairs', async (req, res) => {
