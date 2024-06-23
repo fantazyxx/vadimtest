@@ -22,12 +22,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
+  
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
-      event.preventDefault();  // предотвращает стандартное поведение формы
-      searchButton.click();    // инициирует клик на кнопку поиска
+      event.preventDefault();
+      searchButton.click();
     }
   });
+
   const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
@@ -103,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (deviceNumber) {
       const deviceType = await loadDeviceType(deviceNumber);
       await loadPreviousRepairs(deviceNumber);
-      populateWorkTypes(deviceType); // Новая функция для обновления типов работ
+      populateWorkTypes(deviceType);
     } else {
       deviceTypeInput.value = '';
       previousRepairsList.innerHTML = '';
@@ -156,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
   
     repairListDiv.appendChild(repairItemDiv);
   });
-  
 
   function updateRepairsToAdd(selectedRepair) {
     const index = repairsToAdd.indexOf(selectedRepair);
@@ -222,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-
   async function updateTotalCost() {
     totalCost = 0;
     for (const repair of repairsToAdd) {
@@ -388,11 +388,12 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при добавлении устройства.');
     }
   });
+
   async function populateWorkTypes(deviceType) {
     try {
       const workTypes = await fetchWorkTypes(deviceType);
-      const repairSelect = document.getElementById('repair-select'); // Предположительно элемент для выбора типа ремонта
-  
+      const repairSelect = document.getElementById('repair-select');
+
       repairSelect.innerHTML = '<option value="">--</option>';
       workTypes.forEach(work => {
         const option = document.createElement('option');
@@ -404,5 +405,5 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error populating work types:', error);
     }
   }
-  
+
 });
