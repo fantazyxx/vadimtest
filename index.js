@@ -8,6 +8,9 @@ const path = require('path');
 const app = express();
 app.use(bodyParser.json());
 
+// Обслуживание статических файлов из директории public
+app.use(express.static(path.join(__dirname, 'public')));
+
 const serviceAccount = require('./firebase-config.json');
 
 admin.initializeApp({
@@ -77,6 +80,11 @@ app.post('/uploadWorkTypes', (req, res) => {
     .on('end', () => {
       res.status(200).send('Work types uploaded');
     });
+});
+
+// Маршрут для главной страницы
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 const port = process.env.PORT || 3000;
