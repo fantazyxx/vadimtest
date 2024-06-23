@@ -6,41 +6,33 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3000;  // Использование переменной PORT, предоставляемой Heroku
+app.use(bodyParser.json());
 
-// Инициализация Firebase Admin SDK
 const serviceAccount = require('./firebase-config.json');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
 const db = admin.firestore();
 
-// Настройка Body Parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-// Настройка статической папки для обслуживания HTML, CSS, JS файлов
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Получение всех устройств
 app.get('/devices', async (req, res) => {
   const devicesRef = db.collection('Devices');
   const snapshot = await devicesRef.get();
-  const devices = snapshot.docs.map(doc => doc.data());
+  const devices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   res.json(devices);
 });
 
 // Получение устройства по ID
-app.get('/getDevices', async (req, res) => {
-  try {
-    const devicesRef = db.collection('Devices');
-    const snapshot = await devicesRef.get();
-    const devices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(devices);
-  } catch (error) {
-    console.error('Error fetching devices:', error);
-    res.status(500).send('Internal Server Error');
+app.get('/getDevice/:deviceId', async (req, res) => {
+  const deviceId = req.params.deviceId;
+  const deviceRef = db.collection('Devices').doc(deviceId);
+  const doc = await deviceRef.get();
+  if (doc.exists) {
+    res.json({ id: doc.id, data: doc.data() });
+  } else {
+    res.status(404).send('Device not found');
   }
 });
 
@@ -52,6 +44,14 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
   const snapshot = await workTypesRef.get();
   const workTypes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
   res.json(workTypes);
+});
+
+// Получение всех ремонтов
+app.get('/getRepairs', async (req, res) => {
+  const repairsRef = db.collection('Acts');
+  const snapshot = await repairsRef.get();
+  const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  res.json(repairs);
 });
 
 // Добавление нового акта ремонта
@@ -79,7 +79,6 @@ app.post('/uploadWorkTypes', (req, res) => {
     });
 });
 
-// Запуск сервера
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
 });
