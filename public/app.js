@@ -111,6 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
       previousRepairsList.innerHTML = '';
     }
   });
+  
 
   addRepairButton.addEventListener('click', async () => {
     const repairSelect = document.createElement('select');
@@ -190,6 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const response = await fetch(`/getDevice/${deviceNumber}`);
       const device = await response.json();
       deviceTypeInput.value = device.data.model;
+      return device.data.model; // Возвращаем значение deviceType
     } catch (error) {
       console.error('Error fetching device type:', error);
     }
@@ -212,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('Ошибка при загрузке ремонтов.');
     }
   }
+  
 
   async function fetchWorkTypes(deviceType) {
     try {
@@ -391,6 +394,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function populateWorkTypes(deviceType) {
     try {
+      if (!deviceType) {
+        console.error('Device type is undefined');
+        return;
+      }
       const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
       const workTypes = await response.json();
       const repairSelect = document.getElementById('repair-select');
@@ -406,5 +413,38 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error populating work types:', error);
     }
   }
+  async function saveAct(event) {
+    event.preventDefault();
+    const actNumber = document.getElementById('act-number').value;
+    const deviceNumber = document.getElementById('device-number-select').value;
+    const repairDate = document.getElementById('repair-date').value;
+    const repairType = document.getElementById('repair-select').value;
   
+    try {
+      const response = await fetch('/addRepair', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          actNumber,
+          deviceNumber,
+          repairDate,
+          repairType
+        })
+      });
+  
+      if (response.ok) {
+        alert('Act saved successfully');
+        document.getElementById('act-form').reset();
+        previousRepairsList.innerHTML = '';
+      } else {
+        throw new Error('Failed to save act');
+      }
+    } catch (error) {
+      console.error('Error saving act:', error);
+    }
+  }
+  
+  document.getElementById('act-form').addEventListener('submit', saveAct);
 });
