@@ -32,14 +32,15 @@ app.get('/devices', async (req, res) => {
 });
 
 // Получение устройства по ID
-app.get('/getDevice/:deviceId', async (req, res) => {
-  const deviceId = req.params.deviceId;
-  const deviceRef = db.collection('Devices').doc(deviceId);
-  const doc = await deviceRef.get();
-  if (doc.exists) {
-    res.json({ id: doc.id, data: doc.data() });
-  } else {
-    res.status(404).send('Device not found');
+app.get('/getDevices', async (req, res) => {
+  try {
+    const devicesRef = db.collection('Devices');
+    const snapshot = await devicesRef.get();
+    const devices = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(devices);
+  } catch (error) {
+    console.error('Error fetching devices:', error);
+    res.status(500).send('Internal Server Error');
   }
 });
 
