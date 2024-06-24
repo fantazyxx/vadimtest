@@ -50,18 +50,21 @@ app.get('/getDevice/:deviceId', async (req, res) => {
 });
 
 app.get('/getWorkTypes/:deviceType', async (req, res) => {
-  const deviceType = req.params.deviceType;
-  const collectionName = `WorkTypes_${deviceType.toLowerCase()}`;
+  const deviceType = req.params.deviceType.toLowerCase();
+  const collectionName = `WorkTypes_${deviceType}`;
+  console.log(`Fetching work types from collection: ${collectionName}`);
   try {
     const workTypesRef = db.collection(collectionName);
     const snapshot = await workTypesRef.get();
     const workTypes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    console.log('Work types found:', workTypes); // Логирование для проверки
     res.json(workTypes);
   } catch (error) {
     console.error('Error getting work types:', error);
     res.status(500).send('Error getting work types');
   }
 });
+
 
 
 
