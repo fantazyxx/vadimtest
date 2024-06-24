@@ -415,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error populating work types:', error);
     }
   }
+ 
   
   async function saveAct(event) {
     event.preventDefault();
