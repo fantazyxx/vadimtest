@@ -229,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
   async function updateTotalCost() {
     totalCost = 0;
     for (const repair of repairsToAdd) {
-      const response = await fetch(`/getWorkType/${repair}`);
+      const response = await fetch(`/getWorkTypes/${repair}`);
       const workType = await response.json();
       totalCost += workType.data.cost;
     }
