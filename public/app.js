@@ -398,11 +398,13 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Device type is undefined');
         return;
       }
+      console.log(`Fetching work types for device type: ${deviceType.toLowerCase()}`); // Логирование для проверки
       const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
       const workTypes = await response.json();
+      console.log('Received work types:', workTypes); // Логирование для проверки
       const repairSelect = document.getElementById('repair-select');
       repairSelect.innerHTML = '';
-  
+    
       workTypes.forEach(workType => {
         const option = document.createElement('option');
         option.value = workType.id;
@@ -413,6 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Error populating work types:', error);
     }
   }
+  
   async function saveAct(event) {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
