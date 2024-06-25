@@ -392,28 +392,41 @@ document.getElementById('device-form').addEventListener('submit', async (e) => {
 });
 
 async function populateWorkTypes(deviceType) {
-    try {
-        if (!deviceType) {
-            console.error('Device type is undefined');
-            return;
-        }
-        console.log(`Fetching work types for device type: ${deviceType.toLowerCase()}`); // Логирование для проверки
-        const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
-        const workTypes = await response.json();
-        console.log('Received work types:', workTypes); // Логирование для проверки
-        const repairSelect = document.getElementById('repair-select');
-        repairSelect.innerHTML = '';
-    
-        workTypes.forEach(workType => {
-            const option = document.createElement('option');
-            option.value = workType.id;
-            option.textContent = `${workType.id} - ${workType.price}`;
-            repairSelect.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error populating work types:', error);
-    }
+  try {
+      if (!deviceType) {
+          console.error('Device type is undefined');
+          return;
+      }
+      console.log(`Fetching work types for device type: ${deviceType.toLowerCase()}`); // Логирование для проверки
+      const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
+      const workTypes = await response.json();
+      console.log('Received work types:', workTypes); // Логирование для проверки
+      const repairSelect = document.createElement('select');
+      repairSelect.id = 'repair-select';
+      repairSelect.required = true;
+      repairSelect.classList.add('small');
+      repairSelect.style.width = '550px';
+
+      repairSelect.innerHTML = '';
+  
+      workTypes.forEach(workType => {
+          const option = document.createElement('option');
+          option.value = workType.id;
+          option.textContent = `${workType.id} - ${workType.price}`;
+          repairSelect.appendChild(option);
+      });
+
+      // Добавляем селект к DOM только если он был успешно заполнен
+      const repairListDiv = document.getElementById('repair-list');
+      if (repairListDiv) {
+          repairListDiv.innerHTML = '';
+          repairListDiv.appendChild(repairSelect);
+      }
+  } catch (error) {
+      console.error('Error populating work types:', error);
+  }
 }
+
 
 async function saveAct(event) {
     event.preventDefault();
