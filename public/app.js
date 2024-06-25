@@ -408,11 +408,11 @@ async function populateWorkTypes(deviceType) {
       repairSelect.style.width = '550px';
 
       repairSelect.innerHTML = '';
-  
+
       workTypes.forEach(workType => {
           const option = document.createElement('option');
           option.value = workType.id;
-          option.textContent = `${workType.id} - ${workType.price}`;
+          option.textContent = `${workType.id} - ${workType.cost}`; // Использование 'cost' вместо 'price'
           repairSelect.appendChild(option);
       });
 
@@ -426,6 +426,7 @@ async function populateWorkTypes(deviceType) {
       console.error('Error populating work types:', error);
   }
 }
+
 
 
 async function saveAct(event) {
