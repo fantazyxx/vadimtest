@@ -427,8 +427,6 @@ async function populateWorkTypes(deviceType) {
   }
 }
 
-
-
 async function saveAct(event) {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
