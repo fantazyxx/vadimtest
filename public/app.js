@@ -359,14 +359,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
-  
+
     const deviceData = {
         deviceNumber,
         deviceModel,
         factorySerialNumber,
         region
     };
-  
+
     try {
         const response = await fetch('/addDevice', {
             method: 'POST',
@@ -375,7 +375,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(deviceData)
         });
-  
+
         if (response.ok) {
             alert('Устройство успешно добавлено!');
             clearAddDeviceForm();
@@ -388,7 +388,29 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error adding device:', error);
         alert('Ошибка при добавлении устройства.');
     }
-  });
+});
+// Load previous repairs and display them
+async function loadPreviousRepairs(deviceNumber) {
+  try {
+      const response = await fetch(`/getPreviousRepairs/${deviceNumber}`);
+      const previousRepairs = await response.json();
+      const previousRepairsList = document.getElementById('previous-repairs-list');
+
+      previousRepairsList.innerHTML = '';
+      previousRepairs.forEach(repair => {
+          const li = document.createElement('li');
+          li.textContent = `${repair.description} - ${repair.date}`;
+          previousRepairsList.appendChild(li);
+      });
+
+      if (previousRepairs.length === 0) {
+          previousRepairsList.innerHTML = '<p>No previous repairs found for this device.</p>';
+      }
+  } catch (error) {
+      console.error('Error loading previous repairs:', error);
+  }
+}
+
   
   async function populateWorkTypes(deviceType) {
       try {
@@ -425,4 +447,41 @@ document.addEventListener('DOMContentLoaded', function() {
           console.error('Error populating work types:', error);
       }
   }
+  document.getElementById('act-form').addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const actNumber = document.getElementById('act-number').value;
+    const deviceNumber = deviceNumberSelect.value;
+    const repairDate = document.getElementById('repair-date').value;
+
+    const repairData = {
+        repair_id: actNumber,
+        device_id: deviceNumber,
+        repair_type: repairsToAdd.join(', '),
+        work_count: repairsToAdd.length,
+        installation_date: repairDate
+    };
+
+    try {
+        const response = await fetch('/addRepair', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(repairData)
+        });
+        if (response.ok) {
+            alert('Акт успешно добавлен');
+            clearForm();
+            formContainer.style.display = 'none';
+            menuPage.style.display = 'block';
+        } else {
+            alert('Ошибка при добавлении акта');
+        }
+    } catch (error) {
+        console.error('Error adding repair:', error);
+        alert('Ошибка при добавлении акта');
+    }
+});
+
 });
