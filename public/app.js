@@ -100,17 +100,18 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  deviceNumberSelect.addEventListener('change', async () => {
-    const deviceNumber = deviceNumberSelect.value;
-    if (deviceNumber) {
+
+deviceNumberSelect.addEventListener('change', async () => {
+  const deviceNumber = deviceNumberSelect.value;
+  if (deviceNumber) {
       const deviceType = await loadDeviceType(deviceNumber);
-      await loadPreviousRepairs(deviceNumber);
+      await searchDeviceRepairs(deviceNumber, previousRepairsList);
       populateWorkTypes(deviceType);
-    } else {
+  } else {
       deviceTypeInput.value = '';
       previousRepairsList.innerHTML = '';
-    }
-  });
+  }
+});
 
   addRepairButton.addEventListener('click', async () => {
     const repairSelect = document.createElement('select');
@@ -391,30 +392,7 @@ function updateRepairsToAdd(selectedRepair) {
         alert('Ошибка при добавлении устройства.');
     }
 });
-// Load previous repairs and display them
-async function loadPreviousRepairs(deviceNumber) {
-  try {
-      const response = await fetch(`/getPreviousRepairs/${deviceNumber}`);
-      const previousRepairs = await response.json();
-      const previousRepairsList = document.getElementById('previous-repairs-list');
 
-      previousRepairsList.innerHTML = '';
-      if (previousRepairs.length === 0) {
-          previousRepairsList.innerHTML = '<p>No previous repairs found for this device.</p>';
-      } else {
-          previousRepairs.forEach(repair => {
-              const li = document.createElement('li');
-              li.textContent = `${repair.description} - ${repair.date}`;
-              previousRepairsList.appendChild(li);
-          });
-      }
-  } catch (error) {
-      console.error('Error loading previous repairs:', error);
-  }
-}
-
-
-  
   async function populateWorkTypes(deviceType) {
       try {
           if (!deviceType) {
