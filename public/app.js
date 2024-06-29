@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
-  
+
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function() {
       previousRepairsList.innerHTML = '';
     }
   });
-  
 
   addRepairButton.addEventListener('click', async () => {
     const repairSelect = document.createElement('select');
@@ -163,9 +162,9 @@ document.addEventListener('DOMContentLoaded', function() {
   function updateRepairsToAdd(selectedRepair) {
     const index = repairsToAdd.indexOf(selectedRepair);
     if (index === -1) {
-      repairsToAdd.push(selectedRepair);
+        repairsToAdd.push(selectedRepair);
     } else {
-      repairsToAdd[index] = selectedRepair;
+        repairsToAdd[index] = selectedRepair;
     }
   }
 
@@ -213,9 +212,9 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Error fetching previous repairs:', error);
         alert('Ошибка при загрузке ремонтов.');
     }
-}
+  }
 
-async function fetchWorkTypes(deviceType) {
+  async function fetchWorkTypes(deviceType) {
     try {
         const response = await fetch(`/getWorkTypes/${deviceType}`);
         return await response.json();
@@ -223,9 +222,9 @@ async function fetchWorkTypes(deviceType) {
         console.error('Error fetching work types:', error);
         return [];
     }
-}
+  }
 
-async function updateTotalCost() {
+  async function updateTotalCost() {
     totalCost = 0;
     for (const repair of repairsToAdd) {
         const response = await fetch(`/getWorkTypes/${repair}`);
@@ -233,9 +232,9 @@ async function updateTotalCost() {
         totalCost += workType.data.cost;
     }
     totalCostInput.value = `${totalCost} грн`;
-}
+  }
 
-function highlightCompletedRepairs(repairRows, workTypeRows) {
+  function highlightCompletedRepairs(repairRows, workTypeRows) {
     workTypeRows.forEach((workTypeRow) => {
         const workType = workTypeRow[1];
         const isCompleted = repairRows.some((repairRow) => repairRow[1].includes(workType));
@@ -243,9 +242,9 @@ function highlightCompletedRepairs(repairRows, workTypeRows) {
             workTypeRow.completed = true;
         }
     });
-}
+  }
 
-async function searchDeviceRepairs(deviceId) {
+  async function searchDeviceRepairs(deviceId) {
     try {
         const response = await fetch('/getRepairs');
         const repairs = await response.json();
@@ -297,9 +296,9 @@ async function searchDeviceRepairs(deviceId) {
         console.error('Error fetching repairs:', error);
         alert('Ошибка при загрузке ремонтов.');
     }
-}
+  }
 
-function clearForm() {
+  function clearForm() {
     actForm.reset();
     deviceTypeInput.value = '';
     previousRepairsList.innerHTML = '';
@@ -307,23 +306,23 @@ function clearForm() {
     repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
     repairsToAdd = [];
-}
+  }
 
-function clearSearch() {
+  function clearSearch() {
     searchDeviceIdInput.value = '';
     searchResultsDiv.innerHTML = '';
-}
+  }
 
-function clearAddDeviceForm() {
+  function clearAddDeviceForm() {
     document.getElementById('device-form').reset();
-}
+  }
 
-actForm.addEventListener('submit', async (event) => {
+  actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
     const deviceNumber = deviceNumberSelect.value;
     const repairDate = document.getElementById('repair-date').value;
-
+  
     const repairData = {
         repair_id: actNumber,
         device_id: deviceNumber,
@@ -331,7 +330,7 @@ actForm.addEventListener('submit', async (event) => {
         work_count: repairsToAdd.length,
         installation_date: repairDate
     };
-
+  
     try {
         const response = await fetch('/addRepair', {
             method: 'POST',
@@ -352,22 +351,22 @@ actForm.addEventListener('submit', async (event) => {
         console.error('Error adding repair:', error);
         alert('Ошибка при добавлении акта');
     }
-});
-
-document.getElementById('device-form').addEventListener('submit', async (e) => {
+  });
+  
+  document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const deviceNumber = document.getElementById('device-number').value;
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
-
+  
     const deviceData = {
         deviceNumber,
         deviceModel,
         factorySerialNumber,
         region
     };
-
+  
     try {
         const response = await fetch('/addDevice', {
             method: 'POST',
@@ -376,7 +375,7 @@ document.getElementById('device-form').addEventListener('submit', async (e) => {
             },
             body: JSON.stringify(deviceData)
         });
-
+  
         if (response.ok) {
             alert('Устройство успешно добавлено!');
             clearAddDeviceForm();
@@ -389,76 +388,41 @@ document.getElementById('device-form').addEventListener('submit', async (e) => {
         console.error('Error adding device:', error);
         alert('Ошибка при добавлении устройства.');
     }
-});
-
-async function populateWorkTypes(deviceType) {
-  try {
-      if (!deviceType) {
-          console.error('Device type is undefined');
-          return;
+  });
+  
+  async function populateWorkTypes(deviceType) {
+      try {
+          if (!deviceType) {
+              console.error('Device type is undefined');
+              return;
+          }
+          console.log(`Fetching work types for device type: ${deviceType.toLowerCase()}`); // Логирование для проверки
+          const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
+          const workTypes = await response.json();
+          console.log('Received work types:', workTypes); // Логирование для проверки
+          const repairSelect = document.createElement('select');
+          repairSelect.id = 'repair-select';
+          repairSelect.required = true;
+          repairSelect.classList.add('small');
+          repairSelect.style.width = '550px';
+  
+          repairSelect.innerHTML = '';
+  
+          workTypes.forEach(workType => {
+              const option = document.createElement('option');
+              option.value = workType.id;
+              option.textContent = `${workType.id} - ${workType.price} грн`; // Использование 'price' вместо 'cost'
+              repairSelect.appendChild(option);
+          });
+  
+          // Добавляем селект к DOM только если он был успешно заполнен
+          const repairListDiv = document.getElementById('repair-list');
+          if (repairListDiv) {
+              repairListDiv.innerHTML = '';
+              repairListDiv.appendChild(repairSelect);
+          }
+      } catch (error) {
+          console.error('Error populating work types:', error);
       }
-      console.log(`Fetching work types for device type: ${deviceType.toLowerCase()}`); // Логирование для проверки
-      const response = await fetch(`/getWorkTypes/${deviceType.toLowerCase()}`);
-      const workTypes = await response.json();
-      console.log('Received work types:', workTypes); // Логирование для проверки
-      const repairSelect = document.createElement('select');
-      repairSelect.id = 'repair-select';
-      repairSelect.required = true;
-      repairSelect.classList.add('small');
-      repairSelect.style.width = '550px';
-
-      repairSelect.innerHTML = '';
-
-      workTypes.forEach(workType => {
-          const option = document.createElement('option');
-          option.value = workType.id;
-          option.textContent = `${workType.id} - ${workType.cost}`; // Использование 'cost' вместо 'price'
-          repairSelect.appendChild(option);
-      });
-
-      // Добавляем селект к DOM только если он был успешно заполнен
-      const repairListDiv = document.getElementById('repair-list');
-      if (repairListDiv) {
-          repairListDiv.innerHTML = '';
-          repairListDiv.appendChild(repairSelect);
-      }
-  } catch (error) {
-      console.error('Error populating work types:', error);
   }
-}
-
-async function saveAct(event) {
-    event.preventDefault();
-    const actNumber = document.getElementById('act-number').value;
-    const deviceNumber = document.getElementById('device-number-select').value;
-    const repairDate = document.getElementById('repair-date').value;
-    const repairType = document.getElementById('repair-select').value;
-
-    try {
-        const response = await fetch('/addRepair', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                actNumber,
-                deviceNumber,
-                repairDate,
-                repairType
-            })
-        });
-
-        if (response.ok) {
-            alert('Act saved successfully');
-            document.getElementById('act-form').reset();
-            previousRepairsList.innerHTML = '';
-        } else {
-            throw new Error('Failed to save act');
-        }
-    } catch (error) {
-        console.error('Error saving act:', error);
-    }
-}
-
-document.getElementById('act-form').addEventListener('submit', saveAct);
 });
