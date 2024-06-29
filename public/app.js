@@ -117,56 +117,57 @@ document.addEventListener('DOMContentLoaded', function() {
     repairSelect.required = true;
     repairSelect.classList.add('small');
     repairSelect.style.width = '550px';
-  
+
     const deviceType = deviceTypeInput.value;
     const workTypes = await fetchWorkTypes(deviceType);
     const availableWorkTypes = workTypes.filter(work => !repairsToAdd.includes(work.id));
-  
+
     const emptyOption = document.createElement('option');
     emptyOption.value = '';
     emptyOption.textContent = '--';
     repairSelect.appendChild(emptyOption);
-  
+
     availableWorkTypes.forEach(work => {
-      const option = document.createElement('option');
-      option.value = work.id;
-      option.textContent = `${work.id}: ${work.price} грн`;
-      repairSelect.appendChild(option);
+        const option = document.createElement('option');
+        option.value = work.id;
+        option.textContent = `${work.id}: ${work.price} грн`;
+        repairSelect.appendChild(option);
     });
-  
+
     const removeButton = document.createElement('button');
     removeButton.textContent = '-';
     removeButton.type = 'button';
     removeButton.classList.add('small');
     removeButton.style.width = '30px';
-  
+
     removeButton.addEventListener('click', () => {
-      repairListDiv.removeChild(repairItemDiv);
-      repairsToAdd = repairsToAdd.filter(work => work !== repairSelect.value);
-      updateTotalCost();
+        repairListDiv.removeChild(repairItemDiv);
+        repairsToAdd = repairsToAdd.filter(work => work !== repairSelect.value);
+        updateTotalCost();
     });
-  
+
     const repairItemDiv = document.createElement('div');
     repairItemDiv.classList.add('inline');
     repairItemDiv.appendChild(repairSelect);
     repairItemDiv.appendChild(removeButton);
-  
-    repairSelect.addEventListener('change', () => {
-      updateRepairsToAdd(repairSelect.value);
-      updateTotalCost();
-    });
-  
-    repairListDiv.appendChild(repairItemDiv);
-  });
 
-  function updateRepairsToAdd(selectedRepair) {
+    repairSelect.addEventListener('change', () => {
+        updateRepairsToAdd(repairSelect.value);
+        updateTotalCost();
+    });
+
+    repairListDiv.appendChild(repairItemDiv);
+});
+
+function updateRepairsToAdd(selectedRepair) {
     const index = repairsToAdd.indexOf(selectedRepair);
     if (index === -1) {
         repairsToAdd.push(selectedRepair);
     } else {
         repairsToAdd[index] = selectedRepair;
     }
-  }
+}
+
 
   async function loadDeviceNumbers() {
     try {
@@ -226,13 +227,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
   async function updateTotalCost() {
     totalCost = 0;
-    for (const repair of repairsToAdd) {
-        const response = await fetch(`/getWorkTypes/${repair}`);
+    for (const repairId of repairsToAdd) {
+        const response = await fetch(`/getWorkType/${repairId}`);
         const workType = await response.json();
-        totalCost += workType.data.cost;
+        totalCost += parseFloat(workType.price);
     }
     totalCostInput.value = `${totalCost} грн`;
-  }
+}
+
 
   function highlightCompletedRepairs(repairRows, workTypeRows) {
     workTypeRows.forEach((workTypeRow) => {
@@ -397,19 +399,20 @@ async function loadPreviousRepairs(deviceNumber) {
       const previousRepairsList = document.getElementById('previous-repairs-list');
 
       previousRepairsList.innerHTML = '';
-      previousRepairs.forEach(repair => {
-          const li = document.createElement('li');
-          li.textContent = `${repair.description} - ${repair.date}`;
-          previousRepairsList.appendChild(li);
-      });
-
       if (previousRepairs.length === 0) {
           previousRepairsList.innerHTML = '<p>No previous repairs found for this device.</p>';
+      } else {
+          previousRepairs.forEach(repair => {
+              const li = document.createElement('li');
+              li.textContent = `${repair.description} - ${repair.date}`;
+              previousRepairsList.appendChild(li);
+          });
       }
   } catch (error) {
       console.error('Error loading previous repairs:', error);
   }
 }
+
 
   
   async function populateWorkTypes(deviceType) {
@@ -447,41 +450,42 @@ async function loadPreviousRepairs(deviceNumber) {
           console.error('Error populating work types:', error);
       }
   }
-  document.getElementById('act-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
+  // Existing code
 
-    const actNumber = document.getElementById('act-number').value;
-    const deviceNumber = deviceNumberSelect.value;
-    const repairDate = document.getElementById('repair-date').value;
+document.getElementById('act-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
 
-    const repairData = {
-        repair_id: actNumber,
-        device_id: deviceNumber,
-        repair_type: repairsToAdd.join(', '),
-        work_count: repairsToAdd.length,
-        installation_date: repairDate
-    };
+  const actNumber = document.getElementById('act-number').value;
+  const deviceNumber = deviceNumberSelect.value;
+  const repairDate = document.getElementById('repair-date').value;
 
-    try {
-        const response = await fetch('/addRepair', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(repairData)
-        });
-        if (response.ok) {
-            alert('Акт успешно добавлен');
-            clearForm();
-            formContainer.style.display = 'none';
-            menuPage.style.display = 'block';
-        } else {
-            alert('Ошибка при добавлении акта');
-        }
-    } catch (error) {
-        console.error('Error adding repair:', error);
-        alert('Ошибка при добавлении акта');
-    }
+  const repairData = {
+      repair_id: actNumber,
+      device_id: deviceNumber,
+      repair_type: repairsToAdd.join(', '),
+      work_count: repairsToAdd.length,
+      installation_date: repairDate
+  };
+
+  try {
+      const response = await fetch('/addRepair', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(repairData)
+      });
+      if (response.ok) {
+          alert('Акт успешно добавлен');
+          clearForm();
+          formContainer.style.display = 'none';
+          menuPage.style.display = 'block';
+      } else {
+          alert('Ошибка при добавлении акта');
+      }
+  } catch (error) {
+      console.error('Error adding repair:', error);
+      alert('Ошибка при добавлении акта');
+  }
 });
-
 });
