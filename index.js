@@ -64,6 +64,18 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
     res.status(500).send('Error getting work types');
   }
 });
+app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
+  const deviceNumber = req.params.deviceNumber;
+  try {
+    const repairsRef = db.collection('Repairs').where('device_id', '==', deviceNumber);
+    const snapshot = await repairsRef.get();
+    const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    res.json(repairs);
+  } catch (error) {
+    console.error('Error getting previous repairs:', error);
+    res.status(500).send('Error getting previous repairs');
+  }
+});
 
 
 
