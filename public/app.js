@@ -23,6 +23,21 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
 
+// Add this event listener to handle changes in the device number
+document.getElementById('device-number-select').addEventListener('change', async () => {
+  const deviceNumber = document.getElementById('device-number-select').value;
+  if (deviceNumber) {
+    const deviceType = await loadDeviceType(deviceNumber);
+    await searchDeviceRepairs(deviceNumber, previousRepairsList);
+    populateWorkTypes(deviceType);
+    document.getElementById('add-repair-button').style.display = 'inline-block'; // Ensure the button is displayed
+  } else {
+    document.getElementById('device-type-input').value = '';
+    document.getElementById('previous-repairs-list').innerHTML = '';
+    document.getElementById('add-repair-button').style.display = 'none'; // Hide the button if no device number
+  }
+});
+
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -209,7 +224,6 @@ function updateRepairsToAdd(selectedRepair) {
     }
 }
 
-
   async function updateTotalCost() {
     totalCost = 0;
     for (const repairId of repairsToAdd) {
@@ -360,41 +374,31 @@ async function populateWorkTypes(deviceType) {
       console.error('Error populating work types:', error);
   }
 }
-  // Existing code
+  
+  // Загрузка предыдущих ремонтов
+async function loadPreviousRepairs(deviceNumber, previousRepairsList) {
+  try {
+    const response = await fetch(`/getPreviousRepairs/${deviceNumber}`);
+    const repairs = await response.json();
+    previousRepairsList.innerHTML = '';
 
-  document.getElementById('act-form').addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const actNumber = document.getElementById('act-number').value;
-    const deviceNumber = deviceNumberSelect.value;
-    const repairDate = document.getElementById('repair-date').value;
-
-    const repairData = {
-        repair_id: actNumber,
-        device_id: deviceNumber,
-        repair_type: repairsToAdd.join(', '),
-        work_count: repairsToAdd.length,
-        installation_date: repairDate
-    };
-
-    try {
-        const response = await fetch('/addRepair', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(repairData)
-        });
-        if (response.ok) {
-            alert('Акт успешно добавлен');
-            clearForm();
-            formContainer.style.display = 'none';
-            menuPage.style.display = 'block';
-        } else {
-            alert('Ошибка при добавлении акта');
-        }
-    } catch (error) {
-        console.error('Error adding repair:', error);
-        alert('Ошибка при добавлении акта');
+    if (repairs.length === 0) {
+      previousRepairsList.innerHTML = '<tr><td colspan="3">Ремонтов за последние 6 месяцев не найдено</td></tr>';
+    } else {
+      repairs.forEach((repair, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${index + 1}</td>
+          <td>${repair.repair_type}</td>
+          <td>${repair.installation_date}</td>
+        `;
+        previousRepairsList.appendChild(row);
+      });
     }
-});
+  } catch (error) {
+    console.error('Error loading previous repairs:', error);
+    previousRepairsList.innerHTML = '<tr><td colspan="3">Ошибка загрузки предыдущих ремонтов</td></tr>';
+  }
+}
+
 });
