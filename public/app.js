@@ -210,9 +210,14 @@ document.addEventListener('DOMContentLoaded', function() {
   async function updateTotalCost() {
     totalCost = 0;
     for (const repairId of repairsToAdd) {
-      const response = await fetch(`/getWorkType/${repairId}`);
-      const workType = await response.json();
-      totalCost += parseFloat(workType.price);
+      const response = await fetch(`/getWorkTypes/${deviceTypeInput.value}`); // Виправлено шлях
+      const workTypes = await response.json();
+      const workType = workTypes.find(wt => wt.id === repairId); // Знаходимо тип роботи за id
+      if (workType) {
+        totalCost += parseFloat(workType.price); 
+      } else {
+        console.error(`Work type with id ${repairId} not found`);
+      }
     }
     totalCostInput.value = `${totalCost} грн`;
   }
