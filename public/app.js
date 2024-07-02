@@ -364,9 +364,12 @@ document.addEventListener('DOMContentLoaded', function() {
   async function loadPreviousRepairs(deviceNumber, previousRepairsList) {
     try {
       const response = await fetch(`/getPreviousRepairs/${deviceNumber}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch previous repairs: ${response.statusText}`);
+      }
       const repairs = await response.json();
       previousRepairsList.innerHTML = '';
-
+  
       if (repairs.length === 0) {
         previousRepairsList.innerHTML = '<tr><td colspan="3">Ремонтов за последние 6 месяцев не найдено</td></tr>';
       } else {
@@ -385,4 +388,5 @@ document.addEventListener('DOMContentLoaded', function() {
       previousRepairsList.innerHTML = '<tr><td colspan="3">Ошибка загрузки предыдущих ремонтов</td></tr>';
     }
   }
+ 
 });
