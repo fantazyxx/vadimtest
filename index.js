@@ -69,6 +69,8 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
 // Получение предыдущих ремонтов за последние 6 месяцев
 app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
   const deviceNumber = req.params.deviceNumber;
+  console.log(`Fetching previous repairs for device: ${deviceNumber}`); // Логирование
+
   try {
     const sixMonthsAgo = new Date();
     sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
@@ -80,12 +82,15 @@ app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
     const snapshot = await repairsRef.get();
     const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
+    console.log(`Repairs found: ${JSON.stringify(repairs)}`); // Логирование
+
     res.json(repairs);
   } catch (error) {
     console.error('Error getting previous repairs:', error);
     res.status(500).json({ error: 'Error getting previous repairs' });
   }
 });
+
 
 // Получение всех ремонтов
 app.get('/getRepairs', async (req, res) => {
