@@ -28,7 +28,7 @@ app.get('/getDevices', async (req, res) => {
     res.json(devices);
   } catch (error) {
     console.error('Error getting devices:', error);
-    res.status(500).send('Error getting devices');
+    res.status(500).json({ error: 'Error getting devices' });
   }
 });
 
@@ -41,14 +41,15 @@ app.get('/getDevice/:deviceId', async (req, res) => {
     if (doc.exists) {
       res.json({ id: doc.id, data: doc.data() });
     } else {
-      res.status(404).send('Device not found');
+      res.status(404).json({ error: 'Device not found' });
     }
   } catch (error) {
     console.error('Error getting device:', error);
-    res.status(500).send('Error getting device');
+    res.status(500).json({ error: 'Error getting device' });
   }
 });
 
+// Получение типов работ по типу устройства
 app.get('/getWorkTypes/:deviceType', async (req, res) => {
   const deviceType = req.params.deviceType.toLowerCase();
   const collectionName = `WorkTypes_${deviceType}`;
@@ -61,9 +62,11 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
     res.json(workTypes);
   } catch (error) {
     console.error('Error getting work types:', error);
-    res.status(500).send('Error getting work types');
+    res.status(500).json({ error: 'Error getting work types' });
   }
 });
+
+// Получение предыдущих ремонтов за последние 6 месяцев
 app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
   const deviceNumber = req.params.deviceNumber;
   try {
@@ -80,7 +83,7 @@ app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
     res.json(repairs);
   } catch (error) {
     console.error('Error getting previous repairs:', error);
-    res.status(500).send('Error getting previous repairs');
+    res.status(500).json({ error: 'Error getting previous repairs' });
   }
 });
 
@@ -93,7 +96,7 @@ app.get('/getRepairs', async (req, res) => {
     res.json(repairs);
   } catch (error) {
     console.error('Error getting repairs:', error);
-    res.status(500).send('Error getting repairs');
+    res.status(500).json({ error: 'Error getting repairs' });
   }
 });
 
@@ -103,10 +106,10 @@ app.post('/addRepair', async (req, res) => {
   try {
     const actsRef = db.collection('Acts');
     await actsRef.add({ device_id, repair_type, work_count, installation_date });
-    res.status(201).send('Act added');
+    res.status(201).json({ message: 'Act added' });
   } catch (error) {
     console.error('Error adding repair:', error);
-    res.status(500).send('Error adding repair');
+    res.status(500).json({ error: 'Error adding repair' });
   }
 });
 
@@ -123,11 +126,11 @@ app.post('/uploadWorkTypes', (req, res) => {
         await docRef.set({ price });
       })
       .on('end', () => {
-        res.status(200).send('Work types uploaded');
+        res.status(200).json({ message: 'Work types uploaded' });
       });
   } catch (error) {
     console.error('Error uploading work types:', error);
-    res.status(500).send('Error uploading work types');
+    res.status(500).json({ error: 'Error uploading work types' });
   }
 });
 
