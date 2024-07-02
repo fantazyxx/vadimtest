@@ -87,7 +87,7 @@ app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
 // Получение всех ремонтов
 app.get('/getRepairs', async (req, res) => {
   try {
-    const repairsRef = db.collection('Acts');
+    const repairsRef = db.collection('Repairs');
     const snapshot = await repairsRef.get();
     const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
     res.json(repairs);
