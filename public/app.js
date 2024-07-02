@@ -364,6 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
   async function loadPreviousRepairs(deviceNumber, previousRepairsList) {
     try {
       const response = await fetch(`/getPreviousRepairs/${deviceNumber}`);
+      console.log("Fetching from:", url); // Додано console.log для перевірки URL
       if (!response.ok) {
         throw new Error(`Failed to fetch previous repairs: ${response.statusText}`);
       }
