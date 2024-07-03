@@ -109,7 +109,7 @@ app.get('/getRepairs', async (req, res) => {
 app.post('/addRepair', async (req, res) => {
   const { device_id, repair_type, work_count, installation_date } = req.body;
   try {
-    const actsRef = db.collection('Acts');
+    const actsRef = db.collection('Repairs');
     await actsRef.add({ device_id, repair_type, work_count, installation_date });
     res.status(201).json({ message: 'Act added' });
   } catch (error) {
