@@ -2,8 +2,6 @@ import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 import { loadDeviceNumbers } from '../modules/api.js';
 
-
-
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
   const searchDeviceButton = document.getElementById('search-device-button');
