@@ -1,4 +1,5 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
+import { clearForm } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   backButton.addEventListener('click', () => {
     console.log('Back button clicked');
-    clearForm();
+    clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd);
     formContainer.style.display = 'none';
     menuPage.style.display = 'block';
   });
@@ -196,17 +197,7 @@ addRepairButton.addEventListener('click', async () => {
     });
   }
 
-  function clearForm() {
-    actForm.reset();
-    deviceTypeInput.value = '';
-    previousRepairsList.innerHTML = '';
-    const repairItems = repairListDiv.querySelectorAll('.inline');
-    repairItems.forEach(item => repairListDiv.removeChild(item));
-    totalCostInput.value = '';
-    repairsToAdd = [];
-  }
-
-  function clearSearch() {
+   function clearSearch() {
     searchDeviceIdInput.value = '';
     searchResultsDiv.innerHTML = '';
   }
