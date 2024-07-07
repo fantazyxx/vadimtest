@@ -1,4 +1,4 @@
-import { loadDeviceNumbers } from '/public/modules/api.js';
+import { loadDeviceNumbers } from '/modules/api.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
