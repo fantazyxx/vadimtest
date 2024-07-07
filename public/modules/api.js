@@ -35,3 +35,18 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
       return [];
     }
   }
+
+  export async function updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput) {
+    let totalCost = 0;
+    for (const repairId of repairsToAdd) {
+      const response = await fetch(`/getWorkTypes/${deviceTypeInput.value}`);
+      const workTypes = await response.json();
+      const workType = workTypes.find(wt => wt.id === repairId); // Знаходимо тип роботи за id
+      if (workType) {
+        totalCost += parseFloat(workType.price);
+      } else {
+        console.error(`Work type with id ${repairId} not found`);
+      }
+    }
+    totalCostInput.value = `${totalCost} грн`;
+  }
