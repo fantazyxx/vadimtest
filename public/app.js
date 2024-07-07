@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
     repairItemDiv.appendChild(removeButton);
   
     repairSelect.addEventListener('change', async () => {
-      updateRepairsToAdd(repairSelect.value, repairsToAdd);
-      await updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput); // Обновляем общую стоимость
+      repairsToAdd = updateRepairsToAdd(repairSelect.value, repairsToAdd); // Присвоюємо результат функції
+      await updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput);
     });
   
     repairListDiv.appendChild(repairItemDiv);

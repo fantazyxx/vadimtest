@@ -14,11 +14,13 @@ export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairL
   export function clearAddDeviceForm(deviceForm) {
     deviceForm.reset();
   }
-  export function updateRepairsToAdd(selectedRepair) {
+
+  export function updateRepairsToAdd(selectedRepair, repairsToAdd) {
     const index = repairsToAdd.indexOf(selectedRepair);
     if (index === -1) {
       repairsToAdd.push(selectedRepair);
     } else {
-      repairsToAdd[index] = selectedRepair;
+      repairsToAdd.splice(index, 1); // Видаляємо елемент за індексом
     }
+    return repairsToAdd; // Повертаємо оновлений масив
   }
