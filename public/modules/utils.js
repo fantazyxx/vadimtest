@@ -7,3 +7,7 @@ export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairL
     totalCostInput.value = '';
     repairsToAdd = [];
   }
+  export function clearSearch() {
+    searchDeviceIdInput.value = '';
+    searchResultsDiv.innerHTML = '';
+  }
