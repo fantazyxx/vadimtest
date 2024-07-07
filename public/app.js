@@ -89,8 +89,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   addDeviceBackButton.addEventListener('click', () => {
+    const deviceForm = document.getElementById('device-form');
     console.log('Add Device Back button clicked');
-    clearAddDeviceForm();
+    clearAddDeviceForm(deviceForm);
     addDeviceContainer.style.display = 'none';
     menuPage.style.display = 'block';
   });
