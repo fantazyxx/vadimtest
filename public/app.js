@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function() {
   deviceNumberSelect.addEventListener('change', async () => {
     const deviceNumber = deviceNumberSelect.value;
     if (deviceNumber) {
-      const deviceType = await loadDeviceType(deviceNumber);
+      const deviceType = await loadDeviceType(deviceNumber, deviceTypeInput);
       await loadPreviousRepairs(deviceNumber, previousRepairsList);
       document.getElementById('add-repair-button').style.display = 'inline-block'; // Ensure the button is displayed
     } else {
