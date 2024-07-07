@@ -1,4 +1,4 @@
-import { loadDeviceNumbers } from '/modules/api.js';
+import { loadDeviceNumbers, loadDeviceType } from '/modules/api.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -167,17 +167,6 @@ document.addEventListener('DOMContentLoaded', function() {
       repairsToAdd.push(selectedRepair);
     } else {
       repairsToAdd[index] = selectedRepair;
-    }
-  }
-
-  async function loadDeviceType(deviceNumber) {
-    try {
-      const response = await fetch(`/getDevice/${deviceNumber}`);
-      const device = await response.json();
-      deviceTypeInput.value = device.data.model;
-      return device.data.model; // Возвращаем значение deviceType
-    } catch (error) {
-      console.error('Error fetching device type:', error);
     }
   }
 

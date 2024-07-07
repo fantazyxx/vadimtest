@@ -14,3 +14,14 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
       console.error('Error fetching device numbers:', error);
     }
   }
+
+  export async function loadDeviceType(deviceNumber) {
+    try {
+      const response = await fetch(`/getDevice/${deviceNumber}`);
+      const device = await response.json();
+      deviceTypeInput.value = device.data.model;
+      return device.data.model; // Возвращаем значение deviceType
+    } catch (error) {
+      console.error('Error fetching device type:', error);
+    }
+  }
