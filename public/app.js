@@ -1,5 +1,5 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
-import { clearForm, clearSearch, clearAddDeviceForm } from '/modules/utils.js';
+import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -131,64 +131,55 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
   // app.js
-addRepairButton.addEventListener('click', async () => {
-  const repairSelect = document.createElement('select');
-  repairSelect.required = true;
-  repairSelect.classList.add('small');
-  repairSelect.style.width = '550px';
-
-  const deviceType = deviceTypeInput.value;
-  const workTypes = await fetchWorkTypes(deviceType);
-  const availableWorkTypes = workTypes.filter(work => !repairsToAdd.includes(work.id));
-
-  const emptyOption = document.createElement('option');
-  emptyOption.value = '';
-  emptyOption.textContent = '--';
-  repairSelect.appendChild(emptyOption);
-
-  availableWorkTypes.forEach(work => {
-    const option = document.createElement('option');
-    option.value = work.id;
-    option.textContent = `${work.id}: ${work.price} грн`;
-    repairSelect.appendChild(option);
+  addRepairButton.addEventListener('click', async () => {
+    const repairSelect = document.createElement('select');
+    repairSelect.required = true;
+    repairSelect.classList.add('small');
+    repairSelect.style.width = '550px';
+  
+    const deviceType = deviceTypeInput.value;
+    const workTypes = await fetchWorkTypes(deviceType);
+    const availableWorkTypes = workTypes.filter(work => !repairsToAdd.includes(work.id));
+  
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = '--';
+    repairSelect.appendChild(emptyOption);
+  
+    availableWorkTypes.forEach(work => {
+      const option = document.createElement('option');
+      option.value = work.id;
+      option.textContent = `${work.id}: ${work.price} грн`;
+      repairSelect.appendChild(option);
+    });
+  
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.type = 'button';
+    removeButton.classList.add('small');
+    removeButton.style.width = '30px';
+  
+    removeButton.addEventListener('click', () => {
+      repairListDiv.removeChild(repairItemDiv);
+      repairsToAdd = repairsToAdd.filter(work => work !== repairSelect.value);
+      updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput); // Обновляем общую стоимость
+    });
+  
+    const repairItemDiv = document.createElement('div');
+    repairItemDiv.classList.add('inline');
+    repairItemDiv.appendChild(repairSelect);
+    repairItemDiv.appendChild(removeButton);
+  
+    repairSelect.addEventListener('change', async () => {
+      updateRepairsToAdd(repairSelect.value, repairsToAdd);
+      await updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput); // Обновляем общую стоимость
+    });
+  
+    repairListDiv.appendChild(repairItemDiv);
   });
 
-  const removeButton = document.createElement('button');
-  removeButton.textContent = '-';
-  removeButton.type = 'button';
-  removeButton.classList.add('small');
-  removeButton.style.width = '30px';
 
-  removeButton.addEventListener('click', () => {
-    repairListDiv.removeChild(repairItemDiv);
-    repairsToAdd = repairsToAdd.filter(work => work !== repairSelect.value);
-    updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput); // Обновляем общую стоимость
-  });
-
-  const repairItemDiv = document.createElement('div');
-  repairItemDiv.classList.add('inline');
-  repairItemDiv.appendChild(repairSelect);
-  repairItemDiv.appendChild(removeButton);
-
-  repairSelect.addEventListener('change', async () => {
-    updateRepairsToAdd(repairSelect.value);
-    await updateTotalCost(deviceTypeInput, repairsToAdd, totalCostInput); // Обновляем общую стоимость
-  });
-
-  repairListDiv.appendChild(repairItemDiv);
-});
-
-
-  function updateRepairsToAdd(selectedRepair) {
-    const index = repairsToAdd.indexOf(selectedRepair);
-    if (index === -1) {
-      repairsToAdd.push(selectedRepair);
-    } else {
-      repairsToAdd[index] = selectedRepair;
-    }
-  }
-
-  function highlightCompletedRepairs(repairRows, workTypeRows) {
+   function highlightCompletedRepairs(repairRows, workTypeRows) {
     workTypeRows.forEach((workTypeRow) => {
       const workType = workTypeRow[1];
       const isCompleted = repairRows.some((repairRow) => repairRow[1].includes(workType));
