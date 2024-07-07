@@ -15,12 +15,12 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
   }
 
-  export async function loadDeviceType(deviceNumber) {
+  export async function loadDeviceType(deviceNumber, deviceTypeInput) { // Додано deviceTypeInput
     try {
       const response = await fetch(`/getDevice/${deviceNumber}`);
       const device = await response.json();
-      deviceTypeInput.value = device.data.model;
-      return device.data.model; // Возвращаем значение deviceType
+      deviceTypeInput.value = device.data.model; // Тепер використовуємо переданий елемент
+      return device.data.model;
     } catch (error) {
       console.error('Error fetching device type:', error);
     }
