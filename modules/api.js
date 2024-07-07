@@ -1,4 +1,4 @@
-export async function loadDeviceNumbers() {
+export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
       const response = await fetch('/getDevices');
       const devices = await response.json();
