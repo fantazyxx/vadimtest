@@ -25,3 +25,13 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
       console.error('Error fetching device type:', error);
     }
   }
+
+  export async function fetchWorkTypes(deviceType) {
+    try {
+      const response = await fetch(`/getWorkTypes/${deviceType}`);
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching work types:', error);
+      return [];
+    }
+  }

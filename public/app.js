@@ -1,4 +1,4 @@
-import { loadDeviceNumbers, loadDeviceType } from '/modules/api.js';
+import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes } from '/modules/api.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -114,6 +114,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  deviceNumberSelect.addEventListener('change', async () => {
+    const deviceNumber = deviceNumberSelect.value;
+    if (deviceNumber) {
+      const deviceType = await loadDeviceType(deviceNumber, deviceTypeInput);
+      await loadPreviousRepairs(deviceNumber, previousRepairsList);
+      document.getElementById('add-repair-button').style.display = 'inline-block';
+    } else {
+      deviceTypeInput.value = '';
+      previousRepairsList.innerHTML = '';
+      document.getElementById('add-repair-button').style.display = 'none';
+    }
+  });
+
+
   addRepairButton.addEventListener('click', async () => {
     const repairSelect = document.createElement('select');
     repairSelect.required = true;
@@ -170,15 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  async function fetchWorkTypes(deviceType) {
-    try {
-      const response = await fetch(`/getWorkTypes/${deviceType}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Error fetching work types:', error);
-      return [];
-    }
-  }
+
 
   async function updateTotalCost() {
     totalCost = 0;
