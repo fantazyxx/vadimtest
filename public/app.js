@@ -1,5 +1,5 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
-import { clearForm, clearSearch } from '/modules/utils.js';
+import { clearForm, clearSearch, clearAddDeviceForm } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -197,9 +197,7 @@ addRepairButton.addEventListener('click', async () => {
     });
   }
 
-  function clearAddDeviceForm() {
-    document.getElementById('device-form').reset();
-  }
+  
 
   actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
