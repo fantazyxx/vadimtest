@@ -1,5 +1,5 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
-import { clearForm } from '/modules/utils.js';
+import { clearForm, clearSearch } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   searchBackButton.addEventListener('click', () => {
     console.log('Search Back button clicked');
-    clearSearch();
+    clearSearch(searchDeviceIdInput, searchResultsDiv);
     searchContainer.style.display = 'none';
     menuPage.style.display = 'block';
   });
@@ -195,11 +195,6 @@ addRepairButton.addEventListener('click', async () => {
         workTypeRow.completed = true;
       }
     });
-  }
-
-   function clearSearch() {
-    searchDeviceIdInput.value = '';
-    searchResultsDiv.innerHTML = '';
   }
 
   function clearAddDeviceForm() {
