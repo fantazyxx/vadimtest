@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Add Act button clicked');
     menuPage.style.display = 'none';
     formContainer.style.display = 'block';
-    loadDeviceNumbers();
+    loadDeviceNumbers(deviceNumberSelect);
   });
 
   searchDeviceButton.addEventListener('click', () => {
