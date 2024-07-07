@@ -11,3 +11,6 @@ export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairL
     searchDeviceIdInput.value = '';
     searchResultsDiv.innerHTML = '';
   }
+  export function clearAddDeviceForm() {
+    document.getElementById('device-form').reset();
+  }
