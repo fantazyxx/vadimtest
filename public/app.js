@@ -1,6 +1,7 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
 import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
+import { handleSubmitActForm } from '/modules/form.js';
 import { createTable } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -181,41 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  actForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    const actNumber = document.getElementById('act-number').value;
-    const deviceNumber = deviceNumberSelect.value;
-    const repairDate = document.getElementById('repair-date').value;
-  
-    const repairData = {
-      repair_id: actNumber,
-      device_id: deviceNumber,
-      repair_type: repairsToAdd.join(', '),
-      work_count: repairsToAdd.length,
-      installation_date: repairDate
-    };
-  
-    try {
-      const response = await fetch('/addRepair', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(repairData)
-      });
-      if (response.ok) {
-        alert('Акт успешно добавлен');
-        clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd); // Передаем все необходимые параметры
-        formContainer.style.display = 'none';
-        menuPage.style.display = 'block';
-      } else {
-        alert('Ошибка при добавлении акта');
-      }
-    } catch (error) {
-      console.error('Error adding repair:', error);
-      alert('Ошибка при добавлении акта');
-    }
-  });
+  actForm.addEventListener('submit', (event) => handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage));
 
   document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
