@@ -1,5 +1,5 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
-import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd } from '/modules/utils.js';
+import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect } from '/modules/utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { createTable } from './utils.js';
 
@@ -43,17 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
     "Кривий ріг", "Львів", "Миколаїв", "Одеса", "Полтава", "Кременчуг", "Суми", "Волинь", "Вінниця", "Запоріжжя"
   ];
 
-  function populateRegionSelect() {
-    regionSelect.innerHTML = '<option value="">--</option>';
-    uniqueRegions.forEach(region => {
-      const option = document.createElement('option');
-      option.value = region;
-      option.textContent = region;
-      regionSelect.appendChild(option);
-    });
-  }
+ 
 
-  populateRegionSelect();
+  populateRegionSelect(regionSelect, uniqueRegions);
 
   addActButton.addEventListener('click', () => {
     console.log('Add Act button clicked');

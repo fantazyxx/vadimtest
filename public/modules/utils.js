@@ -24,3 +24,12 @@ export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairL
     }
     return repairsToAdd; // Повертаємо оновлений масив
   }
+  export function populateRegionSelect(regionSelect, uniqueRegions) {
+    regionSelect.innerHTML = '<option value="">--</option>';
+    uniqueRegions.forEach(region => {
+      const option = document.createElement('option');
+      option.value = region;
+      option.textContent = region;
+      regionSelect.appendChild(option);
+    });
+  }
