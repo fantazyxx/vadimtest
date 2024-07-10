@@ -107,9 +107,9 @@ app.get('/getRepairs', async (req, res) => {
 
 // Добавление нового акта ремонта
 app.post('/addRepair', async (req, res) => {
-  const { device_id, repair_type, work_count, installation_date } = req.body;
+  const { repair_id, device_id, repair_type, work_count, installation_date } = req.body;
   try {
-    const actsRef = db.collection('Repairs');
+    const actsRef = db.collection('Repairs').doc(repair_id); // Используем repair_id как идентификатор документа
     await actsRef.set({ device_id, repair_type, work_count, installation_date });
     res.status(201).json({ message: 'Act added' });
   } catch (error) {
@@ -117,6 +117,7 @@ app.post('/addRepair', async (req, res) => {
     res.status(500).json({ error: 'Error adding repair' });
   }
 });
+
 
 // Загрузка данных о типах работ из CSV
 app.post('/uploadWorkTypes', (req, res) => {
