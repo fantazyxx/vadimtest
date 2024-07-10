@@ -110,7 +110,7 @@ app.post('/addRepair', async (req, res) => {
   const { device_id, repair_type, work_count, installation_date } = req.body;
   try {
     const actsRef = db.collection('Repairs');
-    await actsRef.add({ device_id, repair_type, work_count, installation_date });
+    await actsRef.set({ device_id, repair_type, work_count, installation_date });
     res.status(201).json({ message: 'Act added' });
   } catch (error) {
     console.error('Error adding repair:', error);
