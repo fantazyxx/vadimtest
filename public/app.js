@@ -181,14 +181,12 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  
-
   actForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
     const deviceNumber = deviceNumberSelect.value;
     const repairDate = document.getElementById('repair-date').value;
-
+  
     const repairData = {
       repair_id: actNumber,
       device_id: deviceNumber,
@@ -196,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function() {
       work_count: repairsToAdd.length,
       installation_date: repairDate
     };
-
+  
     try {
       const response = await fetch('/addRepair', {
         method: 'POST',
@@ -207,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       if (response.ok) {
         alert('Акт успешно добавлен');
-        clearForm();
+        clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd); // Передаем все необходимые параметры
         formContainer.style.display = 'none';
         menuPage.style.display = 'block';
       } else {

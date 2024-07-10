@@ -5,7 +5,7 @@ export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairL
     const repairItems = repairListDiv.querySelectorAll('.inline');
     repairItems.forEach(item => repairListDiv.removeChild(item));
     totalCostInput.value = '';
-    repairsToAdd = [];
+    repairsToAdd = 0;
   }
   export function clearSearch() {
     searchDeviceIdInput.value = '';
