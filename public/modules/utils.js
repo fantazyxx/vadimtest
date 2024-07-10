@@ -1,4 +1,4 @@
-export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput) {
+export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd) {
   actForm.reset();
   deviceTypeInput.value = '';
   previousRepairsList.innerHTML = '';
