@@ -1,5 +1,6 @@
 import { loadDeviceNumbers } from './api.js';
 import { clearForm } from './utils.js';
+import { searchDeviceRepairs } from './search.js';
 
 // Обработчик для кнопки "Внести Акт"
 export function addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect) {
