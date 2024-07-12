@@ -47,9 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   populateRegionSelect(regionSelect, uniqueRegions);
 
-  addActButton.addEventListener('click', addActButtonClickHandler);
-  addDeviceButton.addEventListener('click', addDeviceButtonClickHandler);
-  backButton.addEventListener('click', backButtonClickHandler);
+  addActButton.addEventListener('click', () => addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect));
+  addDeviceButton.addEventListener('click', () => addDeviceButtonClickHandler(menuPage, addDeviceContainer));
+  backButton.addEventListener('click', () => backButtonClickHandler(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage));
   searchBackButton.addEventListener('click', () => searchBackButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchContainer, menuPage));
   addDeviceBackButton.addEventListener('click', () => addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, menuPage));
 
