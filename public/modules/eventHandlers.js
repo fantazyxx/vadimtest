@@ -1,3 +1,5 @@
+import { loadDeviceNumbers } from '/api.js';
+
 // Обработчик для кнопки "Внести Акт"
 export function addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect) {
     console.log('Add Act button clicked');
