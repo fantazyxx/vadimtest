@@ -1,10 +1,31 @@
-import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
-import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect } from '/modules/utils.js';
-import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickHandler, searchBackButtonClickHandler, addDeviceBackButtonClickHandler } from '/modules/eventHandlers.js';
-import { searchDeviceButtonClickHandler, searchButtonClickHandler } from '/modules/eventHandlers.js';
+import { 
+  loadDeviceNumbers, 
+  loadDeviceType, 
+  fetchWorkTypes, 
+  updateTotalCost 
+} from '/modules/api.js';
+
+import { 
+  clearForm, 
+  clearSearch, 
+  clearAddDeviceForm, 
+  updateRepairsToAdd, 
+  populateRegionSelect,
+  createTable // Добавьте createTable здесь
+} from '/modules/utils.js';
+
+import { 
+  addActButtonClickHandler, 
+  addDeviceButtonClickHandler, 
+  backButtonClickHandler, 
+  searchBackButtonClickHandler, 
+  addDeviceBackButtonClickHandler, 
+  searchDeviceButtonClickHandler, 
+  searchButtonClickHandler 
+} from '/modules/eventHandlers.js';
+
 import { searchDeviceRepairs } from './search.js';
 import { handleSubmitActForm } from '/modules/form.js';
-import { createTable } from './utils.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
@@ -42,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
   addDeviceBackButton.addEventListener('click', () => addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, menuPage));
   searchDeviceButton.addEventListener('click', () => searchDeviceButtonClickHandler(menuPage, searchContainer));
   searchButton.addEventListener('click', () => searchButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchDeviceRepairs));
+  
   const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
@@ -67,20 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('add-repair-button').style.display = 'none'; // Hide the button if no device number
     }
   });
-
-  deviceNumberSelect.addEventListener('change', async () => {
-    const deviceNumber = deviceNumberSelect.value;
-    if (deviceNumber) {
-      const deviceType = await loadDeviceType(deviceNumber, deviceTypeInput);
-      await loadPreviousRepairs(deviceNumber, previousRepairsList);
-      document.getElementById('add-repair-button').style.display = 'inline-block';
-    } else {
-      deviceTypeInput.value = '';
-      previousRepairsList.innerHTML = '';
-      document.getElementById('add-repair-button').style.display = 'none';
-    }
-  });
-
 
   // app.js
   addRepairButton.addEventListener('click', async () => {
