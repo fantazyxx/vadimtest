@@ -38,3 +38,18 @@ export function addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, 
     addDeviceContainer.style.display = 'none';
     menuPage.style.display = 'block';
 }
+
+// Обработчик для кнопки "Поиск устройства"
+export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
+    console.log('Search Device button clicked');
+    menuPage.style.display = 'none';
+    searchContainer.style.display = 'block';
+  }
+  
+  // Обработчик для кнопки "Поиск"
+  export function searchButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchDeviceRepairs) {
+    const deviceId = searchDeviceIdInput.value;
+    if (deviceId) {
+      searchDeviceRepairs(deviceId, searchResultsDiv);
+    }
+  }

@@ -1,6 +1,7 @@
 import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from '/modules/api.js';
 import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect } from '/modules/utils.js';
 import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickHandler, searchBackButtonClickHandler, addDeviceBackButtonClickHandler } from '/modules/eventHandlers.js';
+import { searchDeviceButtonClickHandler, searchButtonClickHandler } from '/modules/eventHandlers.js';
 import { searchDeviceRepairs } from './search.js';
 import { handleSubmitActForm } from '/modules/form.js';
 import { createTable } from './utils.js';
@@ -34,6 +35,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  addActButton.addEventListener('click', () => addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect));
+  addDeviceButton.addEventListener('click', () => addDeviceButtonClickHandler(menuPage, addDeviceContainer));
+  backButton.addEventListener('click', () => backButtonClickHandler(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage));
+  searchBackButton.addEventListener('click', () => searchBackButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchContainer, menuPage));
+  addDeviceBackButton.addEventListener('click', () => addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, menuPage));
+  searchDeviceButton.addEventListener('click', () => searchDeviceButtonClickHandler(menuPage, searchContainer));
+  searchButton.addEventListener('click', () => searchButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchDeviceRepairs));
   const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
@@ -46,28 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
   ];
 
   populateRegionSelect(regionSelect, uniqueRegions);
-
-  addActButton.addEventListener('click', () => addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect));
-  addDeviceButton.addEventListener('click', () => addDeviceButtonClickHandler(menuPage, addDeviceContainer));
-  backButton.addEventListener('click', () => backButtonClickHandler(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage));
-  searchBackButton.addEventListener('click', () => searchBackButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchContainer, menuPage));
-  addDeviceBackButton.addEventListener('click', () => addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, menuPage));
-
-  searchDeviceButton.addEventListener('click', () => {
-    console.log('Search Device button clicked');
-    menuPage.style.display = 'none';
-    searchContainer.style.display = 'block';
-  });
-
   
-  searchButton.addEventListener('click', () => {
-    const deviceId = searchDeviceIdInput.value;
-    if (deviceId) {
-      searchDeviceRepairs(deviceId, searchResultsDiv);
-    }
-  });
-
-  deviceNumberSelect.addEventListener('change', async () => {
+    deviceNumberSelect.addEventListener('change', async () => {
     const deviceNumber = deviceNumberSelect.value;
     if (deviceNumber) {
       const deviceType = await loadDeviceType(deviceNumber, deviceTypeInput);
