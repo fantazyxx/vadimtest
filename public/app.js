@@ -3,7 +3,7 @@ import {
   loadDeviceType, 
   fetchWorkTypes, 
   updateTotalCost 
-} from '/modules/api.js';
+} from './modules/api.js';
 
 import { 
   clearForm, 
@@ -12,7 +12,7 @@ import {
   updateRepairsToAdd, 
   populateRegionSelect,
   createTable // Добавьте createTable здесь
-} from '/modules/utils.js';
+} from './modules/utils.js';
 
 import { 
   addActButtonClickHandler, 
@@ -22,10 +22,10 @@ import {
   addDeviceBackButtonClickHandler, 
   searchDeviceButtonClickHandler, 
   searchButtonClickHandler 
-} from '/modules/eventHandlers.js';
+} from './modules/eventHandlers.js';
 
-import { searchDeviceRepairs } from '/public/search.js';
-import { handleSubmitActForm } from '/modules/form.js';
+import { searchDeviceRepairs } from './search.js';
+import { handleSubmitActForm } from './modules/form.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
