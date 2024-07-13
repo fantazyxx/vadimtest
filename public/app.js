@@ -24,7 +24,7 @@ import {
   searchButtonClickHandler 
 } from '/modules/eventHandlers.js';
 
-import { searchDeviceRepairs } from '/search.js';
+import { searchDeviceRepairs } from './search.js';
 import { handleSubmitActForm } from '/modules/form.js';
 
 document.addEventListener('DOMContentLoaded', function() {
