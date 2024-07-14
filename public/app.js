@@ -1,29 +1,6 @@
-import { 
-  loadDeviceNumbers, 
-  loadDeviceType, 
-  fetchWorkTypes, 
-  updateTotalCost 
-} from './modules/api.js';
-
-import { 
-  clearForm, 
-  clearSearch, 
-  clearAddDeviceForm, 
-  updateRepairsToAdd, 
-  populateRegionSelect,
-  createTable // Добавьте createTable здесь
-} from './modules/utils.js';
-
-import { 
-  addActButtonClickHandler, 
-  addDeviceButtonClickHandler, 
-  backButtonClickHandler, 
-  searchBackButtonClickHandler, 
-  addDeviceBackButtonClickHandler, 
-  searchDeviceButtonClickHandler, 
-  searchButtonClickHandler 
-} from './modules/eventHandlers.js';
-
+import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from './modules/api.js';
+import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect, createTable } from './modules/utils.js';
+import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickHandler, searchBackButtonClickHandler, addDeviceBackButtonClickHandler, searchDeviceButtonClickHandler, searchButtonClickHandler } from './modules/eventHandlers.js';
 import { searchDeviceRepairs } from './search.js';
 import { handleSubmitActForm } from './modules/form.js';
 
