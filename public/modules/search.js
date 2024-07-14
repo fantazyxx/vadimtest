@@ -21,17 +21,17 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const deviceType = deviceData.data.model;
     console.log('Данные устройства:', deviceData);
 
-    const recentRepairTypes = new Set(repairs.filter(repair => {
+    const filteredRepairs = repairs.filter(repair => {
       console.log('Анализ ремонта:', repair);
       return repair.data && repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo;
-    }).map(repair => repair.data.repair_type));
+    });
 
+    console.log('Отфильтрованные ремонты:', filteredRepairs);
+
+    const recentRepairTypes = new Set(filteredRepairs.map(repair => repair.data.repair_type));
     console.log('recentRepairTypes: ', recentRepairTypes);
 
-    repairs.filter(repair => {
-      console.log('Фильтрация ремонта:', repair);
-      return repair.data && repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo;
-    }).forEach(repair => {
+    filteredRepairs.forEach(repair => {
       recentRepairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
     });
 
