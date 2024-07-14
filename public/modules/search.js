@@ -1,4 +1,3 @@
-// search.js
 import { createTable } from './utils.js';
 
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
@@ -19,11 +18,19 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
     const deviceType = deviceData.data.model;
+    console.log('Данные устройства:', deviceData);
 
-    const recentRepairTypes = new Set(repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).map(repair => repair.data.repair_type));
+    const recentRepairTypes = new Set(repairs.filter(repair => {
+      console.log('Анализ ремонта:', repair);
+      return repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo;
+    }).map(repair => repair.data.repair_type));
+
     console.log('recentRepairTypes: ', recentRepairTypes);
 
-    repairs.filter(repair => repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo).forEach(repair => {
+    repairs.filter(repair => {
+      console.log('Фильтрация ремонта:', repair);
+      return repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo;
+    }).forEach(repair => {
       recentRepairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
     });
 
