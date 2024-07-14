@@ -1,46 +1,32 @@
-// search.js
 import { createTable } from './utils.js';
 
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   try {
-    console.log('Запрос к /getRepairs');
-    const response = await fetch('/getRepairs');
+    const url = `/getPreviousRepairs/${deviceId}`;
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch previous repairs: ${response.statusText}`);
+    }
     const repairs = await response.json();
-    console.log('Данные ремонтов:', repairs);
     searchResultsDiv.innerHTML = '';
-
-    const sixMonthsAgo = new Date();
-    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
 
     const repairHeaders = ['№', 'Тип ремонта', 'Дата'];
     const recentRepairRows = [];
     let repairIndex = 1;
 
-    const deviceResponse = await fetch(`/getDevice/${deviceId}`);
-    const deviceData = await deviceResponse.json();
-    const deviceType = deviceData.data.model;
-    console.log('Данные устройства:', deviceData);
-
-    const filteredRepairs = repairs.filter(repair => {
-      console.log('Анализ ремонта:', repair);
-      return repair.data && repair.data.device_id === deviceId && new Date(repair.data.installation_date) >= sixMonthsAgo;
-    });
-
-    console.log('Отфильтрованные ремонты:', filteredRepairs);
-
-    const recentRepairTypes = new Set(filteredRepairs.map(repair => repair.data.repair_type));
-    console.log('recentRepairTypes: ', recentRepairTypes);
-
-    filteredRepairs.forEach(repair => {
-      recentRepairRows.push([repairIndex++, repair.data.repair_type, repair.data.installation_date]);
-    });
-
-    if (recentRepairRows.length > 0) {
+    if (repairs.length === 0) {
+      searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
+    } else {
+      repairs.forEach(repair => {
+        recentRepairRows.push([repairIndex++, repair.repair_type, repair.installation_date]);
+      });
       const repairTable = createTable(repairHeaders, recentRepairRows);
       searchResultsDiv.appendChild(repairTable);
-    } else {
-      searchResultsDiv.textContent = 'Ремонтов за последние 6 месяцев не найдено';
     }
+
+    const deviceResponse = await fetch(`/getDevice/${deviceId}`);
+    const deviceData = await deviceResponse.json();
+    const deviceType = deviceData.model;
 
     const workTypes = await fetchWorkTypes(deviceType);
     console.log('Данные типов работ:', workTypes);
@@ -57,9 +43,9 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
+    const recentRepairTypes = new Set(repairs.map(repair => repair.repair_type));
     const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
     workTypeCells.forEach(cell => {
-      console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
       if (recentRepairTypes.has(cell.textContent.trim())) {
         cell.parentNode.classList.add('completed-repair');
       }
