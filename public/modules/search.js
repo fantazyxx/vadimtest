@@ -16,14 +16,12 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const recentRepairRows = [];
     let repairIndex = 1;
 
-    // Добавление логов для проверки данных устройства
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
-    console.log('Полный ответ сервера:', deviceData); // Полный ответ сервера
+    console.log('Полный ответ сервера:', deviceData);
     const device = deviceData.data || deviceData;
-    console.log('Извлеченные данные устройства:', device); // Логирование извлеченных данных устройства
-
-    const deviceModel = device.model || device.type; // Извлекаем модель устройства
+    console.log('Извлеченные данные устройства:', device);
+    const deviceModel = device.model || device.type;
     console.log('Извлеченная модель устройства:', deviceModel);
 
     if (!deviceModel) {
@@ -39,7 +37,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
         return repairDate >= sixMonthsAgo;
       }
       return false;
-    }).map(repair => repair.repair_type.trim()));
+    }).map(repair => repair.repair_type.trim().toLowerCase()));
 
     console.log('recentRepairTypes:', recentRepairTypes);
 
@@ -64,7 +62,6 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
       searchResultsDiv.innerHTML = 'Ремонтов за последние 6 месяцев не найдено';
     }
 
-    // Fetch work types for the device model
     console.log('Начало запроса типов работ для модели устройства:', deviceModel);
     const workTypes = await fetchWorkTypes(deviceModel);
     console.log('Данные типов работ:', workTypes);
@@ -81,9 +78,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    // Убедимся, что стили применяются после отрисовки таблиц
     applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
-
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
@@ -93,13 +88,14 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
   const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
   workTypeCells.forEach(cell => {
-    const cellText = cell.textContent.trim();
-    console.log('Сравнение:', cellText, recentRepairTypes.has(cellText));
-    if (recentRepairTypes.has(cellText)) {
+    const workType = cell.textContent.trim().toLowerCase();
+    console.log('Сравнение:', workType, recentRepairTypes.has(workType));
+    if (recentRepairTypes.has(workType)) {
       cell.parentNode.classList.add('completed-repair');
     }
   });
 }
+
 
 async function fetchWorkTypes(deviceModel) {
   try {
