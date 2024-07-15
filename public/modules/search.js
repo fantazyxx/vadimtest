@@ -1,3 +1,5 @@
+import { createTable } from './modules/utils.js';
+
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   try {
     console.log('Запрос к /getRepairs');
