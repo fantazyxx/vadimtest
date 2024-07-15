@@ -1,5 +1,3 @@
-import { createTable } from './utils.js';
-
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   try {
     console.log('Запрос к /getRepairs');
@@ -16,11 +14,14 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const recentRepairRows = [];
     let repairIndex = 1;
 
+    // Добавление логов для проверки данных устройства
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
-    console.log('Данные устройства:', deviceData); // Логирование устройства
+    console.log('Полный ответ сервера:', deviceData); // Полный ответ сервера
+    const device = deviceData.data || deviceData;
+    console.log('Извлеченные данные устройства:', device); // Логирование извлеченных данных устройства
 
-    const deviceModel = deviceData.model || deviceData.type; // Извлекаем модель устройства
+    const deviceModel = device.model || device.type; // Извлекаем модель устройства
     console.log('Извлеченная модель устройства:', deviceModel);
 
     if (!deviceModel) {
