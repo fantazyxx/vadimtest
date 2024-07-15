@@ -35,12 +35,15 @@ app.get('/getDevices', async (req, res) => {
 // Получение устройства по ID
 app.get('/getDevice/:deviceId', async (req, res) => {
   const deviceId = req.params.deviceId;
+  console.log('Запрос на получение устройства с ID:', deviceId);
   try {
     const deviceRef = db.collection('Devices').doc(deviceId);
     const doc = await deviceRef.get();
     if (doc.exists) {
+      console.log('Устройство найдено:', doc.data());
       res.json({ id: doc.id, data: doc.data() });
     } else {
+      console.log('Устройство не найдено');
       res.status(404).json({ error: 'Device not found' });
     }
   } catch (error) {
