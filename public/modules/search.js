@@ -81,18 +81,22 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
-    workTypeCells.forEach(cell => {
-      console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
-      if (recentRepairTypes.has(cell.textContent.trim())) {
-        cell.parentNode.classList.add('completed-repair');
-      }
-    });
+    applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
 
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
   }
+}
+
+function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
+  const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
+  workTypeCells.forEach(cell => {
+    console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
+    if (recentRepairTypes.has(cell.textContent.trim())) {
+      cell.parentNode.classList.add('completed-repair');
+    }
+  });
 }
 
 async function fetchWorkTypes(deviceModel) {
