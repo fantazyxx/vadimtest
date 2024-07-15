@@ -39,7 +39,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
         return repairDate >= sixMonthsAgo;
       }
       return false;
-    }).map(repair => repair.repair_type));
+    }).map(repair => repair.repair_type.trim()));
 
     console.log('recentRepairTypes:', recentRepairTypes);
 
