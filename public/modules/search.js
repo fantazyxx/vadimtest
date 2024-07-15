@@ -18,7 +18,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
-    const deviceType = deviceData.type || deviceData.model; // Убедитесь, что это правильное свойство
+    const deviceType = deviceData.data.type || deviceData.data.model; // Убедитесь, что это правильное свойство
     console.log('Данные устройства:', deviceData);
     console.log('Тип устройства:', deviceType);
 
