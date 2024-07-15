@@ -19,8 +19,9 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
     console.log('Данные устройства:', deviceData); // Логирование устройства
+
     const deviceModel = deviceData.model || deviceData.type; // Извлекаем модель устройства
-    console.log('Модель устройства:', deviceModel);
+    console.log('Извлеченная модель устройства:', deviceModel);
 
     if (!deviceModel) {
       console.error('Модель устройства не определена');
