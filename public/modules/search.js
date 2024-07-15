@@ -61,6 +61,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     }
 
     // Fetch work types for the device model
+    console.log('Начало запроса типов работ для модели устройства:', deviceModel);
     if (deviceModel) {
       const workTypes = await fetchWorkTypes(deviceModel);
       console.log('Данные типов работ:', workTypes);
@@ -98,7 +99,9 @@ async function fetchWorkTypes(deviceModel) {
   try {
     console.log('Запрос к /getWorkTypes/' + deviceModel);
     const response = await fetch(`/getWorkTypes/${deviceModel}`);
-    return await response.json();
+    const data = await response.json();
+    console.log('Получены данные типов работ:', data);
+    return data;
   } catch (error) {
     console.error('Error fetching work types:', error);
     return [];
