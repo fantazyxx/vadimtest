@@ -87,11 +87,18 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 
 function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
   const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
+  
+  // Нормализуем recentRepairTypes
+  const normalizedRecentRepairs = new Set(Array.from(recentRepairTypes).map(type => type.trim().toLowerCase()));
+  
   workTypeCells.forEach(cell => {
     const workType = cell.textContent.trim().toLowerCase();
-    console.log('Сравнение:', workType, recentRepairTypes.has(workType));
-    if (recentRepairTypes.has(workType)) {
+    console.log('Сравнение:', workType, normalizedRecentRepairs.has(workType));
+    
+    if (normalizedRecentRepairs.has(workType)) {
       cell.parentNode.classList.add('completed-repair');
+      cell.style.textDecoration = 'line-through'; // Добавляем зачеркивание
+      cell.parentNode.style.backgroundColor = '#f0f0f0'; // Добавляем серый фон
     }
   });
 }
