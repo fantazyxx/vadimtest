@@ -62,32 +62,28 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 
     // Fetch work types for the device model
     console.log('Начало запроса типов работ для модели устройства:', deviceModel);
-    if (deviceModel) {
-      const workTypes = await fetchWorkTypes(deviceModel);
-      console.log('Данные типов работ:', workTypes);
-      let workTypeIndex = 1;
+    const workTypes = await fetchWorkTypes(deviceModel);
+    console.log('Данные типов работ:', workTypes);
+    let workTypeIndex = 1;
 
-      const workTypeHeaders = ['№', 'Тип работ', 'Стоимость работ'];
-      const workTypeRows = [];
+    const workTypeHeaders = ['№', 'Тип работ', 'Стоимость работ'];
+    const workTypeRows = [];
 
-      workTypes.forEach(workType => {
-        const row = [workTypeIndex++, workType.id, workType.price];
-        workTypeRows.push(row);
-      });
+    workTypes.forEach(workType => {
+      const row = [workTypeIndex++, workType.id, workType.price];
+      workTypeRows.push(row);
+    });
 
-      const workTypeTable = createTable(workTypeHeaders, workTypeRows);
-      searchResultsDiv.appendChild(workTypeTable);
+    const workTypeTable = createTable(workTypeHeaders, workTypeRows);
+    searchResultsDiv.appendChild(workTypeTable);
 
-      const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
-      workTypeCells.forEach(cell => {
-        console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
-        if (recentRepairTypes.has(cell.textContent.trim())) {
-          cell.parentNode.classList.add('completed-repair');
-        }
-      });
-    } else {
-      console.error('Модель устройства не определена');
-    }
+    const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
+    workTypeCells.forEach(cell => {
+      console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
+      if (recentRepairTypes.has(cell.textContent.trim())) {
+        cell.parentNode.classList.add('completed-repair');
+      }
+    });
 
   } catch (error) {
     console.error('Error fetching repairs:', error);
