@@ -81,6 +81,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
+    // Убедимся, что стили применяются после отрисовки таблиц
     applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
 
   } catch (error) {
@@ -92,8 +93,9 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
   const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
   workTypeCells.forEach(cell => {
-    console.log('Сравнение:', cell.textContent.trim(), recentRepairTypes.has(cell.textContent.trim()));
-    if (recentRepairTypes.has(cell.textContent.trim())) {
+    const cellText = cell.textContent.trim();
+    console.log('Сравнение:', cellText, recentRepairTypes.has(cellText));
+    if (recentRepairTypes.has(cellText)) {
       cell.parentNode.classList.add('completed-repair');
     }
   });
