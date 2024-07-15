@@ -1,4 +1,4 @@
-import { createTable } from './modules/utils.js';
+import { createTable } from './utils.js';
 
 export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   try {
