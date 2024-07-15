@@ -18,9 +18,9 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
 
     const deviceResponse = await fetch(`/getDevice/${deviceId}`);
     const deviceData = await deviceResponse.json();
-    const deviceType = deviceData.data.type || deviceData.data.model; // Убедитесь, что это правильное свойство
+    const deviceModel = deviceData.model; // Извлекаем модель устройства
     console.log('Данные устройства:', deviceData);
-    console.log('Тип устройства:', deviceType);
+    console.log('Модель устройства:', deviceModel);
 
     const recentRepairTypes = new Set(repairs.filter(repair => {
       console.log('Анализ ремонта:', repair);
@@ -55,9 +55,9 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
       searchResultsDiv.innerHTML = 'Ремонтов за последние 6 месяцев не найдено';
     }
 
-    // Fetch work types for the device type
-    if (deviceType) {
-      const workTypes = await fetchWorkTypes(deviceType);
+    // Fetch work types for the device model
+    if (deviceModel) {
+      const workTypes = await fetchWorkTypes(deviceModel);
       console.log('Данные типов работ:', workTypes);
       let workTypeIndex = 1;
 
@@ -80,7 +80,7 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
         }
       });
     } else {
-      console.error('Тип устройства не определен');
+      console.error('Модель устройства не определена');
     }
 
   } catch (error) {
@@ -89,10 +89,10 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
   }
 }
 
-async function fetchWorkTypes(deviceType) {
+async function fetchWorkTypes(deviceModel) {
   try {
-    console.log('Запрос к /getWorkTypes/' + deviceType);
-    const response = await fetch(`/getWorkTypes/${deviceType}`);
+    console.log('Запрос к /getWorkTypes/' + deviceModel);
+    const response = await fetch(`/getWorkTypes/${deviceModel}`);
     return await response.json();
   } catch (error) {
     console.error('Error fetching work types:', error);
