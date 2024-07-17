@@ -78,10 +78,26 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
+    // Применяем стили только после полной загрузки таблицы
+    setTimeout(() => {
+      applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
+    }, 0);
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
+  }
+}
+
+async function fetchWorkTypes(deviceModel) {
+  try {
+    console.log('Запрос к /getWorkTypes/' + deviceModel);
+    const response = await fetch(`/getWorkTypes/${deviceModel}`);
+    const data = await response.json();
+    console.log('Получены данные типов работ:', data);
+    return data;
+  } catch (error) {
+    console.error('Error fetching work types:', error);
+    return [];
   }
 }
 
@@ -101,18 +117,4 @@ function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
       cell.parentNode.style.backgroundColor = '#f0f0f0'; // Добавляем серый фон
     }
   });
-}
-
-
-async function fetchWorkTypes(deviceModel) {
-  try {
-    console.log('Запрос к /getWorkTypes/' + deviceModel);
-    const response = await fetch(`/getWorkTypes/${deviceModel}`);
-    const data = await response.json();
-    console.log('Получены данные типов работ:', data);
-    return data;
-  } catch (error) {
-    console.error('Error fetching work types:', error);
-    return [];
-  }
 }
