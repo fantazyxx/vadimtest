@@ -54,9 +54,3 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
       searchDeviceRepairs(deviceId, searchResultsDiv);
     }
   }
-  export function clearSearch() {
-    const searchResultsDiv = document.getElementById('search-results');
-    searchResultsDiv.innerHTML = '';
-    const searchForm = document.getElementById('search-form');
-    searchForm.reset(); // Сбрасываем форму поиска, если это необходимо
-  }
