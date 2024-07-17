@@ -46,10 +46,11 @@
   totalCostInput.value = '';
   repairsToAdd.length = 0; // Очистить массив repairsToAdd
 }
-  export function clearSearch() {
-    searchDeviceIdInput.value = '';
-    searchResultsDiv.innerHTML = '';
-  }
+export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
+  searchDeviceIdInput.value = '';
+  searchResultsDiv.innerHTML = '';
+}
+
   
   export function clearAddDeviceForm(deviceForm) {
     deviceForm.reset();
