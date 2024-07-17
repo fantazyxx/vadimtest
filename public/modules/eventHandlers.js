@@ -1,5 +1,5 @@
 import { loadDeviceNumbers } from './api.js';
-import { clearForm } from './utils.js';
+import { clearForm, clearSearch } from './utils.js';
 import { searchDeviceRepairs } from './search.js';
 
 // Обработчик для кнопки "Внести Акт"
