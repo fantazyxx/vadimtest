@@ -29,23 +29,21 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
       return;
     }
 
-    const recentRepairTypes = new Set(repairs.filter(repair => {
-      console.log('Анализ ремонта:', repair);
+    const recentRepairTypes = new Set(repairs.flatMap(repair => {
       if (repair.device_id === deviceId) {
         const repairDate = new Date(repair.installation_date);
-        console.log('Дата установки ремонта:', repairDate);
-        return repairDate >= sixMonthsAgo;
+        if (repairDate >= sixMonthsAgo) {
+          return repair.repair_type.split(',').map(type => type.trim().toLowerCase());
+        }
       }
-      return false;
-    }).map(repair => repair.repair_type.trim().toLowerCase()));
+      return [];
+    }).filter(Boolean));
 
     console.log('recentRepairTypes:', recentRepairTypes);
 
     const recentRepairs = repairs.filter(repair => {
-      console.log('Фильтрация ремонта:', repair);
       if (repair.device_id === deviceId) {
         const repairDate = new Date(repair.installation_date);
-        console.log('Дата установки ремонта для фильтрации:', repairDate);
         return repairDate >= sixMonthsAgo;
       }
       return false;
@@ -78,14 +76,31 @@ export async function searchDeviceRepairs(deviceId, searchResultsDiv) {
     const workTypeTable = createTable(workTypeHeaders, workTypeRows);
     searchResultsDiv.appendChild(workTypeTable);
 
-    // Применяем стили только после полной загрузки таблицы
-    setTimeout(() => {
-      applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
-    }, 0);
+    applyCompletedRepairStyles(workTypeTable, recentRepairTypes);
   } catch (error) {
     console.error('Error fetching repairs:', error);
     alert('Ошибка при загрузке ремонтов.');
   }
+}
+
+function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
+  const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
+
+  // Нормализуем recentRepairTypes
+  const normalizedRecentRepairs = new Set(Array.from(recentRepairTypes).map(type => type.trim().toLowerCase()));
+  
+  console.log('normalizedRecentRepairs:', normalizedRecentRepairs);
+
+  workTypeCells.forEach(cell => {
+    const workType = cell.textContent.trim().toLowerCase();
+    console.log('Сравнение:', workType, normalizedRecentRepairs.has(workType));
+
+    if (normalizedRecentRepairs.has(workType)) {
+      cell.parentNode.classList.add('completed-repair');
+      cell.style.textDecoration = 'line-through'; // Добавляем зачеркивание
+      cell.parentNode.style.backgroundColor = '#f0f0f0'; // Добавляем серый фон
+    }
+  });
 }
 
 async function fetchWorkTypes(deviceModel) {
@@ -99,22 +114,4 @@ async function fetchWorkTypes(deviceModel) {
     console.error('Error fetching work types:', error);
     return [];
   }
-}
-
-function applyCompletedRepairStyles(workTypeTable, recentRepairTypes) {
-  const workTypeCells = workTypeTable.querySelectorAll('tbody tr td:nth-child(2)');
-  
-  // Нормализуем recentRepairTypes
-  const normalizedRecentRepairs = new Set(Array.from(recentRepairTypes).map(type => type.trim().toLowerCase()));
-  
-  workTypeCells.forEach(cell => {
-    const workType = cell.textContent.trim().toLowerCase();
-    console.log('Сравнение:', workType, normalizedRecentRepairs.has(workType));
-    
-    if (normalizedRecentRepairs.has(workType)) {
-      cell.parentNode.classList.add('completed-repair');
-      cell.style.textDecoration = 'line-through'; // Добавляем зачеркивание
-      cell.parentNode.style.backgroundColor = '#f0f0f0'; // Добавляем серый фон
-    }
-  });
 }
