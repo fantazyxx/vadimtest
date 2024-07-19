@@ -25,6 +25,17 @@ document.addEventListener('DOMContentLoaded', function() {
   const totalCostInput = document.getElementById('total-cost');
   const searchDeviceIdInput = document.getElementById('search-device-id');
   const searchResultsDiv = document.getElementById('search-results');
+  const deviceTypeSelect = document.getElementById('device-type');
+  const deviceModelSelect = document.getElementById('device-model');
+
+  searchDeviceIdInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      searchButton.click();
+    }
+  });
+
+
 
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -41,6 +52,33 @@ document.addEventListener('DOMContentLoaded', function() {
   searchDeviceButton.addEventListener('click', () => searchDeviceButtonClickHandler(menuPage, searchContainer));
   searchButton.addEventListener('click', () => searchButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchDeviceRepairs));
   
+  deviceTypeSelect.addEventListener('change', () => {
+    const selectedType = deviceTypeSelect.value;
+    let models = [];
+
+    switch (selectedType) {
+      case 'Безвакуумный/ленточный упаковщик':
+        models = ['una_001'];
+        break;
+      case 'Счетчик монет':
+        models = ['scancoin_sc350', 'scancoin_sc303', 'scancoin_sc313'];
+        break;
+      case 'Вакуумный упаковщик':
+        models = ['deep2240', 'deep2241', 'docash2241', 'vamabp2'];
+        break;
+      case 'Детектор валют':
+        models = ['mt'];
+        break;
+    }
+
+    deviceModelSelect.innerHTML = '<option value="">--</option>'; // Сбросить предыдущие опции
+    models.forEach(model => {
+      const option = document.createElement('option');
+      option.value = model;
+      option.textContent = model;
+      deviceModelSelect.appendChild(option);
+    });
+  });
   const regionSelect = document.getElementById('region');
 
   let repairsToAdd = [];
