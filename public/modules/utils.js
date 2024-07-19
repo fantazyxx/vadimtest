@@ -51,11 +51,6 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   searchResultsDiv.innerHTML = '';
 }
 
-  
-  export function clearAddDeviceForm(deviceForm) {
-    deviceForm.reset();
-  }
-
   export function updateRepairsToAdd(selectedRepair, repairsToAdd) {
     const index = repairsToAdd.indexOf(selectedRepair);
     if (index === -1) {
