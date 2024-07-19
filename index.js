@@ -142,6 +142,26 @@ app.post('/uploadWorkTypes', (req, res) => {
     res.status(500).json({ error: 'Error uploading work types' });
   }
 });
+app.post('/addDevice', async (req, res) => {
+  const { deviceNumber, deviceModel, factorySerialNumber, region, deviceType } = req.body;
+
+  try {
+    const deviceRef = db.collection('Devices').doc(deviceNumber);
+    await deviceRef.set({
+      model: deviceModel,
+      factory_serial_number: factorySerialNumber,
+      region: region,
+      type: deviceType
+    });
+
+    res.status(200).send('Устройство успешно добавлено!');
+  } catch (error) {
+    console.error('Error adding device:', error);
+    res.status(500).send('Ошибка при добавлении устройства.');
+  }
+});
+
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('Server started on port', process.env.PORT || 3000);
