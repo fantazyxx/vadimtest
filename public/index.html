@@ -77,22 +77,18 @@
     <div id="add-device-page">
       <form id="device-form">
         <div>
-          <label for="device-number">Номер Устройства:</label>
-          <input type="text" id="device-number" autocomplete="off" required>
+          <label for="device-type">Тип Устройства:</label>
+          <select id="device-type" autocomplete="off" required>
+            <option value="">--</option>
+            <option value="Безвакуумный/ленточный упаковщик">Безвакуумный/ленточный упаковщик</option>
+            <option value="Счетчик монет">Счетчик монет</option>
+            <option value="Вакуумный упаковщик">Вакуумный упаковщик</option>
+            <option value="Детектор валют">Детектор валют</option>
+          </select>
         </div>
         <div>
-          <label for="device-model">Тип Устройства:</label>
-          <select id="device-model" autocomplete="off" required>
-            <option value="">--</option>
-            <option value="una_001">УНА 001-03</option>
-            <option value="deep2240">Deep 2240</option>
-            <option value="deep2241">Deep 2241</option>
-            <option value="docash2241">DoCash 2241</option>
-            <option value="scancoin_sc303">ScanCoin SC-303</option>
-            <option value="scancoin_sc313">ScanCoin SC-313</option>
-            <option value="scancoin_sc350">ScanCoin SC-350</option>
-            <option value="vamabp2">VAMA BP-2</option>
-          </select>
+          <label for="device-model">Модель Устройства:</label>
+          <select id="device-model" autocomplete="off" required></select>
         </div>
         <div>
           <label for="factory-serial-number">Заводской Номер:</label>
@@ -135,6 +131,7 @@
       </form>
     </div>
   </div>
+
 
  <script type="module" src="./app.js"></script>
 </body>
