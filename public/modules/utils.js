@@ -75,3 +75,12 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
       regionSelect.appendChild(option);
     });
   }
+
+  export function clearAddDeviceForm() {
+    document.getElementById('device-number').value = '';
+    document.getElementById('device-type').value = '';
+    document.getElementById('device-model').innerHTML = '<option value="">--</option>';
+    document.getElementById('factory-serial-number').value = '';
+    document.getElementById('region').value = '';
+  }
+  
