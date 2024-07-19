@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const searchResultsDiv = document.getElementById('search-results');
   const deviceTypeSelect = document.getElementById('device-type');
   const deviceModelSelect = document.getElementById('device-model');
+  const deviceForm = document.getElementById('device-form');
 
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -34,8 +35,6 @@ document.addEventListener('DOMContentLoaded', function() {
       searchButton.click();
     }
   });
-
-
 
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {

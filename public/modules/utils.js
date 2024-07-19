@@ -71,7 +71,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
     });
   }
 
-  export function clearAddDeviceForm() {
+  export function clearAddDeviceForm(deviceForm) {
     document.getElementById('device-number').value = '';
     document.getElementById('device-type').value = '';
     document.getElementById('device-model').innerHTML = '<option value="">--</option>';
