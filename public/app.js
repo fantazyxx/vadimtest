@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const deviceNumber = document.getElementById('device-number').value;
+    const deviceType = document.getElementById('device-type').value;
     const deviceModel = document.getElementById('device-model').value;
     const factorySerialNumber = document.getElementById('factory-serial-number').value;
     const region = document.getElementById('region').value;
@@ -177,7 +178,8 @@ document.addEventListener('DOMContentLoaded', function() {
       deviceNumber,
       deviceModel,
       factorySerialNumber,
-      region
+      region,
+      deviceType
     };
 
     try {
