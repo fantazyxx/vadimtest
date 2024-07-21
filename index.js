@@ -1,10 +1,17 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import admin from 'firebase-admin';
-import csvParser from 'csv-parser';
-import fs from 'fs';
-import path from 'path';
-import { db } from './public/modules/firebase.js';
+const express = require('express');
+const bodyParser = require('body-parser');
+const admin = require('firebase-admin');
+const csvParser = require('csv-parser');
+const fs = require('fs');
+const path = require('path');
+
+const serviceAccount = require('./firebase-config.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
 
 const app = express();
 app.use(bodyParser.json());
