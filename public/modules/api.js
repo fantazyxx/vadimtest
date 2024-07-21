@@ -1,4 +1,6 @@
-import { db } from '../../firebase.js';
+import { db } from './modules/firebase.js';
+// Other imports and code
+
 
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
