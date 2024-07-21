@@ -1,3 +1,6 @@
+const admin = require('firebase-admin');
+const db = admin.firestore();
+
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
       const response = await fetch('/getDevices');
@@ -50,21 +53,17 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
     totalCostInput.value = `${totalCost} грн`;
   }
-  export async function generateReport(month, year) {
+  async function generateReport(month, year) {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
   
     try {
-      const repairsSnapshot = await db.collection('Repairs')
-        .where('date', '>=', startDate)
-        .where('date', '<=', endDate)
-        .get();
+      const repairsRef = db.collection('Repairs')
+        .where('installation_date', '>=', startDate.toISOString())
+        .where('installation_date', '<=', endDate.toISOString());
+      const snapshot = await repairsRef.get();
   
-      const repairs = [];
-      repairsSnapshot.forEach(doc => {
-        repairs.push({ id: doc.id, ...doc.data() });
-      });
-  
+      const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       return repairs;
     } catch (error) {
       console.error('Error generating report:', error);
@@ -72,3 +71,5 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
   }
   
+  module.exports = { generateReport };
+   
