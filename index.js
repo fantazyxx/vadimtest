@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const admin = require('firebase-admin');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
@@ -9,6 +8,13 @@ const app = express();
 app.use(bodyParser.json());
 
 const serviceAccount = require('./firebase-config.json');
+const admin = require('firebase-admin');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const db = admin.firestore();
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
