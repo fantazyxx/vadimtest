@@ -3,6 +3,7 @@ import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populat
 import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickHandler, searchBackButtonClickHandler, addDeviceBackButtonClickHandler, searchDeviceButtonClickHandler, searchButtonClickHandler } from './modules/eventHandlers.js';
 import { searchDeviceRepairs } from './modules/search.js';
 import { handleSubmitActForm } from './modules/form.js';
+import { generateReportButtonClickHandler, reportBackButtonClickHandler, reportFormSubmitHandler } from './modules/eventHandlers.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
@@ -28,6 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const deviceTypeSelect = document.getElementById('device-type');
   const deviceModelSelect = document.getElementById('device-model');
   const deviceForm = document.getElementById('device-form');
+  const generateReportButton = document.getElementById('generate-report-button');
+  const reportBackButton = document.getElementById('report-back-button');
+  const reportForm = document.getElementById('report-form');
+  const reportContainer = document.getElementById('report-container');
 
   searchDeviceIdInput.addEventListener('keydown', (event) => {
     if (event.key === 'Enter') {
@@ -50,6 +55,9 @@ document.addEventListener('DOMContentLoaded', function() {
   addDeviceBackButton.addEventListener('click', () => addDeviceBackButtonClickHandler(deviceForm, addDeviceContainer, menuPage));
   searchDeviceButton.addEventListener('click', () => searchDeviceButtonClickHandler(menuPage, searchContainer));
   searchButton.addEventListener('click', () => searchButtonClickHandler(searchDeviceIdInput, searchResultsDiv, searchDeviceRepairs));
+  generateReportButton.addEventListener('click', () => generateReportButtonClickHandler(menuPage, reportContainer));
+  reportBackButton.addEventListener('click', () => reportBackButtonClickHandler(reportContainer, menuPage));
+  reportForm.addEventListener('submit', (event) => reportFormSubmitHandler(event, reportContainer, menuPage));
   
   deviceTypeSelect.addEventListener('change', () => {
     const selectedType = deviceTypeSelect.value;

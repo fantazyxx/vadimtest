@@ -54,3 +54,22 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
       searchDeviceRepairs(deviceId, searchResultsDiv);
     }
   }
+
+  // Вставьте в начало файла, чтобы добавить новые функции обработчиков
+export function generateReportButtonClickHandler(menuPage, reportContainer) {
+  menuPage.style.display = 'none';
+  reportContainer.style.display = 'block';
+}
+
+export function reportBackButtonClickHandler(reportContainer, menuPage) {
+  reportContainer.style.display = 'none';
+  menuPage.style.display = 'block';
+}
+
+export function reportFormSubmitHandler(event, reportContainer, menuPage) {
+  event.preventDefault();
+  // Здесь будет логика для формирования отчета
+  console.log('Форма отчета отправлена');
+  reportContainer.style.display = 'none';
+  menuPage.style.display = 'block';
+}
