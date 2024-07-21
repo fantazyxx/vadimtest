@@ -1,7 +1,10 @@
 import admin from 'firebase-admin';
 import fs from 'fs';
+import path from 'path';
 
-const serviceAccount = JSON.parse(fs.readFileSync('./firebase-config.json', 'utf8'));
+// Определение пути к файлу firebase-config.json
+const serviceAccountPath = path.resolve(__dirname, '../../firebase-config.json');
+const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
