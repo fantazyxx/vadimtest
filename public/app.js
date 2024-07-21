@@ -4,7 +4,7 @@ import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickH
 import { generateReportButtonClickHandler, reportBackButtonClickHandler, reportFormSubmitHandler } from './modules/eventHandlers.js';
 import { searchDeviceRepairs } from './modules/search.js';
 import { handleSubmitActForm } from './modules/form.js';
-import { initializeApp, db } from './modules/firebase.js';
+import { initializeApp, db } from './firebase.js';
 
 // Other imports and code
 
