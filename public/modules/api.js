@@ -53,7 +53,7 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
     totalCostInput.value = `${totalCost} грн`;
   }
-  async function generateReport(month, year) {
+  export async function generateReport(month, year) {
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
   
