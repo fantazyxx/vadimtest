@@ -9,12 +9,6 @@ import { db } from './public/modules/firebase.js';
 const app = express();
 app.use(bodyParser.json());
 
-const serviceAccount = require('./firebase-config.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
