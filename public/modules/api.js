@@ -1,7 +1,3 @@
-import { db } from './firebase.js';
-// Other imports and code
-
-
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
       const response = await fetch('/getDevices');
