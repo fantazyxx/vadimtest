@@ -1,5 +1,4 @@
-const admin = require('firebase-admin');
-const db = admin.firestore();
+import { db } from '../../firebase.js'; // Подняться на два уровня вверх
 
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
