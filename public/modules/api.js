@@ -1,4 +1,4 @@
-import { db } from '../../firebase.js'; // Подняться на два уровня вверх
+import { db } from '../../firebase.js';
 
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
