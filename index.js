@@ -1,15 +1,14 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import admin from 'firebase-admin';
-import csvParser from 'csv-parser';
-import fs from 'fs';
-import path from 'path';
-
-import { db } from './firebase.js';
+const express = require('express');
+const bodyParser = require('body-parser');
+const admin = require('firebase-admin');
+const csvParser = require('csv-parser');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.json());
 
+const serviceAccount = require('./firebase-config.json');
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
