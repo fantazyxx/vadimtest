@@ -1,9 +1,9 @@
-import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost } from './modules/api.js';
+import { loadDeviceNumbers, loadDeviceType, fetchWorkTypes, updateTotalCost, generateReport } from './modules/api.js';
 import { clearForm, clearSearch, clearAddDeviceForm, updateRepairsToAdd, populateRegionSelect, createTable } from './modules/utils.js';
 import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickHandler, searchBackButtonClickHandler, addDeviceBackButtonClickHandler, searchDeviceButtonClickHandler, searchButtonClickHandler } from './modules/eventHandlers.js';
+import { generateReportButtonClickHandler, reportBackButtonClickHandler, reportFormSubmitHandler } from './modules/eventHandlers.js';
 import { searchDeviceRepairs } from './modules/search.js';
 import { handleSubmitActForm } from './modules/form.js';
-import { generateReportButtonClickHandler, reportBackButtonClickHandler, reportFormSubmitHandler } from './modules/eventHandlers.js';
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
