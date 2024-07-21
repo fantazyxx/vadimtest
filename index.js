@@ -3,12 +3,12 @@ const bodyParser = require('body-parser');
 const csvParser = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
+const admin = require('firebase-admin');
 
 const app = express();
 app.use(bodyParser.json());
 
 const serviceAccount = require('./firebase-config.json');
-const admin = require('firebase-admin');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -16,7 +16,6 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Получение всех устройств
