@@ -50,3 +50,25 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
     totalCostInput.value = `${totalCost} грн`;
   }
+  export async function generateReport(month, year) {
+    const startDate = new Date(year, month - 1, 1);
+    const endDate = new Date(year, month, 0);
+  
+    try {
+      const repairsSnapshot = await db.collection('Repairs')
+        .where('date', '>=', startDate)
+        .where('date', '<=', endDate)
+        .get();
+  
+      const repairs = [];
+      repairsSnapshot.forEach(doc => {
+        repairs.push({ id: doc.id, ...doc.data() });
+      });
+  
+      return repairs;
+    } catch (error) {
+      console.error('Error generating report:', error);
+      throw new Error('Ошибка при формировании отчета.');
+    }
+  }
+  

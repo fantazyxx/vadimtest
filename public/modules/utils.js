@@ -79,3 +79,62 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
     document.getElementById('region').value = '';
   }
   
+  export function displayReport(repairs) {
+    const reportDiv = document.getElementById('report-results');
+    reportDiv.innerHTML = ''; // Очистка предыдущего отчета
+  
+    const regions = {};
+    repairs.forEach(repair => {
+      const { region, act_number, device_number, repair_type, date, cost } = repair;
+  
+      if (!regions[region]) {
+        regions[region] = [];
+      }
+  
+      regions[region].push({ act_number, device_number, repair_type, date, cost });
+    });
+  
+    for (const [region, repairs] of Object.entries(regions)) {
+      const regionHeader = document.createElement('h3');
+      regionHeader.textContent = `Регион: ${region}`;
+      regionHeader.style.backgroundColor = 'grey';
+      regionHeader.style.color = 'white';
+      reportDiv.appendChild(regionHeader);
+  
+      const table = document.createElement('table');
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = `
+        <th>Номер акта</th>
+        <th>Номер устройства</th>
+        <th>Тип работы</th>
+        <th>Дата</th>
+        <th>Сумма</th>
+      `;
+      table.appendChild(headerRow);
+  
+      let regionTotal = 0;
+  
+      repairs.forEach(repair => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${repair.act_number}</td>
+          <td>${repair.device_number}</td>
+          <td>${repair.repair_type}</td>
+          <td>${repair.date.toDateString()}</td>
+          <td>${repair.cost}</td>
+        `;
+        table.appendChild(row);
+        regionTotal += repair.cost;
+      });
+  
+      const totalRow = document.createElement('tr');
+      totalRow.innerHTML = `
+        <td colspan="4" style="text-align: right;"><strong>Всего: ${region}</strong></td>
+        <td><strong>${regionTotal} грн</strong></td>
+      `;
+      table.appendChild(totalRow);
+  
+      reportDiv.appendChild(table);
+    }
+  }
+  

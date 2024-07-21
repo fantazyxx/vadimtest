@@ -1,6 +1,7 @@
 import { loadDeviceNumbers } from './api.js';
 import { clearForm, clearSearch, clearAddDeviceForm } from './utils.js';
 import { searchDeviceRepairs } from './search.js';
+import { generateReport } from './api.js';
 
 // Обработчик для кнопки "Внести Акт"
 export function addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect) {
@@ -66,10 +67,22 @@ export function reportBackButtonClickHandler(reportContainer, menuPage) {
   menuPage.style.display = 'block';
 }
 
-export function reportFormSubmitHandler(event, reportContainer, menuPage) {
+import { generateReport } from './api.js';
+
+export async function reportFormSubmitHandler(event, reportContainer, menuPage) {
   event.preventDefault();
-  // Здесь будет логика для формирования отчета
-  console.log('Форма отчета отправлена');
-  reportContainer.style.display = 'none';
-  menuPage.style.display = 'block';
+
+  const month = document.getElementById('report-month').value;
+  const year = document.getElementById('report-year').value;
+
+  try {
+    const repairs = await generateReport(month, year);
+    displayReport(repairs);
+    reportContainer.style.display = 'none';
+    menuPage.style.display = 'block';
+  } catch (error) {
+    console.error('Error generating report:', error);
+    alert('Ошибка при формировании отчета.');
+  }
 }
+
