@@ -13,6 +13,7 @@
       <button id="add-act-button">Внести Акт</button>
       <button id="search-device-button">Поиск устройства</button>
       <button id="add-device-button">Добавить устройство</button>
+      <button id="generate-report-button">Сформировать отчет</button>
     </div>
   </div>
 
@@ -133,6 +134,41 @@
           <button type="submit">Добавить Устройство</button>
         </div>
       </form>
+    </div>
+  </div>
+  <div id="report-container" style="display: none;">
+    <div id="report-page">
+      <form id="report-form">
+        <div>
+          <label for="report-month">Выберите месяц:</label>
+          <select id="report-month" required>
+            <option value="01">Январь</option>
+            <option value="02">Февраль</option>
+            <option value="03">Март</option>
+            <option value="04">Апрель</option>
+            <option value="05">Май</option>
+            <option value="06">Июнь</option>
+            <option value="07">Июль</option>
+            <option value="08">Август</option>
+            <option value="09">Сентябрь</option>
+            <option value="10">Октябрь</option>
+            <option value="11">Ноябрь</option>
+            <option value="12">Декабрь</option>
+          </select>
+        </div>
+        <div>
+          <label for="report-year">Выберите год:</label>
+          <select id="report-year" required>
+            <option value="2024">2024</option>
+            <option value="2025">2025</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button type="button" id="report-back-button">Назад</button>
+          <button type="submit">Сформировать</button>
+        </div>
+      </form>
+      <div id="report-results" style="display: none;"></div>
     </div>
   </div>
 

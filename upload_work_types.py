@@ -3,7 +3,7 @@ from firebase_admin import credentials, firestore
 import pandas as pd
 
 # Загрузка данных из файла CSV с кодировкой utf-8 и разделителем ';'
-data = pd.read_csv('docash2241.csv', encoding='utf-8', delimiter=';')
+data = pd.read_csv('mt.csv', encoding='utf-8', delimiter=';')
 
 # Инициализация Firebase Admin SDK
 cred = credentials.Certificate('firebase-config.json')
@@ -24,4 +24,4 @@ def upload_work_types(collection_name, csv_file):
         print(f"Updated work type {work_type} in {collection_name}")
 
 # Обновление данных
-upload_work_types('WorkTypes_docash2241', 'docash2241.csv')
+upload_work_types('WorkTypes_mt', 'mt.csv')
