@@ -1,9 +1,10 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const csvParser = require('csv-parser');
-const fs = require('fs');
-const path = require('path');
-const admin = require('firebase-admin');
+import express from 'express';
+import bodyParser from 'body-parser';
+import admin from 'firebase-admin';
+import csvParser from 'csv-parser';
+import fs from 'fs';
+import path from 'path';
+import { db } from './public/modules/firebase.js';
 
 const app = express();
 app.use(bodyParser.json());
@@ -14,8 +15,7 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-const db = admin.firestore();
-
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Получение всех устройств
