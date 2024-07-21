@@ -4,6 +4,9 @@ import { addActButtonClickHandler, addDeviceButtonClickHandler, backButtonClickH
 import { generateReportButtonClickHandler, reportBackButtonClickHandler, reportFormSubmitHandler } from './modules/eventHandlers.js';
 import { searchDeviceRepairs } from './modules/search.js';
 import { handleSubmitActForm } from './modules/form.js';
+import { initializeApp } from './modules/firebase.js';
+// Other imports and code
+
 
 document.addEventListener('DOMContentLoaded', function() {
   const addActButton = document.getElementById('add-act-button');
