@@ -67,8 +67,6 @@ export function reportBackButtonClickHandler(reportContainer, menuPage) {
   menuPage.style.display = 'block';
 }
 
-import { generateReport } from './api.js';
-
 export async function reportFormSubmitHandler(event, reportContainer, menuPage) {
   event.preventDefault();
 
