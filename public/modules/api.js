@@ -1,4 +1,4 @@
-import { db } from './modules/firebase.js';
+import { db } from './firebase.js';
 // Other imports and code
 
 
