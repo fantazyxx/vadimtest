@@ -79,9 +79,13 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
     document.getElementById('region').value = '';
   }
   
-  export function displayReport(repairs) {
+  export function displayReport(repairsByRegion) { // Принимаем объект
     const reportDiv = document.getElementById('report-results');
-    reportDiv.innerHTML = ''; // Очистка предыдущего отчета
+    reportDiv.innerHTML = ''; 
+    if (Object.keys(repairsByRegion).length === 0) {
+      reportDiv.innerHTML = 'Нет данных для отчета за этот период.';
+      return;
+    }
   
     const regions = {};
     repairs.forEach(repair => {
