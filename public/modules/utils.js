@@ -86,19 +86,15 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
       reportDiv.innerHTML = 'Нет данных для отчета за этот период.';
       return;
     }
+    if (typeof repairsByRegion !== 'object' || repairsByRegion === null) {
+      console.error('Некорректный формат данных отчета:', repairsByRegion);
+      reportDiv.innerHTML = 'Ошибка при обработке отчета.';
+      return;
+    }
   
-    const regions = {};
-    repairs.forEach(repair => {
-      const { region, act_number, device_number, repair_type, date, cost } = repair;
+    
   
-      if (!regions[region]) {
-        regions[region] = [];
-      }
-  
-      regions[region].push({ act_number, device_number, repair_type, date, cost });
-    });
-  
-    for (const [region, repairs] of Object.entries(regions)) {
+    for (const [region, repairs] of Object.entries(repairsByRegion)) {
       const regionHeader = document.createElement('h3');
       regionHeader.textContent = `Регион: ${region}`;
       regionHeader.style.backgroundColor = 'grey';
