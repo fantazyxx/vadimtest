@@ -79,7 +79,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
     document.getElementById('region').value = '';
   }
   
-  export function displayReport(repairsByRegion) { // Принимаем объект
+  export function displayReport(repairsByRegion) {
     const reportDiv = document.getElementById('report-results');
     reportDiv.innerHTML = ''; 
     if (Object.keys(repairsByRegion).length === 0) {
@@ -91,8 +91,6 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
       reportDiv.innerHTML = 'Ошибка при обработке отчета.';
       return;
     }
-  
-    
   
     for (const [region, repairs] of Object.entries(repairsByRegion)) {
       const regionHeader = document.createElement('h3');
@@ -120,7 +118,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
           <td>${repair.act_number}</td>
           <td>${repair.device_number}</td>
           <td>${repair.repair_type}</td>
-          <td>${repair.date.toDateString()}</td> <!-- Используем новое поле date -->
+          <td>${new Date(repair.date).toDateString()}</td> // Используем преобразованное поле date
           <td>${repair.cost}</td>
         `;
         table.appendChild(row);
@@ -136,5 +134,6 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   
       reportDiv.appendChild(table);
     }
-  }
+}
+
   
