@@ -76,9 +76,7 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
   try {
     const repairsByRegion = await fetchReportData(month, year); // Используем fetchReportData
     displayReport(repairsByRegion);
-    reportContainer.style.display = 'none';
-    menuPage.style.display = 'block';
-  } catch (error) {
+     } catch (error) {
     console.error('Ошибка при формировании отчета:', error);
     alert('Ошибка при формировании отчета.');
   }
