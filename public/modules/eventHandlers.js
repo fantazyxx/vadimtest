@@ -74,8 +74,8 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
   const year = document.getElementById('report-year').value;
 
   try {
-    const repairs = await fetchReportData(month, year); // Используем fetchReportData
-    displayReport(repairs);
+    const repairsByRegion = await fetchReportData(month, year); // Используем fetchReportData
+    displayReport(repairsByRegion);
     reportContainer.style.display = 'none';
     menuPage.style.display = 'block';
   } catch (error) {
