@@ -62,12 +62,6 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
     }
   }
 
-  // Вставьте в начало файла, чтобы добавить новые функции обработчиков
-export function generateReportButtonClickHandler(menuPage, reportContainer) {
-  menuPage.style.display = 'none';
-  reportContainer.style.display = 'block';
-}
-
 export function reportBackButtonClickHandler(reportContainer, menuPage) {
   reportContainer.style.display = 'none';
   menuPage.style.display = 'block';
