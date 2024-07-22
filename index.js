@@ -72,9 +72,12 @@ async function generateReport(month, year) {
   const repairsByRegion = {};
   snapshot.forEach(doc => {
     const repairData = doc.data();
-    const region = repairData.region;
-    repairData.date = new Date(repairData.installation_date);
+    const region = repairData.region || 'Не указан';
+  
+      // Разбиваем строку repair_type на массив типов работ
     const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
+     // Преобразуем дату в объект Date
+    repairData.date = new Date(repairData.installation_date);
 
     if (!repairsByRegion[region]) {
       repairsByRegion[region] = [];
@@ -85,7 +88,7 @@ async function generateReport(month, year) {
     });
   });
 
-  return repairsByRegion;
+  return repairsByRegion;// Возвращаем объект repairsByRegion
 }
 
 // Получение всех устройств
