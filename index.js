@@ -73,7 +73,7 @@ async function generateReport(month, year) {
   snapshot.forEach(doc => {
     const repairData = doc.data();
     const region = repairData.region;
-
+    repairData.date = new Date(repairData.installation_date);
     const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
 
     if (!repairsByRegion[region]) {
