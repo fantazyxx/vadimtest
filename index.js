@@ -47,17 +47,22 @@ async function generateReport(month, year) {
   if (!isValidMonth(month) || !isValidYear(year)) {
     throw new Error('Некорректные параметры месяца и года.');
   }
+
   const startDate = new Date(year, month - 1, 1);
   const endDate = new Date(year, month, 0);
 
+  // Форматируем даты в соответствии с форматом в Firestore ("YYYY-MM-DD")
+  const formattedStartDate = startDate.toISOString().slice(0, 10);
+  const formattedEndDate = endDate.toISOString().slice(0, 10);
+
   const repairsRef = db.collection('Repairs');
   const snapshot = await repairsRef
-    .where('installation_date', '>=', startDate.toISOString())
-    .where('installation_date', '<=', endDate.toISOString())
+    .where('installation_date', '>=', formattedStartDate) // Сравниваем строки
+    .where('installation_date', '<=', formattedEndDate)   // Сравниваем строки
     .get();
 
   if (snapshot.empty) {
-    return [];
+    return {}; // Возвращаем пустой объект, если нет ремонтов
   }
 
   const repairsByRegion = {};
@@ -65,23 +70,17 @@ async function generateReport(month, year) {
     const repairData = doc.data();
     const region = repairData.region;
 
-    // Разбиваем строку repair_type на массив типов работ
     const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
 
     if (!repairsByRegion[region]) {
       repairsByRegion[region] = [];
     }
 
-    // Добавляем каждый тип работы отдельно
     workTypes.forEach(workType => {
       repairsByRegion[region].push({ ...repairData, repair_type: workType });
     });
   });
-  
-  function isValidMonth(month) {
-    return month >= 1 && month <= 12;
-  }
-  
+
   return repairsByRegion;
 }
 
