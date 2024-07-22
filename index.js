@@ -77,17 +77,11 @@ async function generateReport(month, year) {
       repairsByRegion[region].push({ ...repairData, repair_type: workType });
     });
   });
+  
   function isValidMonth(month) {
     return month >= 1 && month <= 12;
   }
   
-  function isValidYear(year) {
-    // Проверяем, что год не меньше, чем год первого ремонта в базе данных
-    const firstRepairYear = /* Получите год первого ремонта из базы данных */;
-    return year >= firstRepairYear;
-  }
-  
-
   return repairsByRegion;
 }
 
