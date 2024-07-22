@@ -3,6 +3,12 @@ import { clearForm, clearSearch, clearAddDeviceForm } from './utils.js';
 import { searchDeviceRepairs } from './search.js';
 import { displayReport } from './utils.js'
 
+  // Вставьте в начало файла, чтобы добавить новые функции обработчиков
+  export function generateReportButtonClickHandler(menuPage, reportContainer) {
+    menuPage.style.display = 'none';
+    reportContainer.style.display = 'block';
+  }
+
 // Обработчик для кнопки "Внести Акт"
 export function addActButtonClickHandler(formContainer, menuPage, deviceNumberSelect) {
     console.log('Add Act button clicked');
@@ -75,7 +81,11 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
 
   try {
     const repairsByRegion = await fetchReportData(month, year); // Используем fetchReportData
-    displayReport(repairsByRegion);
+    console.log('reportFormSubmitHandler - Received repairsByRegion:', repairsByRegion);
+
+     setTimeout(() => {
+      displayReport(repairsByRegion);
+    }, 0);
      } catch (error) {
     console.error('Ошибка при формировании отчета:', error);
     alert('Ошибка при формировании отчета.');
