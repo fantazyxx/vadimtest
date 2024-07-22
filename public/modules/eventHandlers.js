@@ -1,4 +1,4 @@
-import { loadDeviceNumbers, generateReport } from './api.js';
+import { loadDeviceNumbers, fetchReportData } from './api.js';
 import { clearForm, clearSearch, clearAddDeviceForm } from './utils.js';
 import { searchDeviceRepairs } from './search.js';
 
@@ -73,8 +73,7 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
   const year = document.getElementById('report-year').value;
 
   try {
-    const response = await fetch(`/generateReport/${month}/${year}`);
-    const repairs = await response.json();
+    const repairs = await fetchReportData(month, year); // Используем fetchReportData
     displayReport(repairs);
     reportContainer.style.display = 'none';
     menuPage.style.display = 'block';
