@@ -55,29 +55,28 @@ async function generateReport(month, year) {
   const startDate = new Date(year, month - 1, 1);
   const endDate = new Date(year, month, 0);
 
-  // Форматируем даты в соответствии с форматом в Firestore ("YYYY-MM-DD")
   const formattedStartDate = startDate.toISOString().slice(0, 10);
   const formattedEndDate = endDate.toISOString().slice(0, 10);
 
   const repairsRef = db.collection('Repairs');
   const snapshot = await repairsRef
-    .where('installation_date', '>=', formattedStartDate) // Сравниваем строки
-    .where('installation_date', '<=', formattedEndDate)   // Сравниваем строки
+    .where('installation_date', '>=', formattedStartDate)
+    .where('installation_date', '<=', formattedEndDate)
     .get();
 
   if (snapshot.empty) {
-    return {}; // Возвращаем пустой объект, если нет ремонтов
+    return {}; 
   }
 
   const repairsByRegion = {};
   snapshot.forEach(doc => {
     const repairData = doc.data();
     const region = repairData.region || 'Не указан';
-  
-      // Разбиваем строку repair_type на массив типов работ
     const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
-     // Преобразуем дату в объект Date
-    repairData.date = new Date(repairData.installation_date);
+
+    // Преобразуем дату в объект Date на серверной стороне
+    const date = new Date(repairData.installation_date);
+    repairData.date = date;
 
     if (!repairsByRegion[region]) {
       repairsByRegion[region] = [];
@@ -88,8 +87,9 @@ async function generateReport(month, year) {
     });
   });
 
-  return repairsByRegion;// Возвращаем объект repairsByRegion
+  return repairsByRegion;
 }
+
 
 // Получение всех устройств
 app.get('/getDevices', async (req, res) => {
