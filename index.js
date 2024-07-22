@@ -5,19 +5,91 @@ const csvParser = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
 
-const serviceAccount = require('./firebase-config.json');
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
-
-const db = admin.firestore();
+const { db } = require('./firebase');
 
 const app = express();
 app.use(bodyParser.json());
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Добавьте этот маршрут для генерации отчета
+app.get('/generateReport/:month/:year', async (req, res) => {
+  const { month, year } = req.params;
+  try {
+    const reportData = await generateReport(month, year);
+    res.json(reportData);
+  } catch (error) {
+    console.error('Ошибка при формировании отчета:', error);
+    res.status(500).json({ error: 'Ошибка при формировании отчета' });
+  }
+});
+
+async function isValidYear(year) {
+  try {
+    const firstRepairSnapshot = await db.collection('Repairs').orderBy('installation_date', 'asc').limit(1).get();
+
+    if (!firstRepairSnapshot.empty) {
+      const firstRepairDate = firstRepairSnapshot.docs[0].data().installation_date;
+      const firstRepairYear = new Date(firstRepairDate).getFullYear();
+      return year >= firstRepairYear;
+    } else {
+      // Если ремонтов нет, разрешаем любой год
+      return true;
+    }
+  } catch (error) {
+    console.error('Ошибка при получении первого года ремонта:', error);
+    return false; // В случае ошибки считаем год недопустимым
+  }
+}
+
+async function generateReport(month, year) {
+  if (!isValidMonth(month) || !isValidYear(year)) {
+    throw new Error('Некорректные параметры месяца и года.');
+  }
+  const startDate = new Date(year, month - 1, 1);
+  const endDate = new Date(year, month, 0);
+
+  const repairsRef = db.collection('Repairs');
+  const snapshot = await repairsRef
+    .where('installation_date', '>=', startDate.toISOString())
+    .where('installation_date', '<=', endDate.toISOString())
+    .get();
+
+  if (snapshot.empty) {
+    return [];
+  }
+
+  const repairsByRegion = {};
+  snapshot.forEach(doc => {
+    const repairData = doc.data();
+    const region = repairData.region;
+
+    // Разбиваем строку repair_type на массив типов работ
+    const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
+
+    if (!repairsByRegion[region]) {
+      repairsByRegion[region] = [];
+    }
+
+    // Добавляем каждый тип работы отдельно
+    workTypes.forEach(workType => {
+      repairsByRegion[region].push({ ...repairData, repair_type: workType });
+    });
+  });
+  function isValidMonth(month) {
+    return month >= 1 && month <= 12;
+  }
+  
+  function isValidYear(year) {
+    // Проверяем, что год не меньше, чем год первого ремонта в базе данных
+    const firstRepairYear = /* Получите год первого ремонта из базы данных */;
+    return year >= firstRepairYear;
+  }
+  
+
+  return repairsByRegion;
+}
 
 // Получение всех устройств
 app.get('/getDevices', async (req, res) => {

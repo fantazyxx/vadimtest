@@ -1,7 +1,3 @@
-const { db } = require('./firebase.js');
-// Other imports and code
-
-
 export async function loadDeviceNumbers(deviceNumberSelect) {
     try {
       const response = await fetch('/getDevices');
@@ -54,23 +50,15 @@ export async function loadDeviceNumbers(deviceNumberSelect) {
     }
     totalCostInput.value = `${totalCost} грн`;
   }
-  export async function generateReport(month, year) {
-    const startDate = new Date(year, month - 1, 1);
-    const endDate = new Date(year, month, 0);
   
+
+  export async function fetchReportData(month, year) {
     try {
-      const repairsRef = db.collection('Repairs')
-        .where('installation_date', '>=', startDate.toISOString())
-        .where('installation_date', '<=', endDate.toISOString());
-      const snapshot = await repairsRef.get();
-  
-      const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      return repairs;
+      const response = await fetch(`/generateReport/${month}/${year}`);
+      const data = await response.json();
+      return data;
     } catch (error) {
-      console.error('Error generating report:', error);
-      throw new Error('Ошибка при формировании отчета.');
+      console.error('Ошибка при получении данных отчета:', error);
+      throw new Error('Ошибка при получении данных отчета');
     }
   }
-  
-  module.exports = { generateReport };
-   
