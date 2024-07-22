@@ -120,7 +120,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
           <td>${repair.act_number}</td>
           <td>${repair.device_number}</td>
           <td>${repair.repair_type}</td>
-          <td>${repair.date.toDateString()}</td>
+          <td>${repair.date.toDateString()}</td> // Используем новое поле date
           <td>${repair.cost}</td>
         `;
         table.appendChild(row);
