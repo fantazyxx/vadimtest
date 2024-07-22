@@ -73,13 +73,15 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
   const year = document.getElementById('report-year').value;
 
   try {
-    const repairs = await generateReport(month, year);
+    const response = await fetch(`/generateReport/${month}/${year}`);
+    const repairs = await response.json();
     displayReport(repairs);
     reportContainer.style.display = 'none';
     menuPage.style.display = 'block';
   } catch (error) {
-    console.error('Error generating report:', error);
+    console.error('Ошибка при формировании отчета:', error);
     alert('Ошибка при формировании отчета.');
   }
 }
+
 
