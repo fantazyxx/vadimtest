@@ -82,10 +82,13 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   export function displayReport(repairsByRegion) {
     const reportDiv = document.getElementById('report-results');
     reportDiv.innerHTML = ''; 
+    console.log('displayReport - Received repairsByRegion:', repairsByRegion); // Логирование полученных данных
+
     if (Object.keys(repairsByRegion).length === 0) {
       reportDiv.innerHTML = 'Нет данных для отчета за этот период.';
       return;
     }
+
     if (typeof repairsByRegion !== 'object' || repairsByRegion === null) {
       console.error('Некорректный формат данных отчета:', repairsByRegion);
       reportDiv.innerHTML = 'Ошибка при обработке отчета.';
@@ -93,6 +96,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
     }
   
     for (const [region, repairs] of Object.entries(repairsByRegion)) {
+      console.log('displayReport - Processing region:', region, 'with repairs:', repairs); // Логирование данных по регионам
       const regionHeader = document.createElement('h3');
       regionHeader.textContent = `Регион: ${region}`;
       regionHeader.style.backgroundColor = 'grey';
@@ -113,6 +117,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
       let regionTotal = 0;
   
       repairs.forEach(repair => {
+        console.log('displayReport - Processing repair:', repair); // Логирование данных по каждому ремонту
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${repair.act_number}</td>
@@ -134,6 +139,9 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   
       reportDiv.appendChild(table);
     }
+      // Убедимся, что блок с результатами отображается
+  reportDiv.style.display = 'block';
 }
+
 
   
