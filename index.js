@@ -25,6 +25,10 @@ app.get('/generateReport/:month/:year', async (req, res) => {
   }
 });
 
+function isValidMonth(month) {
+  return month >= 1 && month <= 12;
+}
+
 async function isValidYear(year) {
   try {
     const firstRepairSnapshot = await db.collection('Repairs').orderBy('installation_date', 'asc').limit(1).get();
