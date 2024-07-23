@@ -120,7 +120,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
         console.log('displayReport - Processing repair:', repair); // Логирование данных по каждому ремонту
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${repair.act_number}</td>
+          <td>${repair.Repairs}</td>
           <td>${repair.device_id}</td>
           <td>${repair.repair_type}</td>
           <td>${new Date(repair.date).toDateString()}</td> // Используем преобразованное поле date
