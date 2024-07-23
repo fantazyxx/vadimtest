@@ -121,7 +121,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${repair.act_number}</td>
-          <td>${repair.device_number}</td>
+          <td>${repair.device_id}</td>
           <td>${repair.repair_type}</td>
           <td>${new Date(repair.date).toDateString()}</td> // Используем преобразованное поле date
           <td>${repair.cost}</td>
