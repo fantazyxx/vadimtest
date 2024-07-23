@@ -53,6 +53,7 @@ function formatDate(dateStr) {
 }
 
 async function generateReport(month, year) {
+  console.log(`Generating report for ${month}/${year}`); // Логирование
   if (!isValidMonth(month) || !await isValidYear(year)) {
     throw new Error('Некорректные параметры месяца и года.');
   }
@@ -62,7 +63,7 @@ async function generateReport(month, year) {
 
   const formattedStartDate = startDate.toISOString().slice(0, 10);
   const formattedEndDate = endDate.toISOString().slice(0, 10);
-
+  console.log(`Fetching repairs from ${formattedStartDate} to ${formattedEndDate}`); // Логирование
   const repairsRef = db.collection('Repairs');
   const snapshot = await repairsRef
     .where('installation_date', '>=', formattedStartDate)
@@ -70,6 +71,7 @@ async function generateReport(month, year) {
     .get();
 
   if (snapshot.empty) {
+    console.log('No repairs found for the specified period.'); // Логирование
     return {}; 
   }
 
