@@ -47,8 +47,13 @@ async function isValidYear(year) {
   }
 }
 
+function formatDate(dateStr) {
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return new Date(dateStr).toLocaleDateString('ru-RU', options);
+}
+
 async function generateReport(month, year) {
-  if (!isValidMonth(month) || !isValidYear(year)) {
+  if (!isValidMonth(month) || !await isValidYear(year)) {
     throw new Error('Некорректные параметры месяца и года.');
   }
 
@@ -69,23 +74,56 @@ async function generateReport(month, year) {
   }
 
   const repairsByRegion = {};
-  snapshot.forEach(doc => {
+  const deviceIds = snapshot.docs.map(doc => doc.data().device_id);
+
+  // Получение данных об устройствах за один запрос
+  const devicesSnapshot = await db.collection('Devices')
+    .where('__name__', 'in', deviceIds)
+    .get();
+
+  const devicesData = {};
+  devicesSnapshot.forEach(doc => devicesData[doc.id] = doc.data());
+
+  for (const doc of snapshot.docs) {
     const repairData = doc.data();
-    const region = repairData.region || 'Не указан';
-    const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
+    const deviceData = devicesData[repairData.device_id];
 
-    // Преобразуем дату в объект Date на серверной стороне
-    const date = new Date(repairData.installation_date);
-    repairData.date = date;
-
-    if (!repairsByRegion[region]) {
-      repairsByRegion[region] = [];
+    if (!deviceData) {
+      console.error(`Устройство с ID ${repairData.device_id} не найдено для ремонта ${doc.id}`);
+      continue; // Пропускаем ремонт, если устройство не найдено
     }
 
-    workTypes.forEach(workType => {
-      repairsByRegion[region].push({ ...repairData, repair_type: workType });
+    const region = deviceData.region || 'Не указан';
+    const model = deviceData.model;
+    const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
+
+    workTypes.forEach(async workType => {
+      let price = 0;
+      const workTypeCollection = db.collection(`WorkTypes_${model}`);
+      const workTypeDocs = await workTypeCollection.where('__name__', '==', workType).get();
+
+      if (!workTypeDocs.empty) {
+        const workTypeDoc = workTypeDocs.docs[0];
+        price = workTypeDoc.data().price || 0;
+      } else {
+        console.error(`Тип работы "${workType}" не найден для модели устройства "${model}"`);
+      }
+
+      if (!repairsByRegion[region]) {
+        repairsByRegion[region] = [];
+      }
+
+      repairsByRegion[region].push({
+        act_number: doc.id,
+        device_id: repairData.device_id,
+        model: model,
+        repair_type: workType,
+        date: formatDate(repairData.installation_date),
+        work_count: repairData.work_count,
+        price: price
+      });
     });
-  });
+  }
 
   return repairsByRegion;
 }
