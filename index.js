@@ -99,7 +99,7 @@ async function generateReport(month, year) {
     const model = deviceData.model;
     const workTypes = repairData.repair_type.split(',').map(type => type.trim().toLowerCase());
 
-    workTypes.forEach(async workType => {
+    for (const workType of workTypes) {
       let price = 0;
       const workTypeCollection = db.collection(`WorkTypes_${model}`);
       const workTypeDocs = await workTypeCollection.where('__name__', '==', workType).get();
@@ -124,7 +124,7 @@ async function generateReport(month, year) {
         work_count: repairData.work_count,
         price: price
       });
-    });
+    }
   }
 
   return repairsByRegion;
