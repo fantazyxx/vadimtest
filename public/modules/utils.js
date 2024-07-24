@@ -123,7 +123,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
                 <td>${repair.act_number}</td>
                 <td>${repair.device_id}</td>
                 <td>${repair.repair_type}</td>
-                <td>${new Date(repair.date).toLocaleDateString('ru-RU')}</td>
+                 <td>${repair.date}</td>
                 <td>${repair.price}</td>
             `;
             table.appendChild(row);

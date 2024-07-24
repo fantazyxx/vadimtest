@@ -52,6 +52,23 @@ function formatDate(dateStr) {
   return new Date(dateStr).toLocaleDateString('ru-RU', options);
 }
 
+// Вставьте функцию formatDate перед функцией generateReport
+function formatDate(dateStr) {
+  // Преобразуем строку даты в объект Date
+  const date = new Date(dateStr);
+  
+  // Проверяем, является ли дата допустимой
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date format:', dateStr);
+    return 'Invalid Date';
+  }
+
+  // Преобразуем объект Date в форматируемую строку
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return date.toLocaleDateString('ru-RU', options);
+}
+
+
 async function generateReport(month, year) {
   console.log(`Generating report for ${month}/${year}`); // Логирование
   if (!isValidMonth(month) || !await isValidYear(year)) {
