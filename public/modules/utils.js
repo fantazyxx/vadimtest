@@ -134,7 +134,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
 
         const totalRow = document.createElement('tr');
         totalRow.innerHTML = `
-            <td colspan="4" style="text-align: right;"><strong>Всего: ${region}</strong></td>
+            <td colspan="5" style="text-align: right;"><strong>Всего: ${region}</strong></td>
             <td><strong>${regionTotal} грн</strong></td>
         `;
         table.appendChild(totalRow);
