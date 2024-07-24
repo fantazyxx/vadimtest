@@ -108,6 +108,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
         headerRow.innerHTML = `
             <th>Номер акта</th>
             <th>Номер устройства</th>
+            <th>Тип устройства</th>
             <th>Тип работы</th>
             <th>Дата</th>
             <th>Сумма</th>
@@ -122,6 +123,7 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
             row.innerHTML = `
                 <td>${repair.act_number}</td>
                 <td>${repair.device_id}</td>
+                <td>${repair.model}</td>
                 <td>${repair.repair_type}</td>
                  <td>${repair.date}</td>
                 <td>${repair.price}</td>
