@@ -37,7 +37,8 @@
   return table;
 }
 
-  export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd) {
+// utils.js
+export function clearForm(actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd) {
   actForm.reset();
   deviceTypeInput.value = '';
   previousRepairsList.innerHTML = '';
@@ -46,6 +47,7 @@
   totalCostInput.value = '';
   repairsToAdd.length = 0; // Очистить массив repairsToAdd
 }
+
 export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   searchDeviceIdInput.value = '';
   searchResultsDiv.innerHTML = '';
