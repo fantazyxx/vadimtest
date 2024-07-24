@@ -1,5 +1,5 @@
 // form.js
-export async function handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage ) {
+export async function handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage, deviceNumberSelect ) {
     event.preventDefault();
     const actNumber = document.getElementById('act-number').value;
     const deviceNumber = deviceNumberSelect.value;
