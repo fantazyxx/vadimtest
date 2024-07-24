@@ -62,10 +62,11 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
     }
   }
 
-export function reportBackButtonClickHandler(reportContainer, menuPage) {
-  reportContainer.style.display = 'none';
-  menuPage.style.display = 'block';
+  export function reportBackButtonClickHandler() {
+    document.getElementById('report-container').style.display = 'none';
+    document.getElementById('menu-page').style.display = 'block';
 }
+
 
 export async function reportFormSubmitHandler(event, reportContainer, menuPage) {
   event.preventDefault();
@@ -74,16 +75,20 @@ export async function reportFormSubmitHandler(event, reportContainer, menuPage) 
   const year = document.getElementById('report-year').value;
 
   try {
-    const repairsByRegion = await fetchReportData(month, year); // Используем fetchReportData
-    console.log('reportFormSubmitHandler - Received repairsByRegion:', repairsByRegion);
+      const response = await fetch(`/generateReport/${month}/${year}`);
+      const repairsByRegion = await response.json();
+      console.log('reportFormSubmitHandler - Received repairsByRegion:', repairsByRegion);
 
-     setTimeout(() => {
-      displayReport(repairsByRegion);
-    }, 0);
-     } catch (error) {
-    console.error('Ошибка при формировании отчета:', error);
-    alert('Ошибка при формировании отчета.');
+      if (response.ok) {
+          setTimeout(() => {
+              displayReport(repairsByRegion);
+          }, 0);
+      } else {
+          console.error('Ошибка при получении отчета:', repairsByRegion);
+          alert('Ошибка при получении отчета.');
+      }
+  } catch (error) {
+      console.error('Ошибка при формировании отчета:', error);
+      alert('Ошибка при формировании отчета.');
   }
 }
-
-
