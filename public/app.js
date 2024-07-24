@@ -72,7 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
       case 'Счетчик монет':
         models = ['scancoin_sc350', 'scancoin_sc303', 'scancoin_sc313'];
         break;
-      case 'Вакуумный упаковщик':
+      case 'Счетчик банкнот':
+          models = ['banknota1ku'];
+      break;
+        case 'Вакуумный упаковщик':
         models = ['deep2240', 'deep2241', 'docash2241', 'vamabp2'];
         break;
       case 'Детектор валют':
