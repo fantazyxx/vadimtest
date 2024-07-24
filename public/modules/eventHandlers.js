@@ -63,8 +63,18 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
   }
 
   export function reportBackButtonClickHandler() {
+       // Скрыть контейнер отчета
     document.getElementById('report-container').style.display = 'none';
+    // Показать меню
     document.getElementById('menu').style.display = 'block';
+    // Очистить форму отчета
+    const reportForm = document.getElementById('report-form');
+    reportForm.reset();
+
+    // Очистить результаты отчета
+    const reportResults = document.getElementById('report-results');
+    reportResults.style.display = 'none';
+    reportResults.innerHTML = '';
 }
 
 
