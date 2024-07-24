@@ -1,3 +1,4 @@
+import { clearForm } from './utils.js';
 // form.js
 export async function handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage, deviceNumberSelect ) {
     event.preventDefault();
