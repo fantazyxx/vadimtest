@@ -81,67 +81,67 @@ export function clearSearch(searchDeviceIdInput, searchResultsDiv) {
   
   export function displayReport(repairsByRegion) {
     const reportDiv = document.getElementById('report-results');
-    reportDiv.innerHTML = ''; 
+    reportDiv.innerHTML = '';
     console.log('displayReport - Received repairsByRegion:', repairsByRegion); // Логирование полученных данных
 
     if (Object.keys(repairsByRegion).length === 0) {
-      reportDiv.innerHTML = 'Нет данных для отчета за этот период.';
-      return;
+        reportDiv.innerHTML = 'Нет данных для отчета за этот период.';
+        return;
     }
 
     if (typeof repairsByRegion !== 'object' || repairsByRegion === null) {
-      console.error('Некорректный формат данных отчета:', repairsByRegion);
-      reportDiv.innerHTML = 'Ошибка при обработке отчета.';
-      return;
+        console.error('Некорректный формат данных отчета:', repairsByRegion);
+        reportDiv.innerHTML = 'Ошибка при обработке отчета.';
+        return;
     }
-  
-    for (const [region, repairs] of Object.entries(repairsByRegion)) {
-      console.log('displayReport - Processing region:', region, 'with repairs:', repairs); // Логирование данных по регионам
-      const regionHeader = document.createElement('h3');
-      regionHeader.textContent = `Регион: ${region}`;
-      regionHeader.style.backgroundColor = 'grey';
-      regionHeader.style.color = 'white';
-      reportDiv.appendChild(regionHeader);
-  
-      const table = document.createElement('table');
-      const headerRow = document.createElement('tr');
-      headerRow.innerHTML = `
-        <th>Номер акта</th>
-        <th>Номер устройства</th>
-        <th>Тип работы</th>
-        <th>Дата</th>
-        <th>Сумма</th>
-      `;
-      table.appendChild(headerRow);
-  
-      let regionTotal = 0;
-  
-      repairs.forEach(repair => {
-        console.log('displayReport - Processing repair:', repair); // Логирование данных по каждому ремонту
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${repair.Repairs}</td>
-          <td>${repair.device_id}</td>
-          <td>${repair.repair_type}</td>
-          <td>${new Date(repair.date).toDateString()}</td> // Используем преобразованное поле date
-          <td>${repair.cost}</td>
-        `;
-        table.appendChild(row);
-        regionTotal += repair.cost;
-      });
-  
-      const totalRow = document.createElement('tr');
-      totalRow.innerHTML = `
-        <td colspan="4" style="text-align: right;"><strong>Всего: ${region}</strong></td>
-        <td><strong>${regionTotal} грн</strong></td>
-      `;
-      table.appendChild(totalRow);
-  
-      reportDiv.appendChild(table);
-    }
-      // Убедимся, что блок с результатами отображается
-  reportDiv.style.display = 'block';
-}
 
+    for (const [region, repairs] of Object.entries(repairsByRegion)) {
+        console.log('displayReport - Processing region:', region, 'with repairs:', repairs); // Логирование данных по регионам
+        const regionHeader = document.createElement('h3');
+        regionHeader.textContent = `Регион: ${region}`;
+        regionHeader.style.backgroundColor = 'grey';
+        regionHeader.style.color = 'white';
+        reportDiv.appendChild(regionHeader);
+
+        const table = document.createElement('table');
+        const headerRow = document.createElement('tr');
+        headerRow.innerHTML = `
+            <th>Номер акта</th>
+            <th>Номер устройства</th>
+            <th>Тип работы</th>
+            <th>Дата</th>
+            <th>Сумма</th>
+        `;
+        table.appendChild(headerRow);
+
+        let regionTotal = 0;
+
+        repairs.forEach(repair => {
+            console.log('displayReport - Processing repair:', repair); // Логирование данных по каждому ремонту
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${repair.act_number}</td>
+                <td>${repair.device_id}</td>
+                <td>${repair.repair_type}</td>
+                <td>${new Date(repair.date).toLocaleDateString('ru-RU')}</td>
+                <td>${repair.price}</td>
+            `;
+            table.appendChild(row);
+            regionTotal += repair.price;
+        });
+
+        const totalRow = document.createElement('tr');
+        totalRow.innerHTML = `
+            <td colspan="4" style="text-align: right;"><strong>Всего: ${region}</strong></td>
+            <td><strong>${regionTotal} грн</strong></td>
+        `;
+        table.appendChild(totalRow);
+
+        reportDiv.appendChild(table);
+    }
+
+    // Убедимся, что блок с результатами отображается
+    reportDiv.style.display = 'block';
+}
 
   
