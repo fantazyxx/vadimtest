@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  actForm.addEventListener('submit', (event) => handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage));
+  actForm.addEventListener('submit', (event) => handleSubmitActForm(event, actForm, deviceTypeInput, previousRepairsList, repairListDiv, totalCostInput, repairsToAdd, formContainer, menuPage, deviceNumberSelect ));
 
   document.getElementById('device-form').addEventListener('submit', async (e) => {
     e.preventDefault();
