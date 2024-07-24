@@ -64,7 +64,7 @@ export function searchDeviceButtonClickHandler(menuPage, searchContainer) {
 
   export function reportBackButtonClickHandler() {
     document.getElementById('report-container').style.display = 'none';
-    document.getElementById('menu-page').style.display = 'block';
+    document.getElementById('menu').style.display = 'block';
 }
 
 
