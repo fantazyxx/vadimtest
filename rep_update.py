@@ -9,8 +9,8 @@ db = firestore.client()
 
 def update_work_type():
     work_types_collection = db.collection('WorkTypes_una_001')
-    repair_type_to_update = "ремонт механізму петлеутворення, подачі і затягування"
-    new_repair_type = "ремонт механізму петлеутворення подачі і затягування"
+    repair_type_to_update = "заміна механізму петлеутворення, подачі і затягування"
+    new_repair_type = "заміна механізму петлеутворення подачі і затягування"
 
     # Поиск и обновление записи в коллекции WorkTypes_una_001
     doc_ref = work_types_collection.document(repair_type_to_update)
