@@ -13,13 +13,16 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Добавьте этот маршрут для генерации отчета 
-app.get('/generateReport/:month/:year', async (req, res) => { 
-  const { month, year } = req.params; try { 
-  const reportData = await generateReport(month, year); res.json(reportData); } 
-  catch (error) { console.error('Ошибка при формировании отчета:', error); 
-  res.status(500).json({ error: 'Ошибка при формировании отчета' });
- } 
+// Добавьте этот маршрут для генерации отчета
+app.get('/generateReport/:month/:year', async (req, res) => {
+  const { month, year } = req.params;
+  try {
+    const reportData = await generateReport(month, year);
+    res.json(reportData);
+  } catch (error) {
+    console.error('Ошибка при формировании отчета:', error);
+    res.status(500).json({ error: 'Ошибка при формировании отчета' });
+  }
 });
 
 async function isValidYear(year) {
