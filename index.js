@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Добавьте этот маршрут для генерации отчета
-app.get('/generateReport/:month/:year', async (req, res) => {
+app.get(`/generateReport/:month/:year`, async (req, res) => {
   const { month, year } = req.params;
   try {
     const reportData = await generateReport(month, year);
