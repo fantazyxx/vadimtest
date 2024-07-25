@@ -27,41 +27,49 @@ app.get('/generateReport/:month/:year', async (req, res) => {
     console.log(`Fetching repairs from ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
 
     const repairsRef = db.collection('Repairs');
-    const repairDocs = await repairsRef.where('installation_date', '>=', startDate).where('installation_date', '<=', endDate).get();
+    const repairsSnapshot = await repairsRef
+      .where('installation_date', '>=', startDate)
+      .where('installation_date', '<=', endDate)
+      .get();
 
     let repairs = [];
-    repairDocs.forEach(doc => {
-      repairs.push(doc.data());
+    let deviceIds = new Set();
+
+    repairsSnapshot.forEach(doc => {
+      const repairData = doc.data();
+      repairs.push(repairData);
+      deviceIds.add(repairData.device_id);
     });
 
-    console.log('Fetched repairs:', repairs);
+    deviceIds = Array.from(deviceIds);
 
-    let regions = repairs.map(repair => repair.region).filter((value, index, self) => self.indexOf(value) === index);
-    let regionChunks = [];
-    while (regions.length) {
-      regionChunks.push(regions.splice(0, 30));
-    }
+    if (deviceIds.length > 0) {
+      const devicesSnapshot = await db.collection('Devices')
+        .where('__name__', 'in', deviceIds)
+        .get();
 
-    let repairsByRegion = [];
-    for (let chunk of regionChunks) {
-      const regionDocs = await repairsRef.where('region', 'in', chunk).get();
-      regionDocs.forEach(doc => {
-        repairsByRegion.push(doc.data());
+      let devicesData = {};
+      devicesSnapshot.forEach(doc => devicesData[doc.id] = doc.data());
+
+      let repairsByRegion = repairs.map(repair => {
+        return {
+          ...repair,
+          device_model: devicesData[repair.device_id]?.model || 'Unknown'
+        };
       });
+
+      console.log('Repairs by region:', repairsByRegion);
+
+      res.json({ repairsByRegion });
+    } else {
+      res.json({ repairsByRegion: [] });
     }
 
-    console.log('Repairs by region:', repairsByRegion);
-
-    res.json({ repairsByRegion });
   } catch (error) {
     console.error('Ошибка при формировании отчета:', error);
     res.status(500).json({ error: 'Ошибка при формировании отчета' });
   }
 });
-
-function isValidMonth(month) {
-  return month >= 1 && month <= 12;
-}
 
 async function isValidYear(year) {
   try {
