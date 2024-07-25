@@ -34,6 +34,8 @@ app.get('/generateReport/:month/:year', async (req, res) => {
       repairs.push(doc.data());
     });
 
+    console.log('Fetched repairs:', repairs);
+
     let regions = repairs.map(repair => repair.region).filter((value, index, self) => self.indexOf(value) === index);
     let regionChunks = [];
     while (regions.length) {
