@@ -6,16 +6,7 @@ firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
-collections = [
-    'WorkTypes_deep2240',
-    'WorkTypes_deep2241',
-    'WorkTypes_docash2241',
-    'WorkTypes_scancoin_sc303',
-    'WorkTypes_scancoin_sc313',
-    'WorkTypes_scancoin_sc350',
-    'WorkTypes_una_001',
-    'WorkTypes_vamabp2'
-]
+collections = ['WorkTypes_banknota1ku']
 
 def update_price_field_type(collection_name):
     docs = db.collection(collection_name).stream()

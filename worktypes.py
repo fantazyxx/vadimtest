@@ -8,17 +8,7 @@ firebase_admin.initialize_app(cred)
 db = firestore.client()
 
 # Названия коллекций
-collections = [
-    'WorkTypes_deep2240',
-    'WorkTypes_deep2241',
-    'WorkTypes_docash2241',
-    'WorkTypes_mt',
-    'WorkTypes_scancoin_sc303',
-    'WorkTypes_scancoin_sc313',
-    'WorkTypes_scancoin_sc350',
-    'WorkTypes_una_001',
-    'WorkTypes_vamabp2'
-]
+collections = ['WorkTypes_banknota1ku']
 
 def update_work_types(collection_name):
     collection_ref = db.collection(collection_name)
