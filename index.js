@@ -13,62 +13,13 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/generateReport/:month/:year', async (req, res) => {
-  const month = req.params.month;
-  const year = req.params.year;
-  console.log(`Generating report for ${month}/${year}`);
-
-  try {
-    const startDate = new Date(`${year}-${month}-01`);
-    const endDate = new Date(startDate);
-    endDate.setMonth(endDate.getMonth() + 1);
-    endDate.setDate(0);
-
-    console.log(`Fetching repairs from ${startDate.toISOString().split('T')[0]} to ${endDate.toISOString().split('T')[0]}`);
-
-    const repairsRef = db.collection('Repairs');
-    const repairsSnapshot = await repairsRef
-      .where('installation_date', '>=', startDate)
-      .where('installation_date', '<=', endDate)
-      .get();
-
-    let repairs = [];
-    let deviceIds = new Set();
-
-    repairsSnapshot.forEach(doc => {
-      const repairData = doc.data();
-      repairs.push(repairData);
-      deviceIds.add(repairData.device_id);
-    });
-
-    deviceIds = Array.from(deviceIds);
-
-    if (deviceIds.length > 0) {
-      const devicesSnapshot = await db.collection('Devices')
-        .where('__name__', 'in', deviceIds)
-        .get();
-
-      let devicesData = {};
-      devicesSnapshot.forEach(doc => devicesData[doc.id] = doc.data());
-
-      let repairsByRegion = repairs.map(repair => {
-        return {
-          ...repair,
-          device_model: devicesData[repair.device_id]?.model || 'Unknown'
-        };
-      });
-
-      console.log('Repairs by region:', repairsByRegion);
-
-      res.json({ repairsByRegion });
-    } else {
-      res.json({ repairsByRegion: [] });
-    }
-
-  } catch (error) {
-    console.error('Ошибка при формировании отчета:', error);
-    res.status(500).json({ error: 'Ошибка при формировании отчета' });
-  }
+// Добавьте этот маршрут для генерации отчета 
+app.get('/generateReport/:month/:year', async (req, res) => { 
+  const { month, year } = req.params; try { 
+  const reportData = await generateReport(month, year); res.json(reportData); } 
+  catch (error) { console.error('Ошибка при формировании отчета:', error); 
+  res.status(500).json({ error: 'Ошибка при формировании отчета' });
+ } 
 });
 
 async function isValidYear(year) {
