@@ -1,7 +1,7 @@
 const admin = require('firebase-admin');
-const fs = require('fs');
 
-const serviceAccount = JSON.parse(fs.readFileSync('./firebase-config.json', 'utf8'));
+// Убедитесь, что путь к файлу конфигурации берется из переменной окружения
+const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
