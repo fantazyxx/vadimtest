@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Маршрут для генерации отчета
+// Добавьте этот маршрут для генерации отчета
 app.get('/generateReport/:month/:year', async (req, res) => {
   const { month, year } = req.params;
   try {
@@ -258,5 +258,4 @@ app.post('/addDevice', async (req, res) => {
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('Server started on port', process.env.PORT || 3000);
-  
 });
