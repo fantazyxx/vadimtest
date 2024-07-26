@@ -25,6 +25,7 @@ app.get('/generateReport/:month/:year', async (req, res) => {
   }
 });
 
+// Функция для проверки допустимости года
 async function isValidYear(year) {
   try {
     const firstRepairSnapshot = await db.collection('Repairs').orderBy('installation_date', 'asc').limit(1).get();
@@ -43,15 +44,11 @@ async function isValidYear(year) {
   }
 }
 
-function formatDate(dateStr) {
-  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-  return new Date(dateStr).toLocaleDateString('ru-RU', options);
-}
-// Вставьте функцию formatDate перед функцией generateReport
+// Функция для форматирования даты
 function formatDate(dateStr) {
   // Преобразуем строку даты в объект Date
   const date = new Date(dateStr);
-  
+
   // Проверяем, является ли дата допустимой
   if (isNaN(date.getTime())) {
     console.error('Invalid date format:', dateStr);
@@ -63,10 +60,15 @@ function formatDate(dateStr) {
   return date.toLocaleDateString('ru-RU', options);
 }
 
+// Функция для проверки допустимости месяца
+function isValidMonth(month) {
+  const monthInt = parseInt(month, 10);
+  return monthInt >= 1 && monthInt <= 12;
+}
 
-
+// Основная функция для генерации отчета
 async function generateReport(month, year) {
-  console.log(`Generating report for ${month}/${year}`); // Логирование
+  console.log(`Generating report for ${month}/${year}`);
   if (!isValidMonth(month) || !await isValidYear(year)) {
     throw new Error('Некорректные параметры месяца и года.');
   }
@@ -76,7 +78,7 @@ async function generateReport(month, year) {
 
   const formattedStartDate = startDate.toISOString().slice(0, 10);
   const formattedEndDate = endDate.toISOString().slice(0, 10);
-  console.log(`Fetching repairs from ${formattedStartDate} to ${formattedEndDate}`); // Логирование
+  console.log(`Fetching repairs from ${formattedStartDate} to ${formattedEndDate}`);
   const repairsRef = db.collection('Repairs');
   const snapshot = await repairsRef
     .where('installation_date', '>=', formattedStartDate)
@@ -84,14 +86,13 @@ async function generateReport(month, year) {
     .get();
 
   if (snapshot.empty) {
-    console.log('No repairs found for the specified period.'); // Логирование
+    console.log('No repairs found for the specified period.');
     return {}; 
   }
 
   const repairsByRegion = {};
   const deviceIds = snapshot.docs.map(doc => doc.data().device_id);
 
-  // Получение данных об устройствах за один запрос
   const devicesSnapshot = await db.collection('Devices')
     .where('__name__', 'in', deviceIds)
     .get();
@@ -105,7 +106,7 @@ async function generateReport(month, year) {
 
     if (!deviceData) {
       console.error(`Устройство с ID ${repairData.device_id} не найдено для ремонта ${doc.id}`);
-      continue; // Пропускаем ремонт, если устройство не найдено
+      continue;
     }
 
     const region = deviceData.region || 'Не указан';
