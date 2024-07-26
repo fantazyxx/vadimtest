@@ -34,11 +34,12 @@ async function isValidYear(year) {
       const firstRepairYear = new Date(firstRepairDate).getFullYear();
       return year >= firstRepairYear;
     } else {
+      // Если ремонтов нет, разрешаем любой год
       return true;
     }
   } catch (error) {
     console.error('Ошибка при получении первого года ремонта:', error);
-    return false;
+    return false; // В случае ошибки считаем год недопустимым
   }
 }
 
@@ -46,9 +47,26 @@ function formatDate(dateStr) {
   const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
   return new Date(dateStr).toLocaleDateString('ru-RU', options);
 }
+// Вставьте функцию formatDate перед функцией generateReport
+function formatDate(dateStr) {
+  // Преобразуем строку даты в объект Date
+  const date = new Date(dateStr);
+  
+  // Проверяем, является ли дата допустимой
+  if (isNaN(date.getTime())) {
+    console.error('Invalid date format:', dateStr);
+    return 'Invalid Date';
+  }
+
+  // Преобразуем объект Date в форматируемую строку
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return date.toLocaleDateString('ru-RU', options);
+}
+
+
 
 async function generateReport(month, year) {
-  console.log(`Generating report for ${month}/${year}`);
+  console.log(`Generating report for ${month}/${year}`); // Логирование
   if (!isValidMonth(month) || !await isValidYear(year)) {
     throw new Error('Некорректные параметры месяца и года.');
   }
@@ -58,7 +76,7 @@ async function generateReport(month, year) {
 
   const formattedStartDate = startDate.toISOString().slice(0, 10);
   const formattedEndDate = endDate.toISOString().slice(0, 10);
-  console.log(`Fetching repairs from ${formattedStartDate} to ${formattedEndDate}`);
+  console.log(`Fetching repairs from ${formattedStartDate} to ${formattedEndDate}`); // Логирование
   const repairsRef = db.collection('Repairs');
   const snapshot = await repairsRef
     .where('installation_date', '>=', formattedStartDate)
@@ -66,13 +84,14 @@ async function generateReport(month, year) {
     .get();
 
   if (snapshot.empty) {
-    console.log('No repairs found for the specified period.');
+    console.log('No repairs found for the specified period.'); // Логирование
     return {}; 
   }
 
   const repairsByRegion = {};
   const deviceIds = snapshot.docs.map(doc => doc.data().device_id);
 
+  // Получение данных об устройствах за один запрос
   const devicesSnapshot = await db.collection('Devices')
     .where('__name__', 'in', deviceIds)
     .get();
@@ -86,7 +105,7 @@ async function generateReport(month, year) {
 
     if (!deviceData) {
       console.error(`Устройство с ID ${repairData.device_id} не найдено для ремонта ${doc.id}`);
-      continue;
+      continue; // Пропускаем ремонт, если устройство не найдено
     }
 
     const region = deviceData.region || 'Не указан';
@@ -124,6 +143,8 @@ async function generateReport(month, year) {
   return repairsByRegion;
 }
 
+
+// Получение всех устройств
 app.get('/getDevices', async (req, res) => {
   try {
     const devicesRef = db.collection('Devices');
@@ -136,6 +157,7 @@ app.get('/getDevices', async (req, res) => {
   }
 });
 
+// Получение устройства по ID
 app.get('/getDevice/:deviceId', async (req, res) => {
   const deviceId = req.params.deviceId;
   console.log('Запрос на получение устройства с ID:', deviceId);
@@ -155,6 +177,7 @@ app.get('/getDevice/:deviceId', async (req, res) => {
   }
 });
 
+// Получение типов работ по типу устройства
 app.get('/getWorkTypes/:deviceType', async (req, res) => {
   const deviceType = req.params.deviceType.toLowerCase();
   const collectionName = `WorkTypes_${deviceType}`;
@@ -163,7 +186,7 @@ app.get('/getWorkTypes/:deviceType', async (req, res) => {
     const workTypesRef = db.collection(collectionName);
     const snapshot = await workTypesRef.get();
     const workTypes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log('Work types found:', workTypes);
+    console.log('Work types found:', workTypes); // Логирование для проверки
     res.json(workTypes);
   } catch (error) {
     console.error('Error getting work types:', error);
@@ -185,7 +208,8 @@ app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
     const snapshot = await repairsRef.get();
     const repairs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-    console.log(`Repairs found: ${JSON.stringify(repairs)}`);
+    console.log(`Repairs found: ${JSON.stringify(repairs)}`); // Логирование
+
     res.json(repairs);
   } catch (error) {
     console.error('Error getting previous repairs:', error);
@@ -193,6 +217,8 @@ app.get('/getPreviousRepairs/:deviceNumber', async (req, res) => {
   }
 });
 
+
+// Получение всех ремонтов
 app.get('/getRepairs', async (req, res) => {
   try {
     const repairsRef = db.collection('Repairs');
@@ -205,10 +231,11 @@ app.get('/getRepairs', async (req, res) => {
   }
 });
 
+// Добавление нового акта ремонта
 app.post('/addRepair', async (req, res) => {
   const { repair_id, device_id, repair_type, work_count, installation_date } = req.body;
   try {
-    const actsRef = db.collection('Repairs').doc(repair_id); 
+    const actsRef = db.collection('Repairs').doc(repair_id); // Используем repair_id как идентификатор документа
     await actsRef.set({ device_id, repair_type, work_count, installation_date });
     res.status(201).json({ message: 'Act added' });
   } catch (error) {
@@ -217,6 +244,8 @@ app.post('/addRepair', async (req, res) => {
   }
 });
 
+
+// Загрузка данных о типах работ из CSV
 app.post('/uploadWorkTypes', (req, res) => {
   const { collectionName, filePath } = req.body;
   try {
@@ -236,7 +265,6 @@ app.post('/uploadWorkTypes', (req, res) => {
     res.status(500).json({ error: 'Error uploading work types' });
   }
 });
-
 app.post('/addDevice', async (req, res) => {
   const { deviceNumber, deviceModel, factorySerialNumber, region, deviceType } = req.body;
 
@@ -255,6 +283,8 @@ app.post('/addDevice', async (req, res) => {
     res.status(500).send('Ошибка при добавлении устройства.');
   }
 });
+
+
 
 app.listen(process.env.PORT || 3000, () => {
   console.log('Server started on port', process.env.PORT || 3000);
